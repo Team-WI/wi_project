@@ -1,12 +1,8 @@
-//import { Link } from "react-router-dom";
-import './Components.css'; 
+import { Link } from "react-router-dom";
+import './Components.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-
-
-
 const Category = () => {
-  
    return (
         <div className='category'>
             <div className='category-list'>
@@ -45,5 +41,4 @@ const Category = () => {
         </div>
     );
 };
-
 export default Category;

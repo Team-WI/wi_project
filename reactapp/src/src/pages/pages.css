@@ -1,5 +1,4 @@
-/* 각 페이지 별 css */
-
+/* 페이지 css */
 /* 메인 홈 화면 */
 
 .main {
@@ -30,7 +29,7 @@
 }
 .haadline {
     position: absolute; /* 부모 요소를 기준으로 절대 위치 */
-    top: 40%;           /* 부모 요소의 높이의 50% 위치로 이동 */
+    top: 50%;           /* 부모 요소의 높이의 50% 위치로 이동 */
     left: 55%;          /* 부모 요소의 너비의 50% 위치로 이동 */
     margin-top: 50px;
     height: 100px;
@@ -59,8 +58,8 @@
 }
 
 .mypage-tb {
-    width: 1000px;
-    height: 200px;
+    width: 1100px;
+    height: 250px;
     position: absolute; /* 부모 요소를 기준으로 절대 위치 */
     top: 15%;           /* 부모 요소의 높이의 50% 위치로 이동 */
     left: 58%;          /* 부모 요소의 너비의 50% 위치로 이동 */
@@ -72,7 +71,5 @@
 
 .mypage-tb th {
     color: white; /* 글자색을 흰색으로 설정 */
-    font-size: 1.8rem;
     text-align: center;
 }
-

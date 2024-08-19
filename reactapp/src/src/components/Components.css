@@ -10,31 +10,26 @@
     border-radius: 10px;
     padding: 10px 0;
 }
-
 .logo a {
     margin-left: 60px;
     color: white;
     text-decoration: none;
     font-size: 1.5rem;
 }
-
 .nav-links {
     margin-top: 10px;
     list-style: none;
     display: flex;
 }
-
 .nav-links a {
     margin-right: 60px;
     color: white;
     text-decoration: none;
     font-size: 1rem;
 }
-
 .nav-links a:hover {
     text-decoration: underline;
 }
-
 /* 사이드 내비바 - 마이페이지 고정 */
 .sidebar {
     margin-top: 100px;
@@ -46,20 +41,17 @@
     align-items: center;
     background-color: #333;
 }
-
 .side-links {
     list-style: none;
     display: flex; /* Flexbox for alignment */
     flex-direction: column; /* Align links vertically */
     gap: 80px; /* Space between links */
 }
-
 .side-links a {
     color: white;
     text-decoration: none;
     font-size: 1rem;
 }
-
 /* footer 영역 - 하단고정 */
 .footer {
     display: flex;
@@ -78,7 +70,6 @@
     background: #3c3c40;
     z-index: 100;
 }
-
 /* 카테고리 영역 - 상단고정 */
 /* 카테고리 취상위 태그 */
 .category {
@@ -90,7 +81,6 @@
     position: relative;
     
 }
-
 .category-list {
     padding-left: 5%;
     display: flex;
@@ -102,14 +92,12 @@
     list-style: none;
     font-size: 16pt;
 }
-
 .category-tap:hover {
    background-color: #333;
    color: rgb(146, 91, 91);
    width: 20%;
    border-radius: 5px;
 }
-
 .dropdown-item {
     display: none; /* 초기에는 드롭다운을 숨깁니다. */
     top: 100%;
@@ -119,7 +107,6 @@
 .dropdown-item:hover {
     display: block; 
 }
-
 .dropdown {
     display: none; /* 기본적으로 드롭다운 메뉴를 숨깁니다. */
     position: absolute;
@@ -131,11 +118,9 @@
     background-color: #fff;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 }
-
 .category-tap:hover .dropdown {
     display: block; /* 마우스를 올리면 드롭다운을 표시합니다. */
 }
-
 /* 카테고리의 검색창 css */
 .search {
     display: flex;
@@ -147,7 +132,6 @@
 .search-input {
     width: 90%;
 }
-
 .search-btn {
     background-color: white;
     border-style: none;
