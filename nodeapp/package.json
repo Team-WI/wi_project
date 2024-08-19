@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "global": "^4.4.0",
+    "ip-address": "^9.0.5",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.10.2",
+    "nodemon": "^3.1.4",
+    "pino": "^9.3.2",
+    "pino-pretty": "^11.2.2"
+  },
+  "name": "nodeapp",
+  "version": "1.0.0",
+  "description": "Backend NodeJs API for WEB Service",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "dev1": "nodemon src/server_dev1.js",
+    "prod": "node src/server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

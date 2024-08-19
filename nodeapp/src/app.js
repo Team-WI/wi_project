@@ -1,0 +1,57 @@
+import express from 'express';
+import cors from 'cors';
+import userRoutes from './domains/Users/routes/userRoutes.js';
+import productRoutes from './domains/Products/routes/productRoutes.js';
+import orderRoutes from './domains/Orders/routes/orderRoutes.js';
+import shippingRoutes from './domains/Shipping/routes/shippingRoutes.js';
+import path from 'path';
+import * as url from 'url';
+
+
+const app = express();
+
+let corsOptions = {
+  origin: "http://localhost:3000"
+}
+app.use(cors(corsOptions));
+
+// parse requests of content-type - application/json
+app.use(express.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+// body-parser
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
+// Set filePath
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+
+//app.use('요청 경로', express.static('실제 경로'));
+app.use('/', express.static(path.join(__dirname, 'public/build')));
+app.use('/assets', express.static(path.join(__dirname, '/public/build/assets')));
+
+// 테이블 route 작성
+app.use('/api/users/', userRoutes);
+app.use('/api/products/', productRoutes);
+app.use('/api/orders/', orderRoutes);
+app.use('/api/shippings/', shippingRoutes);
+
+
+app.get('/', (req, res) => {
+  res.sendFile("index.html");
+});
+
+
+app.get("/review", (req, res) => {
+  res.sendFile(path.join(__dirname, "/public/html", "/review_modify.html"));
+});
+
+
+
+export default app;
+
+
+
