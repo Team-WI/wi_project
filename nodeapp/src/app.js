@@ -4,14 +4,16 @@ import userRoutes from './domains/Users/routes/userRoutes.js';
 import productRoutes from './domains/Products/routes/productRoutes.js';
 import orderRoutes from './domains/Orders/routes/orderRoutes.js';
 import shippingRoutes from './domains/Shipping/routes/shippingRoutes.js';
+import productInquiryRoutes from './domains/ProductInquiries/routes/productInquiryRoutes.js';
+import reviewRoutes from './domains/Reviews/routes/reviewRoutes.js';
+import categoryRoutes from './domains/Categories/routes/categoryRoutes.js';
 import path from 'path';
 import * as url from 'url';
-
 
 const app = express();
 
 let corsOptions = {
-  origin: "http://localhost:3000"
+  origin: "*"
 }
 app.use(cors(corsOptions));
 
@@ -38,6 +40,11 @@ app.use('/api/users/', userRoutes);
 app.use('/api/products/', productRoutes);
 app.use('/api/orders/', orderRoutes);
 app.use('/api/shippings/', shippingRoutes);
+app.use('/api/reviews/', reviewRoutes);
+app.use('/api/productInquiries/', productInquiryRoutes);
+app.use('/api/categories/', categoryRoutes);
+
+
 
 
 app.get('/', (req, res) => {
