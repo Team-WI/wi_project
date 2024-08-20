@@ -2,7 +2,7 @@
 import React, { useState,useNavigate } from 'react';
 import './pages.css';
 import axios from 'axios'; // axios를 불러옵니다.
-import { Link } from 'react-router-dom'; // react-router-dom의 Link를 불러옵니다.
+//import { Link } from 'react-router-dom'; // react-router-dom의 Link를 불러옵니다.
 
 
 
@@ -64,27 +64,20 @@ console.log(response.data.data); // 받은 토큰이 {date: token} 형식임..
 };
 
   return (
-    <div>
+    <div className='log-in'>
         <form 
-        className="login" 
+        className="login-form" 
         onSubmit={handleSubmit}>
-            <h1 className="headline">WI에 오신것을 환영해요!</h1>
+            <h1 className="login-headline">WI에 오신것을 환영해요!</h1>
                 <label >아이디</label>
-                <input type="text" placeholder="아이디 입력" name="id" value={id} onChange={idChange}/>
+                <input className='input-section' type="text" placeholder="아이디 입력" name="id" value={id} onChange={idChange}/>
                 <label>비밀번호</label>
-                <input type="password" placeholder="비밀번호 입력" name="password" value={password} onChange={pwChange}/>
-            <button type="submit" className="w-100">
+                <input  className='input-section' type="password" placeholder="비밀번호 입력" name="password" value={password} onChange={pwChange}/>
+            <button type="submit" className='submit-login-btn'>
             로그인
             </button>   
-            <br/> 
-            <ul className="mt-3 signup">
-          <li>
-            <Link to="/SignUp">회원가입</Link>
-          </li>
-          <li>
-            <Link to="/SignUp">아이디찾기</Link>
-          </li>
-        </ul>
+            <hr className="custom-line"/>
+            <button className='signup-btn'>회원가입</button>
         </form>
     </div>
 

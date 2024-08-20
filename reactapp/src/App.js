@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 설치
 import {PrivateRoute} from './components/PrivateRoute';
 import './App.css';
 import Category from "./components/Category";
+import Qnamantoman from "./pages/Qnamantoman";
 
 
 
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/" element={<Main />} />
           <Route path="/MyLike" element={<PrivateRoute element={<MyLike />} />} />
           <Route path="/MyPage" element={<PrivateRoute element={<MyPage />} />} />
+          <Route path="/MyPage/Qnamantoman" element={<Qnamantoman />} /> 
           <Route path="/ShoppingCart" element={<PrivateRoute element={<ShoppingCart />} />}  />
           <Route path="/SignIn" element={<SignIn />} />
           <Route path="/SignUp" element={<SignUp />} /> 
@@ -36,7 +38,6 @@ const App = () => {
         </div>
       </div>
     </Router>
-    
   );
 };
 
