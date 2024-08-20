@@ -29,8 +29,11 @@ export const getProductInquiryById = async (req) => {
 				row.productId,
 				row.userId,
 				row.inquiryCategory,
-				row.inquiryDate
-				));
+				row.inquiryDate,
+				row.inquiryTitle,
+				row.userComment,
+				row.sellerComment
+			));
 			return productInquiry[0];
 		}
 
@@ -41,12 +44,53 @@ export const getProductInquiryById = async (req) => {
 };
 
 
+export const getProductInquiryAll = async () => {
+	try {
+			
+		const connection = await connectionPool.getConnection();
+		const query = 'SELECT * from ProductInquiries;';
+		const result = await connection.execute(query);
+
+		console.log('result ::::', result)
+
+		if(result[0].length === 0) {
+			connection.release();
+			throw new Error('ProductInquiries not found');
+			
+		} else {
+			connection.release();
+			
+			const productInquiry = result[0].map(row => new ProductInquiry(
+				row.inquiryId,
+				row.productId,
+				row.userId,
+				row.inquiryCategory,
+				row.inquiryDate,
+				row.inquiryTitle,
+				row.userComment,
+				row.sellerComment
+				));
+			console.log('productInquiry ::::', productInquiry);
+			return productInquiry;
+		}
+
+	} catch (error) {
+		logger.error(`getProductInquiryById :::: ` + error);
+		throw new Error('ProductInquiry not found');
+	}
+};
+
+
+
+
+
+
 export const createProductInquiry = async (req) => {
 	try {
 
 		const connection = await connectionPool.getConnection();
-		const query = 'INSERT INTO ProductInquiries (productId, userId, inquiryCategory) VALUES (?,?,?)';
-		const result = await connection.execute(query, [req.body.productId, req.body.userId, req.body.inquiryCategory]);
+		const query = 'INSERT INTO ProductInquiries (productId, userId, inquiryCategory, inquiryTitle, userComment) VALUES (?,?,?,?,?)';
+		const result = await connection.execute(query, [req.body.productId, req.body.userId, req.body.inquiryCategory, req.body.inquiryTitle, req.body.userComment]);
 
 		if(result[0].length === 0) {
 			connection.release();

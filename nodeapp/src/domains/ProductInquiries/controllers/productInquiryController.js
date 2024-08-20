@@ -1,4 +1,4 @@
-import { getProductInquiryById, createProductInquiry, updateProductInquiry, deleteProductInquiry } from '../services/productInquiryService.js';
+import { getProductInquiryById, getProductInquiryAll, createProductInquiry, updateProductInquiry, deleteProductInquiry } from '../services/productInquiryService.js';
 import response from '../../../class/response.js';
 import HttpStatus from '../../../constants/HttpStatus.js';
 import logger from '../../../utils/logger.js';
@@ -10,6 +10,20 @@ export const getProductInquiry = async (req,res) => {
 	        const productInquiry = await getProductInquiryById(req);
 			console.log(productInquiry);
 
+	        res.status(HttpStatus.OK.code)
+			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: ProductInquiry Are Found', productInquiry ));
+	} catch (error){
+		console.log(error);
+	    res.status(HttpStatus.NOT_FOUND.code)
+			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: ProductInquiry Not Found', {error : error.massage} ));		
+	}
+};
+
+
+export const getProductInquiries = async (req,res) => {
+	try {
+		logger.info(`${req.method} ${req.originalUrl}, Called getProductInquiry`);
+	        const productInquiry = await getProductInquiryAll();
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: ProductInquiry Are Found', productInquiry ));
 	} catch (error){

@@ -1,10 +1,11 @@
 import express from 'express';
-import { getProductInquiry, addProductInquiry, editProductInquiry, removeProductInquiry } from '../controllers/productInquiryController.js';
+import { getProductInquiry, getProductInquiries, addProductInquiry, editProductInquiry, removeProductInquiry } from '../controllers/productInquiryController.js';
 
 const router = express.Router();
 
 
 router.get('/:id', getProductInquiry);
+router.get('/', getProductInquiries);
 
 router.post('/', addProductInquiry);
 
