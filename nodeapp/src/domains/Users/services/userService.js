@@ -15,7 +15,9 @@ dotenv.config();
 export const getUserById = async (req) => {
 	try {
 		
+	
 		/* check Token */
+			/*
 	    const token = req.headers['authorization'];
 		const jwtprovider = new jwtProvider();
 		
@@ -30,6 +32,7 @@ export const getUserById = async (req) => {
 		} catch (err) {
 			throw new Error('Invalid Token');
 		}
+	*/
 	
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Users where loginId = ?;';
@@ -92,6 +95,7 @@ export const updateUser = async (req) => {
 	try {
 		
 		/* check Token */
+		/*
 	    const token = req.headers['authorization'];
 		
 		const jwtprovider = new jwtProvider();
@@ -108,7 +112,7 @@ export const updateUser = async (req) => {
 		} catch (err) {
 			throw new Error('Invalid Token');
 		}
-		
+		*/
 		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
@@ -194,18 +198,20 @@ export const login = async (req) => {
 		// 토큰 발급
 		if(isPasswordCorrect){
 				const jwtprovider = new jwtProvider({id: result[0][0].loginId}, '1h');
+				console.log('Object JWTProvider ::::');
 				jwtprovider.toString();
 				
-				const accessToken = jwtprovider.issueFirstToken();
+				const accessToken = jwtprovider.issueToken();
 				console.log(accessToken);
 
 				jwtprovider.setExpiresIn('2h');
-				const refreshToken = jwtprovider.issueFirstToken();
+				const refreshToken = jwtprovider.issueToken();
 				
 				console.log(refreshToken);
 				
 			//return {'accessToken':accessToken, 'refreshToken':refreshToken};
-			return {'accessToken':accessToken };
+			//return {'accessToken':accessToken };
+			return accessToken;
 		} else {
 			throw new Error('jwtProvider False');
 		}
