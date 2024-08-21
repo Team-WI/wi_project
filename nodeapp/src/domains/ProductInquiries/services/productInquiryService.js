@@ -89,15 +89,26 @@ export const createProductInquiry = async (req) => {
 	try {
 
 		const connection = await connectionPool.getConnection();
-		const query = 'INSERT INTO ProductInquiries (productId, userId, inquiryCategory, inquiryTitle, userComment) VALUES (?,?,?,?,?)';
-		const result = await connection.execute(query, [req.body.productId, req.body.userId, req.body.inquiryCategory, req.body.inquiryTitle, req.body.userComment]);
-
-		if(result[0].length === 0) {
+		const query_user = 'SELECT userId from Users where loginId = (?)';
+		const result_user = await connection.execute(query_user, [req.body.loginId]);
+		
+		if(result_user[0].length === 0) {
 			connection.release();
-			throw new Error('ProductInquiry not found');
+			throw new Error('ProductInquiry User not found');
+			
 		} else {
-			connection.release();
-			return result[0];
+		
+			const query = 'INSERT INTO ProductInquiries (productId, userId, inquiryCategory, inquiryTitle, userComment) VALUES (?,?,?,?,?)';
+			const result = await connection.execute(query, [req.body.productId, result_user[0][0].userId, req.body.inquiryCategory, req.body.inquiryTitle, req.body.userComment]);
+
+			if(result[0].length === 0) {
+				connection.release();
+				throw new Error('ProductInquiry not found');
+			} else {
+				connection.release();
+				return result[0];
+			}
+			
 		}
 		
 	} catch (error) {
