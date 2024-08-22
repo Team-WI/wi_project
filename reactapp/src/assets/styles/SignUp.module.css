@@ -1,0 +1,97 @@
+.page {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 30px;
+  max-width: 500px;
+  margin: 50px auto;
+}
+
+.titleWrap {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.messageWrap {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.contentWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.userInputFrame {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.infoOptionalText {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.userInput {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.userInput:focus {
+  outline: none;
+  border-color: rgba(31, 38, 135, 0.5);
+}
+
+.errorMessageWrap {
+  color: #ff4d4f;
+  font-size: 12px;
+}
+
+button {
+  background: rgba(31, 38, 135, 0.5);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: rgba(31, 38, 135, 0.7);
+}
+
+button:disabled {
+  background: rgba(31, 38, 135, 0.3);
+  cursor: not-allowed;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 15px 0;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+input[type="checkbox"] {
+  accent-color: rgba(31, 38, 135, 0.5);
+}

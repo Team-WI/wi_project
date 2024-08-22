@@ -6,7 +6,7 @@ const MainPage = () => {
   return (
     <div>
       <BannerSlide />
-      <ProductList />
+      {/* <ProductList /> */}
     </div>
   );
 };
