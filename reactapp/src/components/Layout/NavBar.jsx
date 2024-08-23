@@ -1,7 +1,9 @@
 /* src/components/Layout/NavBar.jsx - 통합 작업중
 재영님의 NavBar.js, Category.js를 참고, 카테고리 드롭다운 메뉴를 추가한 네비바 컴포넌트입니다.
 
-TODO: 로그인 전,후 상단 버튼 바뀌는 기능 - 조건부렌더링으로 태그 바꾸기. 세션스토리지?
+TODO: 
+-로그인 전,후 상단 버튼 바뀌는 기능 - 조건부렌더링으로 태그 바꾸기. 세션스토리지
+-카테고리별 드롭다운 메뉴 태그(Category.js로 사용예정)
 */
 
 import React, { useState } from 'react';

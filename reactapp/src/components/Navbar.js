@@ -4,50 +4,50 @@ import { Link } from 'react-router-dom';
 import { Container, Nav, Navbar, Form, Button } from 'react-bootstrap';
 import '../assets/styles/NavBar.css'; 
 
-const NavBar = ({ isLogin }) => {
-  const [expanded, setExpanded] = useState(false);
+// const NavBar = ({ isLogin }) => {
+//   const [expanded, setExpanded] = useState(false);
 
-  return (
-    <Navbar bg="dark" variant='dark' expand="lg" sticky="top">
-      <Container fluid>
-        <Navbar.Brand as={Link} to="/">WebInside</Navbar.Brand>
-        <Navbar.Toggle 
-        aria-controls="responsive-navbar-nav" 
-        onClick={() => setExpanded(expanded ? false : "expanded")}
-        />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Best</Nav.Link>
-            <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Women</Nav.Link>
-            <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Men</Nav.Link>
-            <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Kids</Nav.Link>
-          </Nav>
-          <Form className="d-flex">
-            <InputGroup>  
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-              />
-              <Button variant="light">
-                <span className="d-none d-lg-inline">검색</span>
-              </Button>
-            </InputGroup>
-          </Form>
-          <Nav>
-            <Nav.Link as={Link} to="/MyLike" onClick={() => setExpanded(false)}>Like</Nav.Link>
-            <Nav.Link as={Link} to="/MyPage" onClick={() => setExpanded(false)}>MyPage</Nav.Link>
-            <Nav.Link as={Link} to="/ShoppingCart" onClick={() => setExpanded(false)}>Cart</Nav.Link>
-            <Nav.Link as={Link} to="/SignIn" onClick={() => setExpanded(false)}>Login</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
-};
+//   return (
+//     <Navbar bg="dark" variant='dark' expand="lg" sticky="top">
+//       <Container fluid>
+//         <Navbar.Brand as={Link} to="/">WebInside</Navbar.Brand>
+//         <Navbar.Toggle 
+//         aria-controls="responsive-navbar-nav" 
+//         onClick={() => setExpanded(expanded ? false : "expanded")}
+//         />
+//         <Navbar.Collapse id="responsive-navbar-nav">
+//           <Nav className="me-auto">
+//             <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Best</Nav.Link>
+//             <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Women</Nav.Link>
+//             <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Men</Nav.Link>
+//             <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Kids</Nav.Link>
+//           </Nav>
+//           <Form className="d-flex">
+//             <InputGroup>  
+//               <Form.Control
+//                 type="search"
+//                 placeholder="Search"
+//                 className="me-2"
+//                 aria-label="Search"
+//               />
+//               <Button variant="light">
+//                 <span className="d-none d-lg-inline">검색</span>
+//               </Button>
+//             </InputGroup>
+//           </Form>
+//           <Nav>
+//             <Nav.Link as={Link} to="/MyLike" onClick={() => setExpanded(false)}>Like</Nav.Link>
+//             <Nav.Link as={Link} to="/MyPage" onClick={() => setExpanded(false)}>MyPage</Nav.Link>
+//             <Nav.Link as={Link} to="/ShoppingCart" onClick={() => setExpanded(false)}>Cart</Nav.Link>
+//             <Nav.Link as={Link} to="/SignIn" onClick={() => setExpanded(false)}>Login</Nav.Link>
+//           </Nav>
+//         </Navbar.Collapse>
+//       </Container>
+//     </Navbar>
+//   );
+// };
 
-export default NavBar;
+// export default NavBar;
 
 
 // 재영님's 로그인, 로그아웃 조건별 네비바
