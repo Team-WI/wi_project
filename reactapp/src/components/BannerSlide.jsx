@@ -25,9 +25,7 @@ const BannerSlide = () => {
         autoplay={{ delay: 3000 }}
         className='mySwiper'
       >
-        <SwiperSlide>
-          <img src="https://img.29cm.co.kr/cms/202408/11ef5886d907495989fb8370314c0b23.jpg?width=1200&q=75" alt="배너 이미지"/>
-        </SwiperSlide>
+       
         <SwiperSlide>
         <img src="https://img.29cm.co.kr/cms/202408/11ef5854b8fb03a1aad2bb58182c84f5.jpg?width=1200&q=75" alt="배너 이미지"/>
           </SwiperSlide>

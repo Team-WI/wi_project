@@ -1,7 +1,6 @@
 /*
-헤더 컴포넌트
--로고, 회원접속 네비바1
--카테고리 네비바2
+Header 컴포넌트
+네비바를 import 하며, 네비바 안에서 로고 
 */
 
 import React from 'react';
