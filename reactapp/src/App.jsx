@@ -16,6 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 설치
 import {PrivateRoute} from './components/PrivateRoute';
 import './App.css';
 import Category from "./components/Category";
+import ProductList from "./components/ProductList";
 
 
 
@@ -26,7 +27,7 @@ const App = () => {
       < div className="main-container">
       <div className="landing-page">
         <Header />
-        <Category />
+        {/* <Category /> */}
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/MyLike" element={<PrivateRoute element={<MyLike />} />} />
@@ -34,6 +35,9 @@ const App = () => {
           <Route path="/ShoppingCart" element={<PrivateRoute element={<ShoppingCart />} />}  />
           <Route path="/SignIn" element={<SignIn />} />
           <Route path="/SignUp" element={<SignUp />} /> 
+          <Route path="/ProductList" element={<ProductList />} />
+          <Route path="/ProductList/:productId" element={<ProductList />} />
+
         </Routes>
         <Footer />
         </div>
