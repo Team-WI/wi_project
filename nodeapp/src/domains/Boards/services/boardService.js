@@ -1,8 +1,8 @@
 import logger from '../../../utils/logger.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
 import mysql from 'mysql2/promise';
-import Category from '../models/categoryModel.js';
-import Product from '../../Products/models/productModel.js';
+import bcrypt from 'bcryptjs';
+import Board from '../models/boardModel.js';
 import response from '../../../class/response.js';
 import jwtProvider from '../../../class/jwtProvider.js';
 import dotenv from 'dotenv';
@@ -36,102 +36,94 @@ function addHour(transDate){
 }
 
 
-export const getCategoryItemById = async (req) => {
+export const getBoardById = async (req) => {
 	try {
-
+		
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT P.* '
-					  + 'from Products P '
-					  + 'JOIN Product_Category PC ON P.productId = PC.productId '
-				      + 'JOIN Categories C ON PC.categoryId = C.categoryId '
-					  + 'WHERE C.categoryName = (?)'
-					  + 'OR C.parentId = (SELECT CategoryId FROM Categories WHERE categoryName = (?))';
-		const result = await connection.execute(query, [req.params.id, req.params.id]);
+		const query = 'SELECT * from Boards where boardId = ?;';
+		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {
 			connection.release();
-			throw new Error('Category > Product not found');
+			throw new Error('Board not found');
 			
 		} else {
 			connection.release();
 			
-			const product = result[0].map(row => new Product(
-				row.productId,
-				row.productName,
-				row.description,
-				row.price,
-				row.stock,
-				addHour(row.created_at)
+			const board = result[0].map(row => new Board(
+				row.boardId,
+				row.administratorsId,
+				row.inquiryCategory,
+				addHour(row.inquiryDate),
+				row.inquiryContent
 				));
-			return product[0];
-
+			return board[0];
 		}
 
 	} catch (error) {
-		logger.error(`getCategoryItemById :::: ` + error);
-		throw new Error('CategoryName > Product not found');
+		logger.error(`getBoardById :::: ` + error);
+		throw new Error('Board not found');
 	}
 };
 
-export const getCategoryItemBySubId = async (req) => {
-	try {
 
+export const getBoardAll = async () => {
+	try {	
+			
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT P.* '
-					  + 'from Products P '
-					  + 'JOIN Product_Category PC ON P.productId = PC.productId '
-				      + 'JOIN Categories C ON PC.categoryId = C.categoryId '
-					  + 'WHERE C.parentId = (SELECT categoryId FROM Categories WHERE categoryName = (?)) '
-					  + 'AND C.categoryName = (?)';
-		const result = await connection.execute(query, [req.params.id, req.params.subId]);
+		const query = 'SELECT * from Boards;';
+		const result = await connection.execute(query);
+
+		console.log('result ::::', result)
 
 		if(result[0].length === 0) {
 			connection.release();
-			throw new Error('Category not found');
+			throw new Error('Boards not found');
 			
 		} else {
 			connection.release();
 			
-			const product = result[0].map(row => new Product(
-				row.productId,
-				row.productName,
-				row.description,
-				row.price,
-				row.stock,
-				addHour(row.created_at)
+			const board = result[0].map(row => new Board(
+				row.boardId,
+				row.administratorsId,
+				row.inquiryCategory,
+				addHour(row.inquiryDate),
+				row.inquiryContent
 				));
-			return product[0];
+			return board;
 		}
 
 	} catch (error) {
-		logger.error(`getCategoryItemBySubId :::: ` + error);
-		throw new Error('CategorySubClass > Product not found');
+		logger.error(`getBoardAll :::: ` + error);
+		throw new Error('Board not found');
 	}
 };
 
 
-//이 기능은 관리자 페이지에서 사용할 것으로 예상
-export const createCategory = async (req) => {
+
+
+export const createBoard = async (req) => {
 	try {
+	
 		const connection = await connectionPool.getConnection();
-		const query = 'INSERT INTO Categories (categoryName, parentId) VALUES (?,?)';
-		const result = await connection.execute(query, [req.body.categoryName, req.body.parentId]);
+		const query = 'INSERT INTO Boards (administratorsId, inquiryCategory, inquiryContent) VALUES (?,?,?)';
+		const result = await connection.execute(query, [req.body.administratorsId, req.body.inquiryCategory, req.body.inquiryContent]);
 
 		if(result[0].length === 0) {
 			connection.release();
-			throw new Error('Category not found');
+			throw new Error('Board not found');
 		} else {
 			connection.release();
 			return result[0];
 		}
 		
 	} catch (error) {
-		logger.error(`createCategory :::: ` + error);
-		throw new Error('Category can\'t create');
+		logger.error(`createBoard :::: ` + error);
+		throw new Error('Board can\'t create');
 	}
 };
 
-export const updateCategory = async (req) => {
+export const updateBoard = async (req) => {
 	try {
 		
 		const keys = Object.keys(req.body);
@@ -150,44 +142,44 @@ export const updateCategory = async (req) => {
 		}
 		
 		const connection = await connectionPool.getConnection();
-		const query = 'UPDATE Categories SET ' 
+		const query = 'UPDATE Boards SET ' 
 						+ querySetData
-						+ ' where categoryId = (?)';
+						+ ' where boardId = (?)';
 		console.log(query);
 
 		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {
 			connection.release();
-			throw new Error('Category not found');
+			throw new Error('Board not found');
 		} else {
 			connection.release();
 			return result[0];
 		}
 
+
 	} catch (error) {
-		logger.error(`updateCategory :::: ` + error);
-		throw new Error('Category can\'t update');
+		logger.error(`updateBoard :::: ` + error);
+		throw new Error('Board can\'t update');
 	}
 };
 
-export const deleteCategory = async (req) => {
+export const deleteBoard = async (req) => {
 	try {
-    
 		const connection = await connectionPool.getConnection();
-		const query = 'DELETE FROM Categories where categoryId = (?)';
+		const query = 'DELETE FROM Boards where boardId = (?)';
 		const result = await connection.execute(query, [req.params.id]);
 	
 		if(result[0].length === 0) {
 			connection.release();
-			throw new Error('Category not found');
+			throw new Error('Board not found');
 		} else {
 			connection.release();
 			return result[0];
 		}
 	
 	} catch {
-		logger.error(`deleteCategory :::: ` + error);
-		throw new Error('Category can\'t delete');
+		logger.error(`deleteBoard :::: ` + error);
+		throw new Error('Board can\'t delete');
 	}
 };

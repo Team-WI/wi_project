@@ -1,10 +1,11 @@
 import express from 'express';
-import { getCategory, addCategory, editCategory, removeCategory } from '../controllers/categoryController.js';
+import { getCategoryItem, getCategoryItemSubClass, addCategory, editCategory, removeCategory } from '../controllers/categoryController.js';
 
 const router = express.Router();
 
 
-router.get('/:id',getCategory);
+router.get('/:id', getCategoryItem);
+router.get('/:id/:subId', getCategoryItemSubClass);
 
 router.post('/',addCategory);
 

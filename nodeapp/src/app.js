@@ -7,6 +7,7 @@ import shippingRoutes from './domains/Shipping/routes/shippingRoutes.js';
 import productInquiryRoutes from './domains/ProductInquiries/routes/productInquiryRoutes.js';
 import reviewRoutes from './domains/Reviews/routes/reviewRoutes.js';
 import categoryRoutes from './domains/Categories/routes/categoryRoutes.js';
+import boardRoutes from './domains/Boards/routes/boardRoutes.js';
 import path from 'path';
 import * as url from 'url';
 
@@ -43,6 +44,7 @@ app.use('/api/shippings/', shippingRoutes);
 app.use('/api/reviews/', reviewRoutes);
 app.use('/api/productInquiries/', productInquiryRoutes);
 app.use('/api/categories/', categoryRoutes);
+app.use('/api/boards/', boardRoutes);
 
 
 
