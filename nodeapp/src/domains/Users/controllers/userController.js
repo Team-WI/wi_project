@@ -1,4 +1,4 @@
-import { getUserById, createUser, updateUser, deleteUser, login } from '../services/userService.js';
+import { getUserById, createUser, updateUser, deleteUser, login, checkDuplicate } from '../services/userService.js';
 import response from '../../../class/response.js';
 import HttpStatus from '../../../constants/HttpStatus.js';
 import logger from '../../../utils/logger.js';
@@ -62,7 +62,7 @@ export const loginRequest = async (req, res) => {
 	try {
 		logger.info(`${req.method} ${req.originalUrl}, Called User loginRequest`);
 		const token = await login(req);
-		console.log(token);
+		console.log('Issued login Access token ::::',token);
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: User are verified', token));
 	} catch(error) {
@@ -71,3 +71,32 @@ export const loginRequest = async (req, res) => {
 	}
 };
 
+
+export const checkId = async (req,res) => {
+	try {
+		logger.info(`${req.method} ${req.originalUrl}, Called getUser`);
+	        const check_Duplicate = await checkDuplicate(req);
+			console.log('check_Duplicate :::: ', check_Duplicate);
+	        res.status(HttpStatus.OK.code)
+			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: User table Inquery Done', check_Duplicate ));
+	} catch (error){
+		console.log(error);
+	    res.status(HttpStatus.NOT_FOUND.code)
+			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: User Not Found', {error : error.massage} ));		
+	}
+};
+
+
+export const checkEmail = async (req,res) => {
+	try {
+		logger.info(`${req.method} ${req.originalUrl}, Called getUser`);
+	        const check_Duplicate = await checkDuplicate(req);
+			console.log('check_Duplicate :::: ', check_Duplicate);
+	        res.status(HttpStatus.OK.code)
+			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: User table Inquery Done', check_Duplicate ));
+	} catch (error){
+		console.log(error);
+	    res.status(HttpStatus.NOT_FOUND.code)
+			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: User Not Found', {error : error.massage} ));		
+	}
+};
