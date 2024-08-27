@@ -1,6 +1,6 @@
 /* 
 src/App.jsx
-실제 렌더링 되는 App은 App.js임 주의
+실제 렌더링 되는 App.js
 */
 
 import React from "react";
@@ -12,6 +12,7 @@ import {PrivateRoute} from './components/PrivateRoute';
 import MyLike from "./pages/MyLike";
 import MyPage from "./pages/MyPage";
 import ShoppingCart from "./pages/ShoppingCart";
+import Inquiries from "./pages/Inquiries";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ProductList from "./components/ProductList";
@@ -32,12 +33,12 @@ const App = () => {
           <Route path="/" element={<MainPage />} />
           <Route path="/MyLike" element={<PrivateRoute element={<MyLike />} />} />
           <Route path="/MyPage" element={<PrivateRoute element={<MyPage />} />} />
+          <Route path="/MyPage/Inquiries" element={<Inquiries />} /> 
           <Route path="/ShoppingCart" element={<PrivateRoute element={<ShoppingCart />} />}  />
           <Route path="/SignIn" element={<SignIn />} />
           <Route path="/SignUp" element={<SignUp />} /> 
           <Route path="/ProductList" element={<ProductList />} />
           <Route path="/ProductList/:productId" element={<ProductList />} />
-
         </Routes>
         <Footer />
         </div>
