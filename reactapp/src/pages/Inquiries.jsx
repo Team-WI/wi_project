@@ -167,7 +167,8 @@ const Inquiries = () => {
               </tr>
               {expandedInquiryId === inquiry.inquiryId && (
                 <tr>
-                  <td colSpan="5" className='drop-answer'>A: {inquiry.sellerComment}</td>
+                  <td colSpan="5" className='drop-answer'>Q: {inquiry.userComment} <br/>
+                    A: {inquiry.sellerComment}</td>
                 </tr>
               )}
             </React.Fragment>
