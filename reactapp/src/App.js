@@ -1,9 +1,9 @@
 // src/App.js 
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from "./components/Navbar";
+import Header from './components/Layout/Header';
 import Footer from "./components/Footer";
-import Main from "./pages/Main";
+import MainPage from "./pages/MainPage";
 import MyLike from "./pages/MyLike";
 import MyPage from "./pages/MyPage";
 import ShoppingCart from "./pages/ShoppingCart";
@@ -12,8 +12,10 @@ import SignUp from "./pages/SignUp";
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 설치
 import {PrivateRoute} from './components/PrivateRoute';
 import './App.css';
-import Category from "./components/Category";
-import Qnamantoman from "./pages/Qnamantoman";
+//import Category from "./components/Category";
+
+import ProductALL from "./product/ProductALL";
+import Inquiries from "./pages/Inquiries";
 
 
 
@@ -23,16 +25,17 @@ const App = () => {
     <Router>
       < div className="main-container">
       <div className="landing-page">
-        <Navbar />
-        <Category />
+      <Header />
+         {/* <Category /> */}
         <Routes>
-          <Route path="/" element={<Main />} />
+        <Route path="/" element={<MainPage />} />
           <Route path="/MyLike" element={<PrivateRoute element={<MyLike />} />} />
           <Route path="/MyPage" element={<PrivateRoute element={<MyPage />} />} />
-          <Route path="/MyPage/Qnamantoman" element={<Qnamantoman />} /> 
+          <Route path="/MyPage/Inquiries" element={<Inquiries />} /> 
           <Route path="/ShoppingCart" element={<PrivateRoute element={<ShoppingCart />} />}  />
           <Route path="/SignIn" element={<SignIn />} />
           <Route path="/SignUp" element={<SignUp />} /> 
+          <Route path="/product/ProductALL" element={<ProductALL />} /> 
         </Routes>
         <Footer />
         </div>

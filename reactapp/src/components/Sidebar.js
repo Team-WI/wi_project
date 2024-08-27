@@ -1,7 +1,7 @@
 // 경로 // src/components/Sidebar.js
 import React from "react";
 import { Link } from "react-router-dom";
-
+//  CSS  import './Navbar.css'; 
 
 const Sidebar = () => {
     return (
@@ -17,7 +17,7 @@ const Sidebar = () => {
                 <Link to="/">회원정보 수정</Link>
                 </li>  
                 <li>
-                <Link to="Qnamantoman">1:1 문의내역</Link>
+                <Link to="/MyPage/Inquiries">1:1 문의내역</Link>
                 </li>
                 <li>
                 <Link to="/">상품Q&A 내역</Link>

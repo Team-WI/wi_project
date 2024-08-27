@@ -6,7 +6,7 @@ const MyLike = () => {
     <div>
       <h1>Home / MyLike Page</h1>
       <p>Welcome to your MyLike!</p>
-      <p>리엑트 하기싫다</p>
+      <p>리엑트 너무 좋다</p>
     </div>
   );
 };
