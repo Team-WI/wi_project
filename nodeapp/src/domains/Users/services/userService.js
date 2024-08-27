@@ -15,7 +15,6 @@ dotenv.config();
 export const getUserById = async (req) => {
 	try {
 		
-	
 		/* check Token */
 			/*
 	    const token = req.headers['authorization'];
@@ -70,6 +69,7 @@ export const getUserById = async (req) => {
 
 export const createUser = async (userData) => {
 	try {
+	
 		// bcrypt를 이용하여유저PW hash 변환
 		const salt = bcrypt.genSaltSync(10);
 		const hash = bcrypt.hashSync(userData.password, salt);
@@ -218,8 +218,46 @@ export const login = async (req) => {
 	
   }catch {
     logger.error(`fetching login :::: ` + error);
+	throw new Error('fetching login False');
   }
 };
 
 
+export const checkDuplicate = async (req) => {
+	try {
+		
+		const keys = Object.keys(req.body);
+		const values = Object.values(req.body);
+				
+		let querySetData = "";		
+				
+		for(let i=0; i < keys.length; i++){
 
+			if(i == keys.length-1){
+				querySetData += ( keys[i] + "='" + values[i] + "'");
+			} else {
+				querySetData += ( keys[i] + "='" + values[i] + "'" + ',');
+			}
+			
+		}
+		
+		const connection = await connectionPool.getConnection();
+		const query = 'SELECT * FROM Users where ' + querySetData;
+		console.log(query);
+
+		const result = await connection.execute(query);
+
+		if(result[0].length === 0) {
+			connection.release();
+			return {'checkDuplicate' : 'NotDuplicated'};
+		} else {
+			connection.release();
+			return {'checkDuplicate' : 'Duplicated'};
+		}
+
+
+	} catch (error) {
+		logger.error(`checkDuplicate :::: ` + error);
+		throw new Error('checkDuplicate False');
+	}
+};
