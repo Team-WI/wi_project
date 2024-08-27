@@ -63,6 +63,7 @@ export const removeProductInquiry = async (req, res) => {
 	try {
 		logger.info(`${req.method} ${req.originalUrl}, Called removeProductInquiry`);
 		const deletedProductInquiry = await deleteProductInquiry(req);
+		console.log('deletedProductInquiry ::::',deletedProductInquiry);
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: ProductInquiry are removed', deletedProductInquiry ));
 	} catch (error) {
