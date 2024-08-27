@@ -193,7 +193,7 @@ export const deleteProductInquiry = async (req) => {
 			throw new Error('ProductInquiry not found');
 		} else {
 			connection.release();
-			return result[0];
+			return { 'ok': true };
 		}
 	
 	} catch {
