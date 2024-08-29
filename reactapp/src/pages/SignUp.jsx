@@ -1,6 +1,5 @@
 /* 회원가입 페이지
-회원가입 POST요청, 아이디 중복확인 POST 요청 포함. 
-이메일 중복확인은 현재는 주석처리 해놓았습니다.
+회원가입 POST 요청, 아이디,이메일 중복확인 POST 요청 포함. 
 */
 
 import React, { useState, useEffect } from 'react';

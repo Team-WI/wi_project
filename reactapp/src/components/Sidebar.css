@@ -1,0 +1,23 @@
+/* 사이드 내비바 - 마이페이지 고정 */
+.sidebar {
+  margin-top: 100px;
+  display: flex;
+  width: 24ex;
+  height: 80ex;
+  border: solid 2px  #333;
+  background-color: #fff;
+}
+.side-links {
+  margin-top: 30px;
+  list-style: none;
+  text-align: center; /* 텍스트 가운데 정렬 */
+  display: flex; /* Flexbox for alignment */
+  flex-direction: column; /* Align links vertically */
+  gap: 80px; /* Space between links */
+}
+.side-links a {
+  display: inline-block; /* li를 인라인 블록으로 설정 */
+  color: #333;
+  text-decoration: none;
+  font-size: 0.8rem;
+}

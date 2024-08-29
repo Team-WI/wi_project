@@ -1,28 +1,25 @@
-/* src/components/Layout/NavBar.jsx - 통합 작업중
-재영님의 NavBar.js, Category.js를 참고, 카테고리 드롭다운 메뉴를 추가한 네비바 컴포넌트입니다.
+/* src/components/Layout/NavBar.jsx
 
 TODO: 
 -로그인 전,후 상단 버튼 바뀌는 기능 - 조건부렌더링으로 태그 바꾸기. 세션스토리지
--카테고리별 드롭다운 메뉴 태그(Category.js로 사용예정)
 */
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Nav, Navbar, Form, Button, InputGroup, NavDropdown } from 'react-bootstrap';
-// import { Search } from 'lucide-react';    // 돋보기 아이콘 라이브러리
-import '../../assets/styles/NavBar.css'; 
-import Category from '../Category';
+import { Container, Nav, Navbar, Form, Button, InputGroup } from 'react-bootstrap';
+import '../Components.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import './NavBar.css'; 
 
 const NavBar = () => {
   const [expanded, setExpanded] = useState(false);
 
   const categories = ['Best', 'Women', 'Men', 'Kids'];
-  const dropdownItems = ['All', '상의', '하의', '신발'];
-  console.log(categories)
 
   return (
     <div>
-    <Navbar bg="dark" variant='dark' expand="lg" expanded={expanded} sticky="top">
+    <Navbar bg="white" variant="light" expand="lg" expanded={expanded} sticky="top">
       <Container fluid>
         <Navbar.Brand as={Link} to="/">WI Mall</Navbar.Brand>
         <Navbar.Toggle 
@@ -30,6 +27,7 @@ const NavBar = () => {
           onClick={() => setExpanded(expanded ? false : "expanded")}
         />
         <Navbar.Collapse id="responsive-navbar-nav">
+        
           <Nav className="me-auto">
 
             
@@ -46,12 +44,10 @@ const NavBar = () => {
               <Form.Control
                 type="search"
                 placeholder="Search"
-                className="me-2"
                 aria-label="Search"
               />
               <Button variant="light">
-                <span>검색</span>
-                {/* <Search className="d-lg-none" size={20} /> */}
+              <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
               </Button>
             </InputGroup>
           </Form>
@@ -64,95 +60,8 @@ const NavBar = () => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-    <Category />
     </div>
   );
 };
 
 export default NavBar;
-
-// const Navbar = () => {
-// if (response) {
-//   return (
-//     <nav className="navbar">
-//     <div className="logo">
-//       <Link to="/">WI Mall</Link>
-//     </div>
-//     <ul className="nav-links">
-//       <li>
-//         <Link to="/MyLike">MyLike</Link>
-//       </li>
-//       <li>
-//         <Link to="/MyPage">MyPage</Link>
-//       </li>
-//       <li>
-//         <Link to="/ShoppingCart">ShoppingCart</Link>
-//       </li>
-//       <li>
-//       <Link to="/SignIn">LogIn</Link>
-//     </li>
-//     </ul>
-//   </nav>
-//   ); 
- 
-// } else {
-//   return (
-//     <nav className="navbar">
-//     <div className="logo">
-//       <Link to="/">WI Mall</Link>
-//     </div>
-//     <ul className="nav-links">
-//       <li>
-//         <Link to="/MyLike">MyLike</Link>
-//       </li>
-//       <li>
-//         <Link to="/MyPage">MyPage</Link>
-//       </li>
-//       <li>
-//         <Link to="/ShoppingCart">ShoppingCart</Link>
-//       </li>
-//       <li>
-//       <Link to="/SignIn">LogOut</Link>
-//     </li>
-//     </ul>
-//   </nav>
-//   ); 
-// }
-  
-// };
-
-// const Navbar = ({ isLogin }) => {
-
-//   return (
-//     <nav className="navbar">
-//     <div className="logo">
-//       <Link to="/">WI Mall</Link>
-//     </div>
-//     <ul className="nav-links">
-//       <li>
-//         <Link to="/MyLike">MyLike</Link>
-//       </li>
-//       <li>
-//         <Link to="/MyPage">MyPage</Link>
-//       </li>
-//       <li>
-//         <Link to="/ShoppingCart">ShoppingCart</Link>
-//       </li>
-//       <li>
-//       <Link to="/SignIn">LogIn</Link>
-//     </li>
-//     </ul>
-//   </nav>
-//   );
-// };
-
-// export default Navbar;
-
-
-
-// 테스트: 세션스토리지에 토큰이 남아있으면 로그인 된 상태, 상단 내비바 LogIn태그가 -> LogOut으로 변환
-//{isLogin  ? (<Link to onClick={logoutToken}>로그아웃</Link>) : ( <Link onClick={() => navigate("/SignIn")}>로그인</Link>)}
-//{isLogin ? (<Link to="/SignIn">로그아웃</Link>) : (<Link to="/SignIn">로그인</Link>)}
-
-
-

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../components/Sidebar'; 
-import './pages.css';
+import './Inquiries.css';
 
 // 추가할것, 해당 유저만 접근가능하게, post, get 로직, 등록시 테이블 추가되도록
 //onClick={() => handleRowClick()} 페이지이동 or 코멘트영역 드롭다운
@@ -65,11 +65,17 @@ const Inquiries = () => {
     const handleSubmit = async (e) => { 
         e.preventDefault();
         try {
-            await axios.post(
+            const Post = await axios.post(
                 'http://43.203.208.22:3000/api/productInquiries', // URL
                 body,         // 요청 본문
                 { headers: { 'Content-Type': 'application/json' } } // 요청 설정
             );
+            
+            // if(){
+            //   resPost = await axios.get(`http://43.203.208.22:3000/api/productInquiries`);
+            //   console.log(resPost);
+            //   setInquiries(resPost.data.data);
+            // } 
 
       setProductID(''); // POST 후 입력 필드를 초기화
       setInquiryTitle('');
@@ -79,19 +85,18 @@ const Inquiries = () => {
         } catch (error) {
             // 오류 처리
             console.error('Error posting inquiry:', error);
-            alert('등록 오류');
+            alert('등록 오류입니다.');
         }
     };
 
     const handleDelete = async (inquiryId) => {
         try{
-           const resDelete =  await axios.delete(`http://43.203.208.22:3000/api/productInquiries/${inquiryId}`);
-            console.log('해당 문의를 삭제했습니다.');
-
-            if(resDelete.ok){
-              await axios.get(`http://43.203.208.22:3000/api/productInquiries/${inquiryId}`);
-              console.log('resDelete');
+           const Delete = await axios.delete(`http://43.203.208.22:3000/api/productInquiries/${inquiryId}`);
+       
+            if(Delete.data.data.ok){
+               const resDelete = await axios.get(`http://43.203.208.22:3000/api/productInquiries`);
               setInquiries(resDelete.data.data);
+              alert('정상적으로 삭제 되었습니다.');
             }
           
         } catch (error) {
@@ -121,7 +126,7 @@ const Inquiries = () => {
         <div className='Qnamantoman'>
             <Sidebar />
             <div className='qna'>
-                <h1>1:1 문의내역</h1>
+                <h2>1:1 문의내역</h2>
                 <p>한번 등록한 상담내용은 수정이 불가능합니다.</p>
                 <button className='modal-open' onClick={modalOpen}> {open ? '닫기' : '작성하기'}</button>
                 {open && (
