@@ -1,5 +1,8 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import * as url from 'url';
+
 import userRoutes from './domains/Users/routes/userRoutes.js';
 import productRoutes from './domains/Products/routes/productRoutes.js';
 import orderRoutes from './domains/Orders/routes/orderRoutes.js';
@@ -8,8 +11,8 @@ import productInquiryRoutes from './domains/ProductInquiries/routes/productInqui
 import reviewRoutes from './domains/Reviews/routes/reviewRoutes.js';
 import categoryRoutes from './domains/Categories/routes/categoryRoutes.js';
 import boardRoutes from './domains/Boards/routes/boardRoutes.js';
-import path from 'path';
-import * as url from 'url';
+import paymentRoutes from './domains/Payments/routes/paymentRoutes.js';
+
 
 const app = express();
 
@@ -45,7 +48,7 @@ app.use('/api/reviews/', reviewRoutes);
 app.use('/api/productInquiries/', productInquiryRoutes);
 app.use('/api/categories/', categoryRoutes);
 app.use('/api/boards/', boardRoutes);
-
+app.use('/api/payments/', paymentRoutes);
 
 
 

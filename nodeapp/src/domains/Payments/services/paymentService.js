@@ -3,101 +3,98 @@ import { addHour } from '../../../utils/myUtil.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
 import mysql from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
-import Board from '../models/boardModel.js';
+import Payment from '../models/paymentModel.js';
 import response from '../../../class/response.js';
 import jwtProvider from '../../../class/jwtProvider.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const getBoardById = async (req) => {
+export const getPaymentById = async (req) => {
 	try {
 		
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT * from Boards where boardId = ?;';
+		const query = 'SELECT * from Payments where paymentId = ?;';
 		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {
 			connection.release();
-			throw new Error('Board not found');
+			throw new Error('Payment not found');
 			
 		} else {
 			connection.release();
 			
-			const board = result[0].map(row => new Board(
-				row.boardId,
-				row.administratorsId,
-				row.inquiryCategory,
-				addHour(row.inquiryDate),
-				row.inquiryContent
+			const payment = result[0].map(row => new Payment(
+				row.paymentId,
+				row.orderId,
+				row.paymentMethodID,
+				row.amount,
+				addHour(row.paymentDate)
 				));
-			return board[0];
+			return payment[0];
 		}
 
 	} catch (error) {
-		logger.error(`getBoardById :::: ` + error);
-		throw new Error('Board not found');
+		logger.error(`getPaymentById :::: ` + error);
+		throw new Error('Payment not found');
 	}
 };
 
 
-export const getBoardAll = async () => {
+export const getPaymentAll = async () => {
 	try {	
 			
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT * from Boards;';
+		const query = 'SELECT * from Payments;';
 		const result = await connection.execute(query);
 
 		console.log('result ::::', result)
 
 		if(result[0].length === 0) {
 			connection.release();
-			throw new Error('Boards not found');
+			throw new Error('Payments not found');
 			
 		} else {
 			connection.release();
 			
-			const board = result[0].map(row => new Board(
+			const payment = result[0].map(row => new Payment(
 				row.boardId,
 				row.administratorsId,
 				row.inquiryCategory,
 				addHour(row.inquiryDate),
 				row.inquiryContent
 				));
-			return board;
+			return payment;
 		}
 
 	} catch (error) {
-		logger.error(`getBoardAll :::: ` + error);
-		throw new Error('Board not found');
+		logger.error(`getPaymentAll :::: ` + error);
+		throw new Error('Payment not found');
 	}
 };
 
-
-
-
-export const createBoard = async (req) => {
+export const createPayment = async (req) => {
 	try {
 	
 		const connection = await connectionPool.getConnection();
-		const query = 'INSERT INTO Boards (administratorsId, inquiryCategory, inquiryContent) VALUES (?,?,?)';
-		const result = await connection.execute(query, [req.body.administratorsId, req.body.inquiryCategory, req.body.inquiryContent]);
+		const query = 'INSERT INTO Payments (orderId, paymentMethodID, amount) VALUES (?,?,?)';
+		const result = await connection.execute(query, [req.body.orderId, req.body.paymentMethodID, req.body.amount]);
 
 		if(result[0].length === 0) {
 			connection.release();
-			throw new Error('Board not found');
+			throw new Error('Payment not found');
 		} else {
 			connection.release();
 			return result[0];
 		}
 		
 	} catch (error) {
-		logger.error(`createBoard :::: ` + error);
-		throw new Error('Board can\'t create');
+		logger.error(`createPayment :::: ` + error);
+		throw new Error('Payment can\'t create');
 	}
 };
 
-export const updateBoard = async (req) => {
+export const updatePayment = async (req) => {
 	try {
 		
 		const keys = Object.keys(req.body);
@@ -116,7 +113,7 @@ export const updateBoard = async (req) => {
 		}
 		
 		const connection = await connectionPool.getConnection();
-		const query = 'UPDATE Boards SET ' 
+		const query = 'UPDATE Payments SET ' 
 						+ querySetData
 						+ ' where boardId = (?)';
 		console.log(query);
@@ -125,7 +122,7 @@ export const updateBoard = async (req) => {
 
 		if(result[0].length === 0) {
 			connection.release();
-			throw new Error('Board not found');
+			throw new Error('Payment not found');
 		} else {
 			connection.release();
 			return result[0];
@@ -133,27 +130,27 @@ export const updateBoard = async (req) => {
 
 
 	} catch (error) {
-		logger.error(`updateBoard :::: ` + error);
-		throw new Error('Board can\'t update');
+		logger.error(`updatePayment :::: ` + error);
+		throw new Error('Payment can\'t update');
 	}
 };
 
-export const deleteBoard = async (req) => {
+export const deletePayment = async (req) => {
 	try {
 		const connection = await connectionPool.getConnection();
-		const query = 'DELETE FROM Boards where boardId = (?)';
+		const query = 'DELETE FROM Payments where boardId = (?)';
 		const result = await connection.execute(query, [req.params.id]);
 	
 		if(result[0].length === 0) {
 			connection.release();
-			throw new Error('Board not found');
+			throw new Error('Payment not found');
 		} else {
 			connection.release();
 			return result[0];
 		}
 	
 	} catch {
-		logger.error(`deleteBoard :::: ` + error);
-		throw new Error('Board can\'t delete');
+		logger.error(`deletePayment :::: ` + error);
+		throw new Error('Payment can\'t delete');
 	}
 };

@@ -1,4 +1,4 @@
-import { getOrderById, createOrder, updateOrder, deleteOrder } from '../services/orderService.js';
+import { getOrderById, createOrder, updateOrder, deleteOrder, getOrderShippingAll } from '../services/orderService.js';
 import response from '../../../class/response.js';
 import HttpStatus from '../../../constants/HttpStatus.js';
 import logger from '../../../utils/logger.js';
@@ -54,5 +54,19 @@ export const removeOrder = async (req, res) => {
 	} catch (error) {
 	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Order Not Found', {error : error.massage} ));
+	}
+};
+
+export const getOrderShipping = async (req,res) => {
+	try {
+		logger.info(`${req.method} ${req.originalUrl}, Called getOrderShipping`);
+	        const OrderShipping = await getOrderShippingAll(req);
+			console.log(OrderShipping);
+	        res.status(HttpStatus.OK.code)
+			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: OrderShipping Are Found', OrderShipping ));
+	} catch (error){
+		console.log(error);
+	    res.status(HttpStatus.NOT_FOUND.code)
+			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: OrderShipping Not Found', {error : error.massage} ));		
 	}
 };
