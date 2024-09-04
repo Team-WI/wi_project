@@ -83,6 +83,9 @@ export const getOrderShippingAll = async (req) => {
 				// orderID 중복을 제거한 배열만큼 순회
 				if(orderIdArrCount < orderIdArr.length){
 					// 이번 회차의 orderId와 첫번째 orderIdArr의 값이 일치한다면 orderArray를 생성
+					console.log('orderIdArr[orderIdArrCount]', orderIdArr[orderIdArrCount]);
+					console.log('result[0][row].orderId', result[0][row].orderId);
+					
 					if(orderIdArr[orderIdArrCount] === result[0][row].orderId){
 						const orderDict = 				
 						{
@@ -103,6 +106,9 @@ export const getOrderShippingAll = async (req) => {
 					}
 				}
 
+				console.log('orderArray 생성회차', orderArray);
+
+
 				// 그리고 매 번의 회차에서 각 아이템의 딕셔너리를 생성
 				const orderItemDict = 
 				{
@@ -111,6 +117,8 @@ export const getOrderShippingAll = async (req) => {
 					'quantity': result[0][row].quantity,
 					'orderItem': result[0][row].productName					
 				}
+				
+				console.log('orderItemDict',orderItemDict);
 				
 				for (const i in orderArray){
 					// 이번 회차의 orderId와 orderArray안의 orderId를 비교해서 같다면
@@ -124,6 +132,8 @@ export const getOrderShippingAll = async (req) => {
 						
 					}
 				}
+				
+				console.log('!!!!orderArray:::: 회차 종료 전 확인',orderArray);
 				
 			}// END for
 			

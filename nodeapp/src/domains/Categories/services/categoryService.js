@@ -44,8 +44,8 @@ export const getCategoryItemById = async (req) => {
 					  + 'from Products P '
 					  + 'JOIN Product_Category PC ON P.productId = PC.productId '
 				      + 'JOIN Categories C ON PC.categoryId = C.categoryId '
-					  + 'WHERE C.categoryName = (?)'
-					  + 'OR C.parentId = (SELECT CategoryId FROM Categories WHERE categoryName = (?))';
+					  + 'WHERE C.categoryName = (?) '
+					  + 'OR C.parentId = (SELECT categoryId FROM Categories WHERE categoryname = (?));';
 		const result = await connection.execute(query, [req.params.id, req.params.id]);
 
 		if(result[0].length === 0) {
@@ -63,7 +63,7 @@ export const getCategoryItemById = async (req) => {
 				row.stock,
 				addHour(row.created_at)
 				));
-			return product[0];
+			return product;
 
 		}
 

@@ -5,75 +5,73 @@ dotenv.config();
 
 class jwtProvider {
 
-	constructor(payload ='',  expiresIn = '1h', secretKey = process.env.JWT_SECRET_KEY, algorithm = 'HS256'){
-		this.payload = payload;
-		this.expiresIn = expiresIn;
-		this.secretKey = secretKey;
-		this.algorithm = algorithm;
+	const JWT_ACC_SECRET_KEY = process.env.JWT_ACC_SECRET_KEY;
+	const JWT_REF_SECRET_KEY = process.env.JWT_REF_SECRET_KEY;
+
+	constructor(accessExpiresIn = '30m', refreshExpiresIn='1d'){
+		this.accessExpiresIn = accessExpiresIn;
+		this.refreshExpiresIn = refreshExpiresIn;
+		this.accessSecretKey = JWT_ACC_SECRET_KEY;
+		this.refreshSecretKey = JWT_REF_SECRET_KEY;
+		this.algorithm = 'HS256';
 	}
 	
+	setAccessExpiresIn(accessExpiresIn){
+		this.accessExpiresIn = accessExpiresIn;
+	}
 	
-	setPayload(payload){
-		this.payload = payload;
+	setRefreshExpiresIn(refreshExpiresIn){
+		this.refreshExpiresIn = refreshExpiresIn;
 	}
 	
 	setAlgorithm(algorithm){
 		this.algorithm = algorithm;
 	}
 	
-	setExpiresIn(expiresIn){
-		this.expiresIn = expiresIn;
-	}
-		
-	getPayload(payload){
-		return this.payload;
-	}
+	// 토큰 발급 access / refresh
+	issueToken(payload, tokenType='access'){
 	
-	toString(){
-		console.log(this.payload, '::', this.expiresIn, '::', this.algorithm);
-	}
-	
-	
-	// 토큰 발급
-	// 로그인 성공한 사용자에게 토큰을 최초 발급
-	issueFirstToken(){
+		if (tokenType == 'access'){
+			return jwt.sign(payload, this.accessSecretKey, {algorithm: this.algorithm, expiresIn: this.accessExpiresIn});
+		} else if (tokenType == 'refresh') {
+			return jwt.sign(payload, this.refreshSecretKey, {algorithm: this.algorithm, expiresIn: this.refreshExpiresIn});
+		} else {
+			throw new Error("Need token Type");
+		}
 
-		// ex) jwt.sign({id: result[0][0].loginId}, process.env.JWT_SECRET_KEY, {algorithm: 'HS256', expiresIn: '1h'});	
-		const token = jwt.sign(this.payload, this.secretKey, {algorithm: this.algorithm, expiresIn: this.expiresIn});
-
-		return token;
 	}
 	
+	// 토큰 검증
+	verifyToken(token, tokenType){
+		try {
+			if (tokenType == 'access'){
+				return jwt.verify(token, this.accessSecretKey);
+			} else if (tokenType == 'refresh') {
+				return jwt.verify(token, this.refreshSecretKey);
+			} else {
+				throw new Error("Need token Type");
+			}
+			
+        } catch (err) {
+            throw new Error('Token is invalid ::::', err);
+        }
+	}
 	
 	// 토큰 재발급
 	reIssueAccessToken(refreshToken){
 		
-		
 		try {
-			if(verifyToken(refreshToken)){
-			
-			}
+			const decoded = this.verifyToken(refreshToken, 'refresh');
 
+			if (decoded) {
+				return this.issueToken({ 'loginId' : decoded.loginId}, 'access');
+			} 
 		
 		} catch (err) {
-			throw new Error('refreshToken is expired');
+			throw new Error('refreshToken is expired ::::', err);
 		}
 		
-	}
-	
-	// 토큰 검증
-	verifyToken(token){
-		
-		try {
-			const verify = jwt.verify(token, this.secretKey, { algorithms: [this.algorithm] });
-			console.log('verify ::', verify);
-			return verify;
-			
-        } catch (err) {
-            throw new Error('Token is invalid');
-        }
-	}
-	
+	}	
 	
 }
 
