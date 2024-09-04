@@ -62,8 +62,7 @@ export const loginRequest = async (req, res) => {
 	try {
 		logger.info(`${req.method} ${req.originalUrl}, Called User loginRequest`);
 		const token = await login(req);
-		console.log('Issued login AccessToken ::::',token.accessToken);
-		console.log('Issued login refreshToken ::::',token.refreshToken);
+		console.log('Issued login Token ::::',token);
 					
 		res.cookie('accessToken', token.accessToken, { httpOnly: true, secure: false });
 		req.session.refreshToken = token.refreshToken;

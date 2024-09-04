@@ -200,17 +200,10 @@ export const login = async (req) => {
 			const jwtprovider = new jwtProvider('10m', '3d');
 		
 			const accessToken = jwtprovider.issueToken({loginid: result[0][0].loginId}, 'access');
-			console.log('accessToken ::::', accessToken);
-
 			const refreshToken = jwtprovider.issueToken({loginid: result[0][0].loginId}, 'refresh');
-			console.log('refreshToken ::::', refreshToken);
-			
-			//res.cookie('accessToken', accessToken, { httpOnly: true, secure: true });	
-			res.cookie('accessToken', accessToken, { httpOnly: true, secure: false });
-			
-			req.session.refreshToken = refreshToken;
 
-		return {'accessToken' : accessToken, 'refreshToken' : refreshToken};
+			const token = {'accessToken' : accessToken, 'refreshToken' : refreshToken}
+			return token;
 			
 		} else {
 			throw new Error('jwtProvider False');

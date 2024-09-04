@@ -2,11 +2,13 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
+	
+const JWT_ACC_SECRET_KEY = process.env.JWT_ACC_SECRET_KEY;
+const JWT_REF_SECRET_KEY = process.env.JWT_REF_SECRET_KEY;
+	
 class jwtProvider {
 
-	const JWT_ACC_SECRET_KEY = process.env.JWT_ACC_SECRET_KEY;
-	const JWT_REF_SECRET_KEY = process.env.JWT_REF_SECRET_KEY;
+
 
 	constructor(accessExpiresIn = '30m', refreshExpiresIn='1d'){
 		this.accessExpiresIn = accessExpiresIn;
