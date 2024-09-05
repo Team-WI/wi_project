@@ -1,0 +1,37 @@
+.product-card {
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 0;
+}
+
+.product-image-placeholder {
+  height: 200px;
+  background-color: #f0f0f0;
+}
+
+.product-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card {
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+
+.product-placeholder {
+  width: 100%;
+  /* padding-top: 100%; 1:1 aspect ratio */
+  background-color: #f0f0f0;
+}
+
+.product-card .card-title {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-card .card-text {
+  font-weight: bold;
+  color: #161718;
+}

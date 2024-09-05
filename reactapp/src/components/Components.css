@@ -30,7 +30,28 @@
 .nav-links a:hover {
     text-decoration: underline;
 }
-
+/* 사이드 내비바 - 마이페이지 고정 */
+.sidebar {
+    margin-top: 100px;
+    display: flex;
+    width: 28ex;
+    height: 80ex;
+    padding: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+}
+.side-links {
+    list-style: none;
+    display: flex; /* Flexbox for alignment */
+    flex-direction: column; /* Align links vertically */
+    gap: 80px; /* Space between links */
+}
+.side-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+}
 /* footer 영역 - 하단고정 */
 .footer {
     display: flex;
