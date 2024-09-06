@@ -43,48 +43,51 @@ const MyOrder = () => {
                 <div className='myorder-th'>
                     <span className='th-img'></span>
                     <span className='th-item'>상품정보</span>
-               
                     <span className='th-status'>진행상태</span>
                     <span>구매확정 및 리뷰</span>
-                </div>   
+                </div>
                 {Array.isArray(data) && data.length > 0 ? (
-            data && data.map((order, index) => (
-             <Link className='myorder-link' to={`/MyPage/MyOrder/MyOrderDetail/${order.orderId}`} >
-   <div className='myorder-list'>
-   <div className='myorder-date' key={index}>
-       <span>주문일자:{order.orderDate}</span>
-       <span>주문번호:{order.orderId}</span>
-   </div>
-   {order.items.map((item) => 
-   <li className='myorder-li' key={index}>
-    <ul className='myorder-itemimg'>이미지영역</ul>
-   <ul className='myorder-item' >
-       <p>상품명:{item.orderItem}</p>
-       <p>수량:{item.quantity}</p>
-       <p>가격:{item.price}</p>
-   </ul>
-  
-   <ul className='myorder-status'>{order.status}</ul>
-   <ul className='myorder-status'>{order.status === '결제완료' ? (
-        <ul><button >취소접수</button></ul>
-      ) : order.status === '배송완료' ? (
-        <ul>
-            <button >반품접수</button>
-        </ul>
-      ) : null}</ul>
-</li>
-)}  
-        </div>
-        </Link>
-            ))
-        
-        ):(
-            <div className='myorder-list'>주문내역이 없습니다.</div>
-        )}
+                    data.map((order) => (
+                        <Link className='myorder-link' to={`/MyPage/MyOrder/MyOrderDetail/${order.orderId}`} key={order.orderId}>
+                            <div className='myorder-list'>
+                                <div className='myorder-date'>
+                                    <span>주문일자: {order.orderDate}</span>
+                                    <span>주문번호: {order.orderId}</span>
+                                </div>
+                                <ul className='myorder-items'>
+                                    {order.items.map((item, itemIndex) => (
+                                        <li className='myorder-li' key={itemIndex}>
+                                            <div className='myorder-itemimg'>이미지영역</div>
+                                            <div className='myorder-item'>
+                                                <p>상품명: {item.orderItem}</p>
+                                                <p>수량: {item.quantity}</p>
+                                                <p>가격: {item.price}</p>
+                                            </div>
+                                            <div className='myorder-status'>
+                                                <p>{order.status}</p>
+                                                {order.status === '결제완료' && (
+                                                    <button>취소접수</button>
+                                                )}
+                                                {order.status === '배송완료' && (
+                                                    <button>반품접수</button>
+                                                )}
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </Link>
+                    ))
+                ) : (
+                    <div className='myorder-list'>주문내역이 없습니다.</div>
+                )}
             </div>
         </div>
     );
+    
+    
 }
+
 
 export {fetchData, MyOrder};
 

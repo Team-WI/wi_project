@@ -9,11 +9,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Dropdown } from 'react-bootstrap';
 import './pages.css'
 
-import { CartProvider } from '../components/CartContext';  // CartProvider import
-import CartButton from '../components/CartButton';  // CartButton 컴포넌트 import
+import { CartProvider, useCart } from '../components/CartContext';  // CartProvider import
+import CartButton from '../components/CartButton';
 
 
-const ProductDetail = () => {
+const ProductDetailContent = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,7 @@ const ProductDetail = () => {
 
   // 장바구니 담기
   const [cartItems, setCartItems] = useState([]);
-
+  const { addToCart } = useCart(); // CartContext에서 addToCart 함수 가져오기
 
   // 상품 데이터 호출 
   useEffect(() => {
@@ -80,7 +80,6 @@ const ProductDetail = () => {
   );
         
   return (
-    <CartProvider>
 
       <Container fluid>
         <Row className="mb-4">
@@ -93,10 +92,18 @@ const ProductDetail = () => {
             <h5 className="h4 mb-3">Seller</h5>
             <h5 className="h2 mb-3">{product.productName}</h5>
             <p>{product.description}</p>
-            <p>상품번호: {product.productId}</p>
             <p className="mb-3">{product.price}원</p>
+            수량
+            <input></input>
+              <Col>
+                <CartButton productId={product.productId} />
+              </Col>
+              <Col>
+                <button>바로 구매</button>
+              </Col>
 
-            <Dropdown className="mb-3">
+
+            {/* <Dropdown className="mb-3">
               <Dropdown.Toggle variant="outline-secondary" id="dropdown-color">
                 Color
               </Dropdown.Toggle>
@@ -108,18 +115,14 @@ const ProductDetail = () => {
                 <Dropdown.Item>NAVY</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            
+             */}
           </Col>
 
         <Row>
           <Col>
-              수량
-            <input></input>
+            <p>상품번호: {product.productId}</p>
           </Col>
-          <Col>
-           {/*<CartButton productId={product.productId} addToCart={addToCart} /> */} 
-            <button>바로 구매</button>
-          </Col>
+          
         </Row>
         </Row>
 
@@ -155,9 +158,15 @@ const ProductDetail = () => {
         </Row> */}
 
       </Container>
-    </CartProvider>
 
   );
 };
+
+// ContextAPI CartProvider로 감싸는 부분을 별도의 컴포넌트로 분리
+const ProductDetail = () => (
+  <CartProvider>
+    <ProductDetailContent />
+  </CartProvider>
+);
 
 export default ProductDetail;
