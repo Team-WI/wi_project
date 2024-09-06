@@ -2,10 +2,9 @@ import logger from '../../../utils/logger.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
 import mysql from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwtProvider from '../../../class/jwtProvider.js';
 import User from '../models/userModel.js';
 import response from '../../../class/response.js';
-import jwtProvider from '../../../class/jwtProvider.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -156,7 +155,7 @@ export const deleteUser = async (userId) => {
 	try {
     
 		const connection = await connectionPool.getConnection();
-		const query = 'DELETE FROM Users where userId = (?)';
+		const query = 'UPDATE Users SET status='+ "'inactive'" +' where userId = (?)';
 		const result = await connection.execute(query, [userId]);
 	
 		if(result[0].length === 0) {
@@ -197,21 +196,15 @@ export const login = async (req) => {
 
 		// 토큰 발급
 		if(isPasswordCorrect){
-				const jwtprovider = new jwtProvider({id: result[0][0].loginId}, '1h');
-				console.log('Object JWTProvider ::::');
-				jwtprovider.toString();
-				
-				const accessToken = jwtprovider.issueToken();
-				console.log(accessToken);
+			
+			const jwtprovider = new jwtProvider('10m', '3d');
+		
+			const accessToken = jwtprovider.issueToken({loginid: result[0][0].loginId}, 'access');
+			const refreshToken = jwtprovider.issueToken({loginid: result[0][0].loginId}, 'refresh');
 
-				jwtprovider.setExpiresIn('2h');
-				const refreshToken = jwtprovider.issueToken();
-				
-				console.log(refreshToken);
-				
-			//return {'accessToken':accessToken, 'refreshToken':refreshToken};
-			//return {'accessToken':accessToken };
-			return accessToken;
+			const token = {'accessToken' : accessToken, 'refreshToken' : refreshToken}
+			return token;
+			
 		} else {
 			throw new Error('jwtProvider False');
 		}

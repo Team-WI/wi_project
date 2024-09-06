@@ -65,11 +65,24 @@ const Inquiries = () => {
     const handleSubmit = async (e) => { 
         e.preventDefault();
         try {
+<<<<<<< HEAD
             await axios.post(
+=======
+            const Post = await axios.post(
+>>>>>>> origin/jykim
                 'http://43.203.208.22:3000/api/productInquiries', // URL
                 body,         // 요청 본문
                 { headers: { 'Content-Type': 'application/json' } } // 요청 설정
             );
+<<<<<<< HEAD
+=======
+            
+            // if(){
+            //   resPost = await axios.get(`http://43.203.208.22:3000/api/productInquiries`);
+            //   console.log(resPost);
+            //   setInquiries(resPost.data.data);
+            // } 
+>>>>>>> origin/jykim
 
       setProductID(''); // POST 후 입력 필드를 초기화
       setInquiryTitle('');
@@ -79,12 +92,17 @@ const Inquiries = () => {
         } catch (error) {
             // 오류 처리
             console.error('Error posting inquiry:', error);
+<<<<<<< HEAD
             alert('등록 오류');
+=======
+            alert('등록 오류입니다.');
+>>>>>>> origin/jykim
         }
     };
 
     const handleDelete = async (inquiryId) => {
         try{
+<<<<<<< HEAD
            const resDelete =  await axios.delete(`http://43.203.208.22:3000/api/productInquiries/${inquiryId}`);
             console.log('해당 문의를 삭제했습니다.');
 
@@ -92,6 +110,14 @@ const Inquiries = () => {
               await axios.get(`http://43.203.208.22:3000/api/productInquiries/${inquiryId}`);
               console.log('resDelete');
               setInquiries(resDelete.data.data);
+=======
+           const Delete = await axios.delete(`http://43.203.208.22:3000/api/productInquiries/${inquiryId}`);
+       
+            if(Delete.data.data.ok){
+               const resDelete = await axios.get(`http://43.203.208.22:3000/api/productInquiries`);
+              setInquiries(resDelete.data.data);
+              alert('정상적으로 삭제 되었습니다.');
+>>>>>>> origin/jykim
             }
           
         } catch (error) {
@@ -121,7 +147,11 @@ const Inquiries = () => {
         <div className='Qnamantoman'>
             <Sidebar />
             <div className='qna'>
+<<<<<<< HEAD
                 <h1>1:1 문의내역</h1>
+=======
+                <h2>1:1 문의내역</h2>
+>>>>>>> origin/jykim
                 <p>한번 등록한 상담내용은 수정이 불가능합니다.</p>
                 <button className='modal-open' onClick={modalOpen}> {open ? '닫기' : '작성하기'}</button>
                 {open && (
@@ -167,7 +197,12 @@ const Inquiries = () => {
               </tr>
               {expandedInquiryId === inquiry.inquiryId && (
                 <tr>
+<<<<<<< HEAD
                   <td colSpan="5" className='drop-answer'>A: {inquiry.sellerComment}</td>
+=======
+                  <td colSpan="5" className='drop-answer'>Q: {inquiry.userComment} <br/>
+                    A: {inquiry.sellerComment}</td>
+>>>>>>> origin/jykim
                 </tr>
               )}
             </React.Fragment>

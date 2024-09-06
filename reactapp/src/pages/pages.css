@@ -7,7 +7,7 @@
     display: flex;
     justify-content: center; 
 }
-
+/*
 .image {
     display: flex;
     width: 80%;
@@ -16,9 +16,10 @@
     background-size: 100% 100%;
     background-image: url('../assets/main-2.jpg'); /* URL 뒤에 세미콜론 추가 */
     background-repeat: no-repeat; /* 이미지 반복하지 않음 */
-    background-position: center; /* 이미지 위치 중앙 */
+    background-position: center; /* 이미지 위치 중앙 
 }
 
+*/
 
 .login {
     margin-top: 120px;

@@ -1,0 +1,64 @@
+.mypage {
+    display: flex;
+    margin-top: 120px;
+    height: 1200px;
+    width: 100%;        /* 부모 요소의 너비를 설정 */
+    backdrop-filter: blur(5px);
+}
+
+.mypage-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 수직 가운데 정렬 */
+  width: 80%;
+  height: auto;
+}
+.user-name {
+margin-bottom: 50px;
+}
+
+.mypage-tb {
+    width: 60%;
+    height: 280px;
+    background-color: #333; /* 시각적으로 확인할 수 있도록 배경색 추가 */
+        /* 내용 확인을 위해 약간의 패딩 추가 */
+    
+}
+
+.mypage-tb th {
+    padding: 10px;  
+    color: white; /* 글자색을 흰색으로 설정 */
+    text-align: center;
+   
+}
+
+/* 회원정보 수정영역 */
+
+.update-section {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 15px;
+    width: 100%;
+}
+
+.update-headline {
+    margin-top: 50px;
+    border-bottom: solid 2px #333;
+    width: 60%;
+}
+
+.del-account {
+    margin-top: 50px;
+    text-decoration: none;
+}
+
+.th-Id {
+    font-size: 24px;
+    border-right: dotted 3px white; 
+}
+
+.th-grade {
+    font-size: 24px;
+}

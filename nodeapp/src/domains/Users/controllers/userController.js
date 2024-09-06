@@ -62,7 +62,13 @@ export const loginRequest = async (req, res) => {
 	try {
 		logger.info(`${req.method} ${req.originalUrl}, Called User loginRequest`);
 		const token = await login(req);
-		console.log('Issued login Access token ::::',token);
+		console.log('Issued login Token ::::',token);
+					
+		res.cookie('accessToken', token.accessToken, { httpOnly: true, secure: false });
+		req.session.refreshToken = token.refreshToken;
+		
+		console.log('done');
+		
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: User are verified', token));
 	} catch(error) {
