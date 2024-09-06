@@ -42,18 +42,10 @@
 }
 .modal-open {
   width: 90px;
-<<<<<<< HEAD
-  margin: 0  0 10px 580px;
-  padding: 5px 10px 5px 10px;
-  background-color: #333;
-  color: white;
-  border-radius: 5px;
-=======
   margin: 0  0 10px 70%;
   padding: 5px 10px 5px 10px;
   background-color: #333;
   color: white;
->>>>>>> origin/jykim
 }
 .qna-submit {
   width: 100px;

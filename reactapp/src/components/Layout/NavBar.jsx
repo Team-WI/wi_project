@@ -5,14 +5,9 @@ TODO:
 */
 
 import React, { useState } from 'react';
-<<<<<<< HEAD
-import { Link } from 'react-router-dom';
-import { Container, Nav, Navbar, Form, Button, InputGroup } from 'react-bootstrap';
-=======
 import { Link, useParams, useLocation} from 'react-router-dom';
 import { Container, Nav, Navbar, Form, Button, InputGroup } from 'react-bootstrap';
 import { CATEGORIES, SUBCATEGORIES } from '../CATEGORIES';
->>>>>>> origin/jykim
 import '../Components.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
@@ -20,11 +15,6 @@ import './NavBar.css';
 
 const NavBar = () => {
   const [expanded, setExpanded] = useState(false);
-<<<<<<< HEAD
-
-  const categories = ['Best', 'Women', 'Men', 'Kids'];
-
-=======
   const { category, item } = useParams()
   const location = useLocation();
 
@@ -38,7 +28,6 @@ const NavBar = () => {
   const currentCategory = CATEGORIES.find(cat => cat.name === category);
   const categoryText = currentCategory ? currentCategory.text : category;
   
->>>>>>> origin/jykim
   return (
     <div>
     <Navbar bg="white" variant="light" expand="lg" expanded={expanded} sticky="top">
@@ -50,18 +39,6 @@ const NavBar = () => {
         />
         <Navbar.Collapse id="responsive-navbar-nav">
         
-<<<<<<< HEAD
-          <Nav className="me-auto">
-
-            
-            <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Best</Nav.Link>
-            <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Women</Nav.Link>
-            <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Men</Nav.Link>
-            <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>Kids</Nav.Link>
-
-
-          </Nav>
-=======
         <Nav className="me-auto">
               {CATEGORIES.map((cat) => (
                 <Nav.Link 
@@ -76,7 +53,6 @@ const NavBar = () => {
               ))}
             </Nav>
           
->>>>>>> origin/jykim
 
           <Form className="d-flex">
             <InputGroup>  
@@ -90,10 +66,7 @@ const NavBar = () => {
               </Button>
             </InputGroup>
           </Form>
-<<<<<<< HEAD
-=======
           
->>>>>>> origin/jykim
           <Nav>
             <Nav.Link as={Link} to="/MyLike" onClick={() => setExpanded(false)}>MyLike</Nav.Link>
             <Nav.Link as={Link} to="/MyPage" onClick={() => setExpanded(false)}>MyPage</Nav.Link>
@@ -103,8 +76,6 @@ const NavBar = () => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-<<<<<<< HEAD
-=======
 
 {/* 
     {category && (
@@ -124,7 +95,6 @@ const NavBar = () => {
           </Nav>
         </Navbar>
     )} */}
->>>>>>> origin/jykim
     </div>
   );
 };
