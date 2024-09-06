@@ -1,0 +1,127 @@
+/* SignUp.css */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.titleWrap {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.contentWrap {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userInputFrame {
+  width: 100%;
+  margin-bottom: px;
+}
+
+.infoLabelText {
+  margin-top: 0px;
+  margin-bottom: 00px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.infoOptionalText {
+  font-size: 14px;
+  color: #3c3c3d;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.inputGroup {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.userInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #535353;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+button[type="button"] {
+  background-color: #000102;
+  border-radius: 4px;
+  width: auto;
+  white-space: nowrap;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.buttonWrap {
+  display: flex;
+  justify-content: flex-start; /* 버튼을 왼쪽으로 정렬 */
+  margin-top: 5px;
+}
+
+.errorMessageWrap {
+  min-height: 20px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  color: red;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: left;
+  opacity: 1;
+  /* transition: opacity 0.3s ease; */
+}
+
+
+hr {
+  margin: 20px 0;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+  margin-left: 10px;
+}
+
+.messageWrap {
+  color: #ff3c00;
+  font-size: 16px;
+  margin-bottom: 20px;
+}

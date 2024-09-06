@@ -1,0 +1,58 @@
+.main-carousel-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main-carousel-swiper {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.main-carousel-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-carousel-slide img {
+  width: 100%;
+  max-width: 300px;
+  height: 300px;
+  object-fit: cover;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #333;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 1024px) {
+  .main-carousel-container {
+    padding: 15px 0;
+  }
+  
+  .main-carousel-slide img {
+    max-width: 250px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-carousel-container {
+    width: 95%;
+  }
+  
+  .main-carousel-slide img {
+    max-width: 200px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-carousel-slide img {
+    max-width: 150px;
+    height: 150px;
+  }
+}
