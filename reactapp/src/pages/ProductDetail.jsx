@@ -1,13 +1,14 @@
 /** ProductDetail.jsx
  * 상품 상세 페이지 컴포넌트. 
- * TODO: 상품상세,상품평 등 스티키헤더
+ * TODO: 상품상세,상품평 등 스티키헤더, tanstack-query 적용
  */
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Dropdown } from 'react-bootstrap';
-import './pages.css'
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Container, Row, Col, Dropdown, Form, Button } from 'react-bootstrap';
+import { ArrowLeft, Heart, LoaderCircle } from 'lucide-react';
+import './ProductDetail.css';
 
 import { CartProvider, useCart } from '../components/CartContext';  // CartProvider import
 import CartButton from '../components/CartButton';
@@ -18,10 +19,24 @@ const ProductDetailContent = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  // 수량 선택
+  const [quantity, setQuantity] = useState(1);
 
   // 장바구니 담기
   const [cartItems, setCartItems] = useState([]);
   const { addToCart } = useCart(); // CartContext에서 addToCart 함수 가져오기
+
+  // 상품 설명 탭 UI
+  let [tab, setTab] = useState(0);
+
+  const tabContent = (props) => {
+    if (props.tab === 0) return <div>0</div>
+    else if (props.tab ===1) return <div>1</div>
+    else if (props.tab ===2) return <div>2</div>
+    else return <div>3</div>
+  }
 
   // 상품 데이터 호출 
   useEffect(() => {
@@ -55,19 +70,23 @@ const ProductDetailContent = () => {
   }, [productId]);
 
   // 상품 정보가 업데이트될 때마다 실행되는 useEffect
-  useEffect(() => {
-    if (product) {
-      console.log("상품 정보가 업데이트되었습니다:", product);
-      // 여기에서 product 상태를 사용하는 추가 로직을 구현할 수 있습니다.
-    }
-  }, [product]);
+  // useEffect(() => {
+  //   if (product) {
+  //     console.log("상품 정보가 업데이트되었습니다:", product);
+  //   }
+  // }, [product]);
 
-  if (loading) return <div>로딩중</div>;
+  const handleQuantityChange = (value) => {
+    setQuantity(prevQuantity => {
+      const newQuantity = prevQuantity + value;
+      return newQuantity > 0 ? newQuantity : 1;
+    });
+  };
+
+
+  if (loading) return <LoaderCircle />;
   if (error) return <div>{error}</div>;
   if (!product) return <div>상품 정보가 없습니다.</div>;
-
-
-  
 
   const placeholderImage = (
     <div
@@ -80,83 +99,83 @@ const ProductDetailContent = () => {
   );
         
   return (
-
-      <Container fluid>
-        <Row className="mb-4">
-          <Col xs={12} md={8} lg={9} className="mb-3 mb-md-0">
+      <Container fluid className="product-detail">
+        <Row className="mb-3">
+          <Col>
+            <Link to="#" onClick={() => navigate(-1)} className="back-link">
+              <ArrowLeft size={20}/> 뒤로가기
+            </Link>
+          </Col>
+        </Row>
+        <Row className="mb-3">
+          <Col>
+            <h1 className="product-name">{product.productName}</h1>
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <Col md={7} className="mb-3 mb-md-0">
             <div className='image-container'>
               {placeholderImage}
             </div>
           </Col>
-          <Col xs={12} md={4} lg={3}>
-            <h5 className="h4 mb-3">Seller</h5>
+          <Col  md={5} className="product-info">
+            <p className="seller-id">Seller</p>
             <h5 className="h2 mb-3">{product.productName}</h5>
-            <p>{product.description}</p>
-            <p className="mb-3">{product.price}원</p>
-            수량
-            <input></input>
-              <Col>
+            <p className="description">{product.description}</p>
+            <p className="price">{product.price}원</p>
+
+            <div className="quantity-selector mb-3">
+              <span>수량</span>
+              <div className="quantity-control">
+                <input type="text" value={quantity} readOnly className="quantity-input" />
+                <div className="quantity-buttons">
+                  <button onClick={() => handleQuantityChange(1)} className="quantity-button">
+                    <ChevronUp size={20} />
+                  </button>
+                  <button onClick={() => handleQuantityChange(-1)} className="quantity-button">
+                    <ChevronDown size={20} />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="d-flex justify-content-between align-items-center mb-3">
                 <CartButton productId={product.productId} />
-              </Col>
-              <Col>
-                <button>바로 구매</button>
-              </Col>
-
-
-            {/* <Dropdown className="mb-3">
-              <Dropdown.Toggle variant="outline-secondary" id="dropdown-color">
-                Color
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item>BLACK</Dropdown.Item>
-                <Dropdown.Item>BEIGE</Dropdown.Item>
-                <Dropdown.Item>IVORY</Dropdown.Item>
-                <Dropdown.Item>INDIGO</Dropdown.Item>
-                <Dropdown.Item>NAVY</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-             */}
+                <Button variant="outline-dark" className="wishlist-btn">
+                  <Heart size={20} />
+                </Button>
+            </div>
+                <Button variant="dark" className="buy-btn" block>바로 구매</Button>
           </Col>
+        </Row>
 
         <Row>
           <Col>
             <p>상품번호: {product.productId}</p>
+            <hr />
           </Col>
-          
-        </Row>
         </Row>
 
-        {/* <Row>
-          <Nav>
-            상품상세 | 상품평 | 상품문의 | 배송/교환/반품 안내
+        <Row>
+          <p>상품설명</p>
+        </Row>
+
+        <Row>
+          <Nav justify variant="tabs" defaultActiveKey="link-0">
+            <Nav.Item>
+              <Nav.Link eventKey="link-0" onClick={() => setTab(0)}>상품상세</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="link-1" onClick={() => setTab(1)}>상품평</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="link-2" onClick={() => setTab(2)}>상품문의</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="link-3" onClick={() => setTab(3)}>배송/교환/반품 안내</Nav.Link>
+            </Nav.Item>
           </Nav>
-        </Row> */}
-
-
-        {/* <Row className="g-3">
-          {[...Array(6)].map((_, idx) => (
-            <Col xs={12} sm={8} md={9} key={idx}>
-              {placeholderImage}
-            </Col>
-          ))}
-        </Row> */}
-
-        {/* <Row>
-          <div>
-            <h5>상품정보</h5>
-            <table>
-              <tbody>
-                {product.map((item, index) => (
-                  <tr key={index}>
-                    <th>{item.label}</th>
-                    <td>{item.value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Row> */}
-
+        </Row>
       </Container>
 
   );

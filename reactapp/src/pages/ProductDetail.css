@@ -1,0 +1,88 @@
+.product-detail {
+  padding: 20px;
+}
+
+.back-link {
+  color: #333;
+  text-decoration: none;
+}
+
+.product-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.image-container {
+  margin-bottom: 20px;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.seller-id {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.description {
+  margin: 10px 0;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.cart-btn {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.wishlist-btn {
+  width: 50px;
+}
+
+.buy-btn {
+  width: 100%;
+}
+
+/* 수량 선택 */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.quantity-input {
+  width: 40px;
+  text-align: center;
+  border: none;
+  padding: 5px;
+}
+
+.quantity-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.quantity-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.quantity-button:hover {
+  background-color: #f0f0f0;
+}

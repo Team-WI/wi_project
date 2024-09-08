@@ -5,14 +5,15 @@
 
 import React from 'react';
 import { useCart } from './CartContext';
+import Button from 'react-bootstrap/Button';
 
 const CartButton = ({ productId }) => {
   const { addToCart } = useCart();
 
   return (
-    <button onClick={() => addToCart(productId)}>
+    <Button className="cart-btn" variant="outline-dark" onClick={() => addToCart(productId)}>
       장바구니 담기
-    </button>
+    </Button>
   );
 };
 
