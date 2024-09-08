@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/:id',getOrder);
 
 router.post('/',addOrder);
-router.post('/:id',getOrderShipping);
+router.post('/shippingList',getOrderShipping);
 
 router.put('/:id',editOrder);
 

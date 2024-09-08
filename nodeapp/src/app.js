@@ -38,14 +38,6 @@ app.use(express.urlencoded({extended: false}));
 
 // JWT
 app.use(cookieParser());
-app.use(session({
-    secret: process.env.SESSION_SECRET_KEY,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // HTTPS에서는 true로 설정
-}));
-
-
 
 // Set filePath
 const __filename = url.fileURLToPath(import.meta.url);
@@ -72,6 +64,11 @@ app.use('/api/payments/', paymentRoutes);
 
 app.get('/', (req, res) => {
   res.sendFile("index.html");
+});
+
+app.get('/logout',(req,res)=>{
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken').redirect('/');
 });
 
 

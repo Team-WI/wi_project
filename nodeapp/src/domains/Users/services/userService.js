@@ -10,7 +10,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
-
 export const getUserById = async (req) => {
 	try {
 		
@@ -198,6 +197,12 @@ export const login = async (req) => {
 		if(isPasswordCorrect){
 			
 			const jwtprovider = new jwtProvider('10m', '3d');
+		
+			const clientIp1 = req.headers['x-forwarded-for'];
+			const clientIp2 = req.connection.remoteAddress;
+		
+			console.log('a::',clientIp1);
+			console.log('b::',clientIp2);
 		
 			const accessToken = jwtprovider.issueToken({loginid: result[0][0].loginId}, 'access');
 			const refreshToken = jwtprovider.issueToken({loginid: result[0][0].loginId}, 'refresh');

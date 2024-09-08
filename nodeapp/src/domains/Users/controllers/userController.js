@@ -62,15 +62,23 @@ export const loginRequest = async (req, res) => {
 	try {
 		logger.info(`${req.method} ${req.originalUrl}, Called User loginRequest`);
 		const token = await login(req);
-		console.log('Issued login Token ::::',token);
-					
-		res.cookie('accessToken', token.accessToken, { httpOnly: true, secure: false });
-		req.session.refreshToken = token.refreshToken;
-		
-		console.log('done');
+
+		res.cookie('accessToken', token.accessToken, {
+			httpOnly: true,   // 자바스크립트에서 쿠키 접근 불가
+			secure: false,     // HTTPS 연결에서만 전송
+			sameSite: 'Strict', // CSRF 방어
+			maxAge: 3600000 / 2
+		});
+				
+		res.cookie('refreshToken', token.refreshToken, {
+			httpOnly: true,   // 자바스크립트에서 쿠키 접근 불가
+			secure: false,     // HTTPS 연결에서만 전송
+			sameSite: 'Strict', // CSRF 방어
+			maxAge: 3600000 * 24
+		});
 		
 		res.status(HttpStatus.OK.code)
-			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: User are verified', token));
+			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: User are verified'));
 	} catch(error) {
 	    res.status(HttpStatus.UNAUTHORIZED.code)
 			.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: Login Fail', {error : error.massage} ));

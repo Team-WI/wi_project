@@ -3,7 +3,6 @@ import { getUser, addUser, editUser, removeUser, loginRequest, checkId, checkEma
 
 const router = express.Router();
 
-
 router.get('/:id',getUser);
 
 router.post('/',addUser);
