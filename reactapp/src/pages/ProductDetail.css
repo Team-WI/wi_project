@@ -19,16 +19,18 @@
 .product-info {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 }
 
 .seller-id {
   font-size: 0.9rem;
   color: #666;
+  font-weight: bold;
 }
 
 .description {
   margin: 10px 0;
+  font-size: 0.9rem;
 }
 
 .price {
@@ -40,10 +42,17 @@
 .cart-btn {
   flex-grow: 1;
   margin-right: 10px;
+  background-color: white !important;
+  color: #343a40 !important;
+  border-color: #343a40 !important;
+
 }
 
 .wishlist-btn {
   width: 50px;
+  background-color: white !important;
+  color: #343a40 !important;
+  border-color: #343a40 !important;
 }
 
 .buy-btn {
@@ -81,6 +90,7 @@
   border: none;
   cursor: pointer;
   padding: 2px;
+  color: rgb(71, 71, 71);
 }
 
 .quantity-button:hover {

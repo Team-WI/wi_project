@@ -6,8 +6,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Container, Row, Col, Dropdown, Form, Button } from 'react-bootstrap';
-import { ArrowLeft, Heart, LoaderCircle } from 'lucide-react';
+import { Nav, Container, Row, Col, Dropdown, Form, Button } from 'react-bootstrap';
+import { CircleArrowLeft, Heart, LoaderCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import './ProductDetail.css';
 
 import { CartProvider, useCart } from '../components/CartContext';  // CartProvider import
@@ -103,7 +103,7 @@ const ProductDetailContent = () => {
         <Row className="mb-3">
           <Col>
             <Link to="#" onClick={() => navigate(-1)} className="back-link">
-              <ArrowLeft size={20}/> 뒤로가기
+              <CircleArrowLeft size={20}/> 뒤로가기
             </Link>
           </Col>
         </Row>
@@ -123,41 +123,47 @@ const ProductDetailContent = () => {
             <p className="seller-id">Seller</p>
             <h5 className="h2 mb-3">{product.productName}</h5>
             <p className="description">{product.description}</p>
+            <p classNAme="description">리뷰 00개</p>
             <p className="price">{product.price}원</p>
 
             <div className="quantity-selector mb-3">
               <span>수량</span>
               <div className="quantity-control">
-                <input type="text" value={quantity} readOnly className="quantity-input" />
-                <div className="quantity-buttons">
-                  <button onClick={() => handleQuantityChange(1)} className="quantity-button">
-                    <ChevronUp size={20} />
-                  </button>
                   <button onClick={() => handleQuantityChange(-1)} className="quantity-button">
-                    <ChevronDown size={20} />
+                    <ChevronLeft size={20} />
                   </button>
-                </div>
+                  <input type="text" value={quantity} readOnly className="quantity-input" />
+                  <button onClick={() => handleQuantityChange(1)} className="quantity-button">
+                    <ChevronRight size={20} />
+                  </button>
               </div>
             </div>
-            <div className="d-flex justify-content-between align-items-center mb-3">
+            
+              <div className="d-flex justify-content-between align-items-center mb-3">
+              
                 <CartButton productId={product.productId} />
                 <Button variant="outline-dark" className="wishlist-btn">
                   <Heart size={20} />
                 </Button>
-            </div>
+              </div>
                 <Button variant="dark" className="buy-btn" block>바로 구매</Button>
           </Col>
         </Row>
 
         <Row>
           <Col>
-            <p>상품번호: {product.productId}</p>
-            <hr />
+          <hr />
+          <p>상품번호: {product.productId}</p>
           </Col>
         </Row>
 
         <Row>
-          <p>상품설명</p>
+          <Col>
+            <p>상품설명</p>
+            <div className='image-container'>
+              {placeholderImage}
+            </div>
+          </Col>
         </Row>
 
         <Row>
