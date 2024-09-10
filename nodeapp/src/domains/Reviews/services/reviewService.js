@@ -9,10 +9,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
-
 export const getReviewById = async (req) => {
 	try {
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Reviews where reviewId = ?;';
@@ -47,6 +48,9 @@ export const getReviewById = async (req) => {
 
 export const createReview = async (req) => {
 	try {
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 	
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Reviews (productId, userId, rating, comment, helpCount, noHelpCount) VALUES (?,?,?,?,?,?)';
@@ -68,6 +72,9 @@ export const createReview = async (req) => {
 
 export const updateReview = async (req) => {
 	try {
+
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
@@ -109,6 +116,10 @@ export const updateReview = async (req) => {
 
 export const deleteReview = async (req) => {
 	try {
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+		
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Reviews where reviewId = (?)';
 		const result = await connection.execute(query, [req.params.id]);

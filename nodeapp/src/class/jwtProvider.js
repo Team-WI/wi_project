@@ -8,8 +8,6 @@ const JWT_REF_SECRET_KEY = process.env.JWT_REF_SECRET_KEY;
 	
 class jwtProvider {
 
-
-
 	constructor(accessExpiresIn = '30m', refreshExpiresIn='1d'){
 		this.accessExpiresIn = accessExpiresIn;
 		this.refreshExpiresIn = refreshExpiresIn;
@@ -74,6 +72,31 @@ class jwtProvider {
 		}
 		
 	}	
+	
+	verifyAccessToken(req){
+		
+		const accessToken = req.cookies.accessToken;
+		console.log('Income accessToken :: ', accessToken);
+	
+		if (!accessToken) {
+			const err = new Error('AccessToken not Found');
+			err.status = 401;
+			throw err;
+		}
+		
+		try {
+			const decoded = this.verifyToken(accessToken, 'access');
+			console.log('decoded ::',decoded);
+		} catch (err) {
+			err = new Error('AccessToken Expired');
+			err.status = 401;
+			throw err;
+		}
+	}
+	
+	
+	
+	
 	
 }
 

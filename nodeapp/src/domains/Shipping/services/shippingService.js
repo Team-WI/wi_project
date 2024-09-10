@@ -7,7 +7,10 @@ import response from '../../../class/response.js';
 
 export const getShippingById = async (shippingId) => {
 	try {
-		console.log(shippingId);
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+		
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Shipping where shippingId = (?);';
 		const result = await connection.execute(query, [shippingId]);
@@ -62,6 +65,9 @@ export const createShipping = async (ShippingData) => {
 export const updateShipping = async (shippingId, updateData) => {
 	try {
 		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+	
 		const keys = Object.keys(updateData);
 		const values = Object.values(updateData);
 				
@@ -101,6 +107,9 @@ export const updateShipping = async (shippingId, updateData) => {
 
 export const deleteShipping = async (shippingId) => {
 	try {
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Shipping where shippingId = (?)';

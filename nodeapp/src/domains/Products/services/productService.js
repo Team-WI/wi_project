@@ -3,7 +3,7 @@ import connectionPool from '../../../dbconfig/spmallDBC.js';
 import mysql from 'mysql2/promise';
 import Product from '../models/productModel.js';
 import response from '../../../class/response.js';
-
+import jwtProvider from '../../../class/jwtProvider.js';
 
 export const getProductById = async (productId) => {
 	try {
@@ -40,6 +40,9 @@ export const getProductById = async (productId) => {
 export const createProduct = async (ProductData) => {
 	try {
 
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Products (productName, description, price , stock) VALUES (?,?,?,?)';
 		const result = await connection.execute(query, [ProductData.productName, ProductData.description, ProductData.price, ProductData.stock]);
@@ -62,6 +65,9 @@ export const createProduct = async (ProductData) => {
 
 export const updateProduct = async (productId, updateData) => {
 	try {
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 		
 		const keys = Object.keys(updateData);
 		const values = Object.values(updateData);
@@ -102,7 +108,10 @@ export const updateProduct = async (productId, updateData) => {
 
 export const deleteProduct = async (productId) => {
 	try {
-		
+
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+	
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Products where productId = (?)';
 		const result = await connection.execute(query, [productId]);

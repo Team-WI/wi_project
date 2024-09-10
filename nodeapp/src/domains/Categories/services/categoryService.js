@@ -5,35 +5,10 @@ import Category from '../models/categoryModel.js';
 import Product from '../../Products/models/productModel.js';
 import response from '../../../class/response.js';
 import jwtProvider from '../../../class/jwtProvider.js';
+import { addHour } from '../../../utils/myUtil.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
-
-function addHour(transDate){
-	
-	const originalDate = new Date(transDate);
-
-	// 9시간을 밀리초로 변환 (9시간 * 60분 * 60초 * 1000밀리초)
-	const nineHoursInMilliseconds = 9 * 60 * 60 * 1000;
-
-	// 9시간 더하기
-	const newDate = new Date(originalDate.getTime() + nineHoursInMilliseconds);
-	
-	// 연도, 월, 일, 시간, 분, 초 추출 및 포맷팅
-	const year = newDate.getFullYear();
-	const month = String(newDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
-	const day = String(newDate.getDate()).padStart(2, '0');
-	const hours = String(newDate.getHours()).padStart(2, '0');
-	const minutes = String(newDate.getMinutes()).padStart(2, '0');
-	const seconds = String(newDate.getSeconds()).padStart(2, '0');
-
-	// 원하는 형식으로 조합
-	const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-	
-	return formattedDate;
-	
-}
 
 
 export const getCategoryItemById = async (req) => {
@@ -113,6 +88,10 @@ export const getCategoryItemBySubId = async (req) => {
 //이 기능은 관리자 페이지에서 사용할 것으로 예상
 export const createCategory = async (req) => {
 	try {
+
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Categories (categoryName, parentId) VALUES (?,?)';
 		const result = await connection.execute(query, [req.body.categoryName, req.body.parentId]);
@@ -133,6 +112,9 @@ export const createCategory = async (req) => {
 
 export const updateCategory = async (req) => {
 	try {
+
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
@@ -173,7 +155,10 @@ export const updateCategory = async (req) => {
 
 export const deleteCategory = async (req) => {
 	try {
-    
+ 
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+		
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Categories where categoryId = (?)';
 		const result = await connection.execute(query, [req.params.id]);

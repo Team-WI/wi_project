@@ -6,11 +6,14 @@ import Order from '../models/orderModel.js';
 import Shipping from '../../Shipping/models/shippingModel.js';
 import Orderitem from '../../OrderItems/models/orderItemModel.js';
 import response from '../../../class/response.js';
-
+import jwtProvider from '../../../class/jwtProvider.js';
 
 export const getOrderById = async (orderId) => {
 	try {
-		console.log(orderId);
+
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Orders where orderId = (?);';
 		const result = await connection.execute(query, [orderId]);
@@ -41,7 +44,10 @@ export const getOrderById = async (orderId) => {
 
 export const getOrderShippingAll = async (req) => {
 	try {	
-			
+
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+		
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT o.userId, o.orderDate, o.totalAmount, o.status, '
 						+ 's.orderId, s.shippingDate, s.deliveryDate, s.courier, s.courierInvoiceNumber, s.deliveryFee, '
@@ -153,6 +159,9 @@ export const getOrderShippingAll = async (req) => {
 export const createOrder = async (OrderData) => {
 	try {
 
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Orders (userId, totalAmount) VALUES (?,?)';
 		const result = await connection.execute(query, [OrderData.userId, OrderData.totalAmount]);
@@ -175,6 +184,9 @@ export const createOrder = async (OrderData) => {
 
 export const updateOrder = async (orderId, updateData) => {
 	try {
+
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 		
 		const keys = Object.keys(updateData);
 		const values = Object.values(updateData);
@@ -215,6 +227,9 @@ export const updateOrder = async (orderId, updateData) => {
 
 export const deleteOrder = async (orderId) => {
 	try {
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Orders where orderId = (?)';

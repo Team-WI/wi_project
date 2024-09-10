@@ -78,7 +78,10 @@ export const getBoardAll = async () => {
 
 export const createBoard = async (req) => {
 	try {
-	
+
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+		
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Boards (administratorsId, inquiryCategory, inquiryContent) VALUES (?,?,?)';
 		const result = await connection.execute(query, [req.body.administratorsId, req.body.inquiryCategory, req.body.inquiryContent]);
@@ -99,6 +102,9 @@ export const createBoard = async (req) => {
 
 export const updateBoard = async (req) => {
 	try {
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
@@ -140,6 +146,10 @@ export const updateBoard = async (req) => {
 
 export const deleteBoard = async (req) => {
 	try {
+
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Boards where boardId = (?)';
 		const result = await connection.execute(query, [req.params.id]);

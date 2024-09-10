@@ -12,27 +12,8 @@ dotenv.config();
 
 export const getUserById = async (req) => {
 	
-	/* check Token */
-	const accessToken = req.cookies.accessToken;
-	
 	const jwtprovider = new jwtProvider();
-	
-	console.log('Income accessToken :: ', accessToken);
-	if (!accessToken) {
-		const err = new Error('AccessToken not Found');
-		err.status = 401;
-		throw err;
-	}
-	
-	try {
-		const decoded = jwtprovider.verifyToken(accessToken, 'access');
-		console.log('decoded ::',decoded);
-	} catch (err) {
-		err = new Error('AccessToken Expired');
-		err.status = 401;
-		throw err;
-	}
-
+	jwtprovider.verifyAccessToken(req);
 	
 	try {
 		
@@ -97,25 +78,9 @@ export const createUser = async (userData) => {
 export const updateUser = async (req) => {
 	try {
 		
-		/* check Token */
-		/*
-	    const token = req.headers['authorization'];
-		
 		const jwtprovider = new jwtProvider();
-		
-		
-		console.log('Income Token :: ', token);
-		if (!token) {
-			throw new Error('Token not Found');
-		}
-		
-		try {
-			const decoded = jwtprovider.verifyToken(token);
-			res.json({ message: 'Token valid', user: decoded });
-		} catch (err) {
-			throw new Error('Invalid Token');
-		}
-		*/
+		jwtprovider.verifyAccessToken(req);
+	
 		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
