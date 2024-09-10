@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Nav, Container, Row, Col, Dropdown, Form, Button } from 'react-bootstrap';
+import { Nav, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { CircleArrowLeft, Heart, LoaderCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import './ProductDetail.css';
 
@@ -150,21 +150,7 @@ const ProductDetailContent = () => {
           </Col>
         </Row>
 
-        <Row>
-          <Col>
-          <hr />
-          <p>상품번호: {product.productId}</p>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <p>상품설명</p>
-            <div className='image-container'>
-              {placeholderImage}
-            </div>
-          </Col>
-        </Row>
+        <hr />
 
         <Row>
           <Nav justify variant="tabs" defaultActiveKey="link-0">
@@ -181,6 +167,21 @@ const ProductDetailContent = () => {
               <Nav.Link eventKey="link-3" onClick={() => setTab(3)}>배송/교환/반품 안내</Nav.Link>
             </Nav.Item>
           </Nav>
+        </Row>
+
+        <Row>
+          <Col>
+          <p>상품번호: {product.productId}</p>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <p>상품설명</p>
+            <div className='image-container'>
+              {placeholderImage}
+            </div>
+          </Col>
         </Row>
       </Container>
 

@@ -37,6 +37,8 @@ const App = () => {
         <NavBar />
         <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/ShoppingCart" element={<ShoppingCart />} />
+
         <Route path="/MyLike" element={<PrivateRoute element={<MyLike />} />} />
         <Route path="/MyPage" element={<PrivateRoute element={<MyPage />} />} />
         <Route path="/MyPage/DelAccount" element={<DelAccount/>} />
@@ -50,7 +52,6 @@ const App = () => {
         <Route path="/categories/:category" element={<ProductList/>} />
         <Route path="/categories/:category/:item" element={<ProductList />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
-        <Route path="/ShoppingCart" element={<ShoppingCart />} />
         <Route path="/Checkout" element={<Checkout />} />
         </Routes>
         <Footer />
