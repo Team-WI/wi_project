@@ -3,8 +3,9 @@ import cors from 'cors';
 import path from 'path';
 import * as url from 'url';
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import https from 'https';
 
 dotenv.config();
 
@@ -17,11 +18,18 @@ import reviewRoutes from './domains/Reviews/routes/reviewRoutes.js';
 import categoryRoutes from './domains/Categories/routes/categoryRoutes.js';
 import boardRoutes from './domains/Boards/routes/boardRoutes.js';
 import paymentRoutes from './domains/Payments/routes/paymentRoutes.js';
+import authRoutes from './domains/Auth/routes/authRoutes.js';
+
 
 const app = express();
 
+
+
+
+
 let corsOptions = {
-  origin: "*"
+  origin: "*",
+  credentials: true
 }
 app.use(cors(corsOptions));
 
@@ -47,8 +55,6 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 app.use('/', express.static(path.join(__dirname, 'public/build')));
 //app.use('/assets', express.static(path.join(__dirname, '/public/build/assets')));
 
-
-
 // 테이블 route 작성
 app.use('/api/users/', userRoutes);
 app.use('/api/products/', productRoutes);
@@ -59,14 +65,24 @@ app.use('/api/productInquiries/', productInquiryRoutes);
 app.use('/api/categories/', categoryRoutes);
 app.use('/api/boards/', boardRoutes);
 app.use('/api/payments/', paymentRoutes);
+app.use('/api/auth/', authRoutes);
 
+app.get("*", (req, res, next) => {
+	console.log("req.secure == " + req.secure);
+	if(req.secure){       // --- https        
+		next();    
+	}else{        // -- http        
+		let to = "https://" + req.headers.host + req.url;
+		console.log("to ==> " + to);
+		return res.redirect("https://" + req.headers.host + req.url);
+	}})
 
 
 app.get('/', (req, res) => {
   res.sendFile("index.html");
 });
 
-app.get('/logout',(req,res)=>{
+app.get('/logout',(req, res)=>{
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken').redirect('/');
 });
@@ -77,4 +93,17 @@ app.get("/review", (req, res) => {
 });
 
 
+const HTTPS_PORT = 8443;
+
+const option = {
+  key: fs.readFileSync(path.join(__dirname, '.ssl', 'private.key')),
+  cert: fs.readFileSync(path.join(__dirname, '.ssl', 'certificate.crt'))
+};
+
+// HTTPS 서버 생성
+https.createServer(option, app).listen(HTTPS_PORT, () => {
+  console.log('HTTPS 서버가 실행 중입니다.');
+});
+
 export default app;
+

@@ -11,10 +11,19 @@ export const getUser = async (req,res) => {
 			console.log(user);
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: User Are Found', user ));
+			
 	} catch (error){
-		console.log(error);
-	    res.status(HttpStatus.NOT_FOUND.code)
-			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: User Not Found', {error : error.massage} ));		
+		
+		if (error.status === 401) {
+			console.log('401')
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {
+			console.log('except 401')
+			res.status(HttpStatus.NOT_FOUND.code)
+				.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: User Not Found', error ));		
+		}
+		
 	}
 };
 
@@ -65,16 +74,16 @@ export const loginRequest = async (req, res) => {
 
 		res.cookie('accessToken', token.accessToken, {
 			httpOnly: true,   // 자바스크립트에서 쿠키 접근 불가
-			secure: false,     // HTTPS 연결에서만 전송
+			secure: true,     // HTTPS 연결에서만 전송
 			sameSite: 'Strict', // CSRF 방어
-			maxAge: 3600000 / 2
+			maxAge: 3600000
 		});
 				
 		res.cookie('refreshToken', token.refreshToken, {
 			httpOnly: true,   // 자바스크립트에서 쿠키 접근 불가
-			secure: false,     // HTTPS 연결에서만 전송
+			secure: true,     // HTTPS 연결에서만 전송
 			sameSite: 'Strict', // CSRF 방어
-			maxAge: 3600000 * 24
+			maxAge: 3600000
 		});
 		
 		res.status(HttpStatus.OK.code)

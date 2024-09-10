@@ -11,26 +11,31 @@ dotenv.config();
 
 
 export const getUserById = async (req) => {
+	
+	/* check Token */
+	const accessToken = req.cookies.accessToken;
+	
+	const jwtprovider = new jwtProvider();
+	
+	console.log('Income accessToken :: ', accessToken);
+	if (!accessToken) {
+		const err = new Error('AccessToken not Found');
+		err.status = 401;
+		throw err;
+	}
+	
+	try {
+		const decoded = jwtprovider.verifyToken(accessToken, 'access');
+		console.log('decoded ::',decoded);
+	} catch (err) {
+		err = new Error('AccessToken Expired');
+		err.status = 401;
+		throw err;
+	}
+
+	
 	try {
 		
-		/* check Token */
-			/*
-	    const token = req.headers['authorization'];
-		const jwtprovider = new jwtProvider();
-		
-		console.log('Income Token :: ', token);
-		if (!token) {
-			throw new Error('Token not Found');
-		}
-		
-		try {
-			const decoded = jwtprovider.verifyToken(token);
-			console.log('decoded ::',decoded);
-		} catch (err) {
-			throw new Error('Invalid Token');
-		}
-	*/
-	
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Users where loginId = ?;';
 		const result = await connection.execute(query, [req.params.id]);
@@ -196,16 +201,13 @@ export const login = async (req) => {
 		// 토큰 발급
 		if(isPasswordCorrect){
 			
-			const jwtprovider = new jwtProvider('10m', '3d');
+			const jwtprovider = new jwtProvider('1m', '3d');
 		
-			const clientIp1 = req.headers['x-forwarded-for'];
-			const clientIp2 = req.connection.remoteAddress;
+			const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+			
 		
-			console.log('a::',clientIp1);
-			console.log('b::',clientIp2);
-		
-			const accessToken = jwtprovider.issueToken({loginid: result[0][0].loginId}, 'access');
-			const refreshToken = jwtprovider.issueToken({loginid: result[0][0].loginId}, 'refresh');
+			const accessToken = jwtprovider.issueToken({loginid: result[0][0].loginId, 'clientIp': clientIp}, 'access');
+			const refreshToken = jwtprovider.issueToken({loginid: result[0][0].loginId, 'clientIp': clientIp}, 'refresh');
 
 			const token = {'accessToken' : accessToken, 'refreshToken' : refreshToken}
 			return token;
