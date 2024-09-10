@@ -1,17 +1,18 @@
 import express from 'express';
-import { getOrder, addOrder, editOrder, removeOrder, getOrderShipping } from '../controllers/orderController.js';
+import { getOrder, addOrder, editOrder, removeOrder, getOrderShipping, getOrderShippingDetail } from '../controllers/orderController.js';
 
 const router = express.Router();
 
-router.get('/:id',getOrder);
+router.get('/:id', getOrder);
+router.get('/shippingDetail/:id',getOrderShippingDetail);
 
-router.post('/',addOrder);
-router.post('/shippingList',getOrderShipping);
+router.post('/', addOrder);
+router.post('/shippingList', getOrderShipping);
 
-router.put('/:id',editOrder);
 
-router.delete('/:id',removeOrder);
+router.put('/:id', editOrder);
 
+router.delete('/:id', removeOrder);
 
 
 export default router;

@@ -5,6 +5,7 @@ import mysql from 'mysql2/promise';
 import Order from '../models/orderModel.js';
 import Shipping from '../../Shipping/models/shippingModel.js';
 import Orderitem from '../../OrderItems/models/orderItemModel.js';
+
 import response from '../../../class/response.js';
 import jwtProvider from '../../../class/jwtProvider.js';
 
@@ -40,7 +41,6 @@ export const getOrderById = async (orderId) => {
 		throw new Error('Order not found');
 	}
 };
-
 
 export const getOrderShippingAll = async (req) => {
 	try {	
@@ -153,9 +153,6 @@ export const getOrderShippingAll = async (req) => {
 	}
 };
 
-
-
-
 export const createOrder = async (OrderData) => {
 	try {
 
@@ -248,11 +245,72 @@ export const deleteOrder = async (orderId) => {
 	}
 };
 
+export const getOrderShippingDetailById = async (req) => {
+	try {
 
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 
+		const connection = await connectionPool.getConnection();
+		const query = 'SELECT u.name, u.phone, '
+						+ 'p.amount, p.paymentDate, '
+						+ 'pm.PaymentMethodName, pm.PaymentMethodInfo, '
+						+ 'sa.Receiver, sa.Phone, sa.PostalCode, sa.Address1, sa.Address2, sa.request, '
+						+ 'pd.productName, '
+						+ 'oi.price, oi.quantity '
+						+ 'FROM Orders o '
+						+ 'JOIN OrderItems oi ON oi.orderId = o.orderId '
+						+ 'JOIN Users u ON u.userId = o.userId '
+						+ 'JOIN ShippingAddresses sa ON sa.userId = u.userId '
+						+ 'JOIN Payments p ON p.orderId = o.orderId '
+						+ 'JOIN PaymentMethods pm ON pm.PaymentMethodID = p.paymentMethodID '
+						+ 'JOIN Products pd ON pd.productId = oi.productId '
+						+ 'WHERE o.orderId = (?);';
+		
+		const result = await connection.execute(query, [req.params.id]);
 
+		if(result[0].length === 0) {
+			connection.release();
+			throw new Error('getOrderShippingDetailById not found');
+			
+		} else {
+			connection.release();
+			
+			const resultArray = [];
+			const resultDict = {
+				'name' : result[0][0].name,
+				'phone' : result[0][0].phone,
+				'amount' : result[0][0].amount,
+				'paymentDate' : result[0][0].paymentDate,
+				'PaymentMethodName' : result[0][0].PaymentMethodName,
+				'PaymentMethodInfo' : result[0][0].PaymentMethodInfo,
+				'Receiver' : result[0][0].Receiver,
+				'Phone' : result[0][0].Phone,
+				'PostalCode' : result[0][0].PostalCode,
+				'Address1' : result[0][0].Address1,
+				'Address2' : result[0][0].Address2,
+				'request' : result[0][0].request
+			}
+			
+			for (const row in result[0]) {
+				const orderItemDict = 
+				{
+					'productName': result[0][row].productName,
+					'price': result[0][row].price,
+					'quantity': result[0][row].quantity,		
+				}
+				resultArray.push(orderItemDict);
+			}
+			
+			resultDict['items'] = resultArray;
+			return resultDict;
+		}
 
-
+	} catch (error) {
+		logger.error(`getOrderShippingDetailById :::: ` + error);
+		throw new Error('getOrderShippingDetailById not found');
+	}
+};
 
 
 
