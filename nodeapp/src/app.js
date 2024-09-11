@@ -19,17 +19,15 @@ import categoryRoutes from './domains/Categories/routes/categoryRoutes.js';
 import boardRoutes from './domains/Boards/routes/boardRoutes.js';
 import paymentRoutes from './domains/Payments/routes/paymentRoutes.js';
 import authRoutes from './domains/Auth/routes/authRoutes.js';
-
+import shoppingCartRoutes from './domains/ShoppingCarts/routes/shoppingCartRoutes.js';
 
 const app = express();
 
-
-
-
-
 let corsOptions = {
-  origin: "*",
-  credentials: true
+    origin: "wispmall.duckdns.org",
+//  origin: "https://localhost:3000",
+// 	origin: "*",
+	credentials: true
 }
 app.use(cors(corsOptions));
 
@@ -66,6 +64,7 @@ app.use('/api/categories/', categoryRoutes);
 app.use('/api/boards/', boardRoutes);
 app.use('/api/payments/', paymentRoutes);
 app.use('/api/auth/', authRoutes);
+app.use('/api/shoppingCarts/', shoppingCartRoutes);
 
 app.get("*", (req, res, next) => {
 	console.log("req.secure == " + req.secure);
