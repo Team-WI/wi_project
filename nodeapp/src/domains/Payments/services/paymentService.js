@@ -11,9 +11,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const getPaymentById = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Payments where paymentId = ?;';
@@ -44,10 +46,11 @@ export const getPaymentById = async (req) => {
 
 
 export const getPaymentAll = async () => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {	
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Payments;';
@@ -79,10 +82,11 @@ export const getPaymentAll = async () => {
 };
 
 export const createPayment = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-	
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 	
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Payments (orderId, paymentMethodID, amount) VALUES (?,?,?)';
@@ -103,10 +107,11 @@ export const createPayment = async (req) => {
 };
 
 export const updatePayment = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
@@ -147,10 +152,11 @@ export const updatePayment = async (req) => {
 };
 
 export const deletePayment = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Payments where boardId = (?)';

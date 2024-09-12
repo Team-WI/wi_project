@@ -6,10 +6,11 @@ import response from '../../../class/response.js';
 
 
 export const getShippingById = async (shippingId) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Shipping where shippingId = (?);';
@@ -59,14 +60,16 @@ export const createShipping = async (ShippingData) => {
 		
 	} catch (error) {
 		logger.error(`createShipping :::: ` + error);
+		throw new Error('Shipping can\'t create');
 	}
 };
 
 export const updateShipping = async (shippingId, updateData) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 	
 		const keys = Object.keys(updateData);
 		const values = Object.values(updateData);
@@ -102,14 +105,16 @@ export const updateShipping = async (shippingId, updateData) => {
 
 	} catch (error) {
 		logger.error(`updateShipping :::: ` + error);
+		throw new Error('Shipping can\'t update');
 	}
 };
 
 export const deleteShipping = async (shippingId) => {
+	
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Shipping where shippingId = (?)';
@@ -125,6 +130,7 @@ export const deleteShipping = async (shippingId) => {
 	
 	} catch {
 		logger.error(`deleteShipping :::: ` + error);
+		throw new Error('Shipping can\'t delete');
 	}
 };
 

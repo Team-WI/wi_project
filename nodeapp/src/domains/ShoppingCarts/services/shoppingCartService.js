@@ -8,11 +8,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const getShoppingCartById = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+	
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
-		
+
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT sc.shoppingCartId, sc.userId, p.productName, sc.quantity '
 						+ 'FROM ShoppingCarts sc '
@@ -44,11 +45,13 @@ export const getShoppingCartById = async (req) => {
 
 
 export const createShoppingCart = async (req) => {
+	
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+	
+	
 	try {
 		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
-	
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO ShoppingCarts (userId, productId, quantity) VALUES (?,?,?)';
 		const result = await connection.execute(query, [req.body.userId, req.body.productId, req.body.quantity]);
@@ -68,10 +71,11 @@ export const createShoppingCart = async (req) => {
 };
 
 export const updateShoppingCart = async (req) => {
-	try {
 
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
+	try {
 		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
@@ -112,11 +116,12 @@ export const updateShoppingCart = async (req) => {
 };
 
 export const deleteShoppingCart = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
-		
+
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM ShoppingCarts where shoppingCartId = (?)';
 		const result = await connection.execute(query, [req.params.id]);

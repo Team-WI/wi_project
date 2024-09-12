@@ -11,11 +11,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const getProductInquiryById = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
 
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
-			
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from ProductInquiries where inquiryId = ?;';
 		const result = await connection.execute(query, [req.params.id]);
@@ -47,11 +48,12 @@ export const getProductInquiryById = async (req) => {
 };
 
 
-export const getProductInquiryAll = async () => {
-	try {	
+export const getProductInquiryAll = async (req) => {
 
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
+	try {	
 			
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from ProductInquiries;';
@@ -92,10 +94,11 @@ export const getProductInquiryAll = async () => {
 
 
 export const createProductInquiry = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query_user = 'SELECT userId from Users where loginId = (?)';
@@ -127,11 +130,12 @@ export const createProductInquiry = async (req) => {
 };
 
 export const updateProductInquiry = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
 
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
-		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
 				
@@ -170,11 +174,12 @@ export const updateProductInquiry = async (req) => {
 };
 
 export const deleteProductInquiry = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
 		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
-
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM ProductInquiries where inquiryId = (?)';
 		const result = await connection.execute(query, [req.params.id]);

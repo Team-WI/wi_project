@@ -11,12 +11,12 @@ dotenv.config();
 
 
 export const getUserById = async (req) => {
-	
+		
 	const jwtprovider = new jwtProvider();
 	jwtprovider.verifyAccessToken(req);
-	
+
 	try {
-		
+
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Users where loginId = ?;';
 		const result = await connection.execute(query, [req.params.id]);
@@ -76,12 +76,12 @@ export const createUser = async (userData) => {
 };
 
 export const updateUser = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+		
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 	
-		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
 				

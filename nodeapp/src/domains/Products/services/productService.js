@@ -7,7 +7,7 @@ import jwtProvider from '../../../class/jwtProvider.js';
 
 export const getProductById = async (productId) => {
 	try {
-		console.log(productId);
+
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Products where productId = (?);';
 		const result = await connection.execute(query, [productId]);
@@ -37,15 +37,16 @@ export const getProductById = async (productId) => {
 };
 
 
-export const createProduct = async (ProductData) => {
-	try {
+export const createProduct = async (req) => {
 
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
+	try {
 
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Products (productName, description, price , stock) VALUES (?,?,?,?)';
-		const result = await connection.execute(query, [ProductData.productName, ProductData.description, ProductData.price, ProductData.stock]);
+		const result = await connection.execute(query, [req.body.productName, req.body.description, req.body.price, req.body.stock]);
 
 		console.log(result);
 
@@ -60,14 +61,16 @@ export const createProduct = async (ProductData) => {
 		
 	} catch (error) {
 		logger.error(`createProduct :::: ` + error);
+		throw new Error('Product can\'t create');
 	}
 };
 
-export const updateProduct = async (productId, updateData) => {
+export const updateProduct = async (req, updateData) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 		
 		const keys = Object.keys(updateData);
 		const values = Object.values(updateData);
@@ -90,7 +93,7 @@ export const updateProduct = async (productId, updateData) => {
 						+ ' where productId = (?)';
 		console.log(query);
 
-		const result = await connection.execute(query, [productId]);
+		const result = await connection.execute(query, [req.params.productId]);
 
 		if(result[0].length === 0) {
 			connection.release();
@@ -103,18 +106,20 @@ export const updateProduct = async (productId, updateData) => {
 
 	} catch (error) {
 		logger.error(`updateProduct :::: ` + error);
+		throw new Error('Product can\'t update');
 	}
 };
 
-export const deleteProduct = async (productId) => {
-	try {
+export const deleteProduct = async (req) => {
 
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
+	try {
 	
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Products where productId = (?)';
-		const result = await connection.execute(query, [productId]);
+		const result = await connection.execute(query, [req.params.productId]);
 	
 		if(result[0].length === 0) {
 			connection.release();
@@ -126,6 +131,7 @@ export const deleteProduct = async (productId) => {
 	
 	} catch {
 		logger.error(`deleteProduct :::: ` + error);
+		throw new Error('Product can\'t delete');
 	}
 };
 

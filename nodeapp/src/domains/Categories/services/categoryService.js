@@ -87,10 +87,11 @@ export const getCategoryItemBySubId = async (req) => {
 
 //이 기능은 관리자 페이지에서 사용할 것으로 예상
 export const createCategory = async (req) => {
-	try {
 
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
+	try {
 
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Categories (categoryName, parentId) VALUES (?,?)';
@@ -111,10 +112,11 @@ export const createCategory = async (req) => {
 };
 
 export const updateCategory = async (req) => {
-	try {
 
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
+	try {
 		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
@@ -154,10 +156,11 @@ export const updateCategory = async (req) => {
 };
 
 export const deleteCategory = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
- 
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Categories where categoryId = (?)';

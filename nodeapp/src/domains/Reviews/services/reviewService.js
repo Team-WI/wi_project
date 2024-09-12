@@ -10,11 +10,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const getReviewById = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
-		
+
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Reviews where reviewId = ?;';
 		const result = await connection.execute(query, [req.params.id]);
@@ -47,11 +48,12 @@ export const getReviewById = async (req) => {
 
 
 export const createReview = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
 		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
-	
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Reviews (productId, userId, rating, comment, helpCount, noHelpCount) VALUES (?,?,?,?,?,?)';
 		const result = await connection.execute(query, [req.body.productId, req.body.userId, req.body.rating, req.body.comment, 0, 0]);
@@ -71,11 +73,12 @@ export const createReview = async (req) => {
 };
 
 export const updateReview = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
 
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
-		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
 				
@@ -115,11 +118,12 @@ export const updateReview = async (req) => {
 };
 
 export const deleteReview = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
 	try {
-		
-		const jwtprovider = new jwtProvider();
-		jwtprovider.verifyAccessToken(req);
-		
+
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Reviews where reviewId = (?)';
 		const result = await connection.execute(query, [req.params.id]);
