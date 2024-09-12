@@ -9,7 +9,7 @@ import Orderitem from '../../OrderItems/models/orderItemModel.js';
 import response from '../../../class/response.js';
 import jwtProvider from '../../../class/jwtProvider.js';
 
-export const getOrderById = async (orderId) => {
+export const getOrderById = async (req) => {
 
 	const jwtprovider = new jwtProvider();
 	jwtprovider.verifyAccessToken(req);
@@ -18,7 +18,7 @@ export const getOrderById = async (orderId) => {
 
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Orders where orderId = (?);';
-		const result = await connection.execute(query, [orderId]);
+		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {
 			connection.release();
@@ -182,17 +182,17 @@ export const createOrder = async (OrderData) => {
 	}
 };
 
-export const updateOrder = async (req, updateData) => {
+export const updateOrder = async (req, res) => {
 
 	const jwtprovider = new jwtProvider();
 	jwtprovider.verifyAccessToken(req);
 
 	try {
 		
-		const keys = Object.keys(updateData);
-		const values = Object.values(updateData);
+		const keys = Object.keys(req.body);
+		const values = Object.values(req.body);
 				
-		let querySetData = "";		
+		let querySetData = "";
 				
 		for(let i=0; i < keys.length; i++){
 
@@ -210,7 +210,7 @@ export const updateOrder = async (req, updateData) => {
 						+ ' where orderId = (?)';
 		console.log(query);
 
-		const result = await connection.execute(query, [req.body.orderId]);
+		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {
 			connection.release();
@@ -318,5 +318,44 @@ export const getOrderShippingDetailById = async (req) => {
 	}
 };
 
+
+export const getOrderByRequest = async (req) => {
+
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
+
+	try {
+
+		const connection = await connectionPool.getConnection();
+		const query = 'SELECT o.orderId, o.userId, o.orderDate, o.totalAmount, o.`status`, o.requestReason, o.requestReasonComment '
+						+ 'FROM Orders o '
+						+ 'JOIN Users u ON u.userId = o.userId '
+						+ 'WHERE o.STATUS IN (\'취소접수\',\'취소완료\',\'반품접수\',\'반품완료\',\'교환접수\',\'교환완료\') '
+						+ 'AND u.loginId = (?);';
+
+		const result = await connection.execute(query, [req.params.id]);
+
+		if(result[0].length === 0) {
+			connection.release();
+			throw new Error('Order not found');
+			
+		} else {
+			connection.release();
+			
+			const order = result[0].map(row => new Order(
+				row.orderId,
+				row.userId,
+				row.orderDate,
+				row.totalAmount,
+				row.status
+				));	
+			return order[0];
+		}
+
+	} catch (error) {
+		logger.error(`getOrderById :::: ` + error);
+		throw new Error('Order not found');
+	}
+};
 
 

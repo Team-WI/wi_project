@@ -1,4 +1,4 @@
-import { getOrderById, createOrder, updateOrder, deleteOrder, getOrderShippingAll, getOrderShippingDetailById } from '../services/orderService.js';
+import { getOrderById, createOrder, updateOrder, deleteOrder, getOrderShippingAll, getOrderShippingDetailById, getOrderByRequest } from '../services/orderService.js';
 import response from '../../../class/response.js';
 import HttpStatus from '../../../constants/HttpStatus.js';
 import logger from '../../../utils/logger.js';
@@ -7,7 +7,7 @@ import logger from '../../../utils/logger.js';
 export const getOrder = async (req,res) => {
 	try {
 		logger.info(`${req.method} ${req.originalUrl}, Called getOrder`);
-	        const order = await getOrderById(req.params.id);
+	        const order = await getOrderById(req);
 			console.log(order);
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Order Are Found', order ));
@@ -22,6 +22,26 @@ export const getOrder = async (req,res) => {
 		}
 	}
 };
+
+export const getOrderByRequestAll = async (req,res) => {
+	try {
+		logger.info(`${req.method} ${req.originalUrl}, Called getOrderByRequest`);
+	        const orderByRequest = await getOrderByRequest(req);
+	        res.status(HttpStatus.OK.code)
+				.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: orderByRequest Are Found', orderByRequest ));
+	} catch (error){
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: Order By Request Not Found', error ));		
+		} else {		
+	    res.status(HttpStatus.NOT_FOUND.code)
+			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Order By Request Not Found', {error : error.massage} ));		
+		}
+	}
+};
+
+
+
 
 export const addOrder = async (req, res) => {
 	try {
@@ -44,8 +64,7 @@ export const addOrder = async (req, res) => {
 export const editOrder = async (req, res) => {
 	try {
 		logger.info(`${req.method} ${req.originalUrl}, Called editOrder`);
-		const updatedOrder = await updateOrder(req.params.id, req.body);
-		console.log(updatedOrder);
+		const updatedOrder = await updateOrder(req);
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Order are updated', updatedOrder ));
 	} catch (error) {
