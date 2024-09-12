@@ -12,9 +12,13 @@ export const getPayment = async (req,res) => {
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Payment Are Found', payment ));
 	} catch (error){
-		console.log(error);
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {		console.log(error);
 	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Payment Not Found', {error : error.massage} ));		
+		}
 	}
 };
 
@@ -27,9 +31,13 @@ export const getPayments = async (req,res) => {
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Payment Are Found', payment ));
 	} catch (error){
-		console.log(error);
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {		console.log(error);
 	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Payment Not Found', {error : error.massage} ));		
+		}
 	}
 };
 
@@ -41,9 +49,13 @@ export const addPayment = async (req, res) => {
 	    res.status(HttpStatus.CREATED.code)
 			.send(new response(HttpStatus.CREATED.code, HttpStatus.CREATED.status, 'Completed: Payment are Created', newPayment ));
 	} catch (error) {
-		res.status(HttpStatus.BAD_REQUEST.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {		res.status(HttpStatus.BAD_REQUEST.code)
 			.send(new response(HttpStatus.BAD_REQUEST.code, HttpStatus.BAD_REQUEST.status, 'Error: BAD_REQUEST', {error : error.massage} ));		
-	}	
+		}
+	}
 };
 
 export const editPayment = async (req, res) => {
@@ -54,10 +66,14 @@ export const editPayment = async (req, res) => {
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Payment are updated', updatedPayment ));
 			
 	} catch (error) {
-	    res.status(HttpStatus.NOT_FOUND.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {	    
+		res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Payment Not Found', {error : error.massage} ));		
-	}	
-	
+		}	
+	}
 };
 
 export const removePayment = async (req, res) => {
@@ -67,7 +83,12 @@ export const removePayment = async (req, res) => {
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Payment are removed', deletedPayment ));
 	} catch (error) {
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {		
 	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Payment Not Found', {error : error.massage} ));
+		}
 	}
 };

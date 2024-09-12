@@ -12,6 +12,8 @@ dotenv.config();
 
 export const getPaymentById = async (req) => {
 	try {
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 		
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Payments where paymentId = ?;';
@@ -43,7 +45,10 @@ export const getPaymentById = async (req) => {
 
 export const getPaymentAll = async () => {
 	try {	
-			
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+		
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Payments;';
 		const result = await connection.execute(query);
@@ -76,6 +81,9 @@ export const getPaymentAll = async () => {
 export const createPayment = async (req) => {
 	try {
 	
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+	
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Payments (orderId, paymentMethodID, amount) VALUES (?,?,?)';
 		const result = await connection.execute(query, [req.body.orderId, req.body.paymentMethodID, req.body.amount]);
@@ -96,6 +104,9 @@ export const createPayment = async (req) => {
 
 export const updatePayment = async (req) => {
 	try {
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
 		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
@@ -137,6 +148,10 @@ export const updatePayment = async (req) => {
 
 export const deletePayment = async (req) => {
 	try {
+		
+		const jwtprovider = new jwtProvider();
+		jwtprovider.verifyAccessToken(req);
+		
 		const connection = await connectionPool.getConnection();
 		const query = 'DELETE FROM Payments where boardId = (?)';
 		const result = await connection.execute(query, [req.params.id]);

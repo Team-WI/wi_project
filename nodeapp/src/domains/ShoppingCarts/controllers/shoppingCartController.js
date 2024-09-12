@@ -11,9 +11,14 @@ export const getShoppingCart = async (req,res) => {
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: ShoppingCart Are Found', ShoppingCart ));
 	} catch (error){
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {		
 		console.log(error);
 	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: ShoppingCart Not Found', {error : error.massage} ));		
+		}
 	}
 };
 
@@ -25,9 +30,13 @@ export const addShoppingCart = async (req, res) => {
 	    res.status(HttpStatus.CREATED.code)
 			.send(new response(HttpStatus.CREATED.code, HttpStatus.CREATED.status, 'Completed: ShoppingCart are Created', newShoppingCart ));
 	} catch (error) {
-		res.status(HttpStatus.BAD_REQUEST.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {		res.status(HttpStatus.BAD_REQUEST.code)
 			.send(new response(HttpStatus.BAD_REQUEST.code, HttpStatus.BAD_REQUEST.status, 'Error: BAD_REQUEST', {error : error.massage} ));		
-	}	
+		}	
+	}
 };
 
 export const editShoppingCart = async (req, res) => {
@@ -38,8 +47,12 @@ export const editShoppingCart = async (req, res) => {
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: ShoppingCart are updated', updatedShoppingCart ));
 			
 	} catch (error) {
-	    res.status(HttpStatus.NOT_FOUND.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: ShoppingCart Not Found', {error : error.massage} ));		
+		}
 	}	
 	
 };
@@ -51,7 +64,12 @@ export const removeShoppingCart = async (req, res) => {
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: ShoppingCart are removed', deletedShoppingCart ));
 	} catch (error) {
-	    res.status(HttpStatus.NOT_FOUND.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {	    
+		res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: ShoppingCart Not Found', {error : error.massage} ));
+		}
 	}
 };

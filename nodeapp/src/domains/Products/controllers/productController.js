@@ -12,7 +12,6 @@ export const getProduct = async (req,res) => {
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Product Are Found', product ));
 	} catch (error){
-		console.log(error);
 	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Product Not Found', {error : error.massage} ));		
 	}
@@ -26,9 +25,13 @@ export const addProduct = async (req, res) => {
 	    res.status(HttpStatus.CREATED.code)
 			.send(new response(HttpStatus.CREATED.code, HttpStatus.CREATED.status, 'Completed: Product are Created', newProduct ));
 	} catch (error) {
-		res.status(HttpStatus.BAD_REQUEST.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {		res.status(HttpStatus.BAD_REQUEST.code)
 			.send(new response(HttpStatus.BAD_REQUEST.code, HttpStatus.BAD_REQUEST.status, 'Error: BAD_REQUEST', {error : error.massage} ));		
-	}	
+		}
+	}
 };
 
 export const editProduct = async (req, res) => {
@@ -39,10 +42,13 @@ export const editProduct = async (req, res) => {
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Product are updated', updatedProduct ));
 	} catch (error) {
-	    res.status(HttpStatus.NOT_FOUND.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Product Not Found', {error : error.massage} ));		
-	}	
-	
+		}	
+	}
 };
 
 export const removeProduct = async (req, res) => {
@@ -52,7 +58,11 @@ export const removeProduct = async (req, res) => {
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Product are removed', deletedProduct ));
 	} catch (error) {
-	    res.status(HttpStatus.NOT_FOUND.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Product Not Found', {error : error.massage} ));
+		}
 	}
 };

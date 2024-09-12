@@ -12,9 +12,13 @@ export const getReview = async (req,res) => {
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Review Are Found', review ));
 	} catch (error){
-		console.log(error);
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {
 	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Review Not Found', {error : error.massage} ));		
+		}
 	}
 };
 
@@ -26,9 +30,13 @@ export const addReview = async (req, res) => {
 	    res.status(HttpStatus.CREATED.code)
 			.send(new response(HttpStatus.CREATED.code, HttpStatus.CREATED.status, 'Completed: Review are Created', newReview ));
 	} catch (error) {
-		res.status(HttpStatus.BAD_REQUEST.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {		res.status(HttpStatus.BAD_REQUEST.code)
 			.send(new response(HttpStatus.BAD_REQUEST.code, HttpStatus.BAD_REQUEST.status, 'Error: BAD_REQUEST', {error : error.massage} ));		
-	}	
+		}	
+	}
 };
 
 export const editReview = async (req, res) => {
@@ -39,10 +47,13 @@ export const editReview = async (req, res) => {
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Review are updated', updatedReview ));
 			
 	} catch (error) {
-	    res.status(HttpStatus.NOT_FOUND.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Review Not Found', {error : error.massage} ));		
-	}	
-	
+		}	
+	}
 };
 
 export const removeReview = async (req, res) => {
@@ -52,7 +63,11 @@ export const removeReview = async (req, res) => {
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Review are removed', deletedReview ));
 	} catch (error) {
-	    res.status(HttpStatus.NOT_FOUND.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Review Not Found', {error : error.massage} ));
+		}
 	}
 };

@@ -13,13 +13,10 @@ export const getUser = async (req,res) => {
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: User Are Found', user ));
 			
 	} catch (error){
-		
 		if (error.status === 401) {
-			console.log('401')
 			res.status(HttpStatus.UNAUTHORIZED.code)
 				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
 		} else {
-			console.log('except 401')
 			res.status(HttpStatus.NOT_FOUND.code)
 				.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: User Not Found', error ));		
 		}
@@ -48,10 +45,14 @@ export const editUser = async (req, res) => {
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: User are updated', updatedUser ));
 			
 	} catch (error) {
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {
 	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: User Not Found', {error : error.massage} ));		
-	}	
-	
+		}
+	}
 };
 
 export const removeUser = async (req, res) => {

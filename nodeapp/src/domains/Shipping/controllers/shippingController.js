@@ -12,9 +12,13 @@ export const getShipping = async (req,res) => {
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Shipping Are Found', shipping ));
 	} catch (error){
-		console.log(error);
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {
 	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Shipping Not Found', {error : error.massage} ));		
+		}
 	}
 };
 
@@ -39,10 +43,13 @@ export const editShipping = async (req, res) => {
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Shipping are updated', updatedShipping ));
 	} catch (error) {
-	    res.status(HttpStatus.NOT_FOUND.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Shipping Not Found', {error : error.massage} ));		
-	}	
-	
+		}	
+	}
 };
 
 export const removeShipping = async (req, res) => {
@@ -52,7 +59,11 @@ export const removeShipping = async (req, res) => {
 		res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Shipping are removed', deletedShipping ));
 	} catch (error) {
-	    res.status(HttpStatus.NOT_FOUND.code)
+		if (error.status === 401) {
+			res.status(HttpStatus.UNAUTHORIZED.code)
+				.send(new response(HttpStatus.UNAUTHORIZED.code, HttpStatus.UNAUTHORIZED.status, 'Error: User Not Found', error ));		
+		} else {	    res.status(HttpStatus.NOT_FOUND.code)
 			.send(new response(HttpStatus.NOT_FOUND.code, HttpStatus.NOT_FOUND.status, 'Error: Shipping Not Found', {error : error.massage} ));
+		}
 	}
 };
