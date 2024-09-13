@@ -30,7 +30,7 @@ const SignIn = () => {
 // post로 요청보내기
 try {
 const response = await axios.post(
-  'http://43.203.208.22:3000/api/users/login',
+  'https://wispmall.duckdns.org/api/users/login',
   body,
   {
     headers: { "Content-Type": "application/json" },

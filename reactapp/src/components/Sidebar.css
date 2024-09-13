@@ -9,6 +9,7 @@
 }
 .side-links {
   margin-top: 30px;
+  margin-right: 30px;
   list-style: none;
   text-align: center; /* 텍스트 가운데 정렬 */
   display: flex; /* Flexbox for alignment */

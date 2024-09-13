@@ -28,6 +28,7 @@ import './App.css';
 import Notice from "./pages/Notice";
 import {MyOrder} from "./pages/MyOrder";
 import MyOrderDetail from "./pages/MyOrderDetail";
+import CancelList from "./pages/CancelList";
 
 const App = () => {
   return (    
@@ -46,6 +47,7 @@ const App = () => {
         <Route path="/MyPage/Notice" element={<Notice />} /> 
         <Route path="/MyPage/MyOrder" element={<MyOrder />} />
         <Route path="/MyPage/MyOrder/MyOrderDetail/:orderid" element={<MyOrderDetail />} />
+        <Route path="/MyPage/CancelList" element={<CancelList />} />
         <Route path="/ShoppingCart" element={<PrivateRoute element={<ShoppingCart />} />}  />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} /> 

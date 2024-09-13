@@ -19,7 +19,7 @@ margin-bottom: 50px;
 
 .mypage-tb {
     width: 60%;
-    height: 280px;
+  
     background-color: #333; /* 시각적으로 확인할 수 있도록 배경색 추가 */
         /* 내용 확인을 위해 약간의 패딩 추가 */
     
@@ -45,7 +45,7 @@ margin-bottom: 50px;
 
 .update-headline {
     margin-top: 50px;
-    border-bottom: solid 2px #333;
+    border-bottom: solid 3px #333;
     width: 60%;
 }
 
@@ -57,8 +57,10 @@ margin-bottom: 50px;
 .th-Id {
     font-size: 24px;
     border-right: dotted 3px white; 
+    height: 180px;
 }
 
 .th-grade {
     font-size: 24px;
+    height: 180px;
 }
