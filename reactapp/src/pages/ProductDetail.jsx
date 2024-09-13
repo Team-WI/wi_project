@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Dropdown } from 'react-bootstrap';
-import './pages.css'
+
 
 import { CartProvider, useCart } from '../components/CartContext';  // CartProvider import
 import CartButton from '../components/CartButton';
