@@ -1,7 +1,6 @@
 /* 
 src/App.jsx
 실제 렌더링 되는 App.js
-[ ] 상품 상세 ProductDetail.jsx 작성 예정
 */
 
 import React from "react";
@@ -13,12 +12,13 @@ import {PrivateRoute} from './components/PrivateRoute';
 import MyLike from "./pages/MyLike";
 import MyPage from "./pages/MyPage";
 import DelAccount from './pages/DelAccount'
-import ShoppingCart from "./pages/ShoppingCart";
 import Inquiries from "./pages/Inquiries";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ProductList from "./components/ProductList";
 import ProductDetail from "./pages/ProductDetail";
+import ShoppingCart from "./pages/ShoppingCart";
+import Checkout from "./pages/Checkout";
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 설치
 import './App.css';
@@ -38,6 +38,8 @@ const App = () => {
         <NavBar />
         <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/ShoppingCart" element={<ShoppingCart />} />
+
         <Route path="/MyLike" element={<PrivateRoute element={<MyLike />} />} />
         <Route path="/MyPage" element={<PrivateRoute element={<MyPage />} />} />
         <Route path="/MyPage/DelAccount" element={<DelAccount/>} />
@@ -49,9 +51,10 @@ const App = () => {
         <Route path="/ShoppingCart" element={<PrivateRoute element={<ShoppingCart />} />}  />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} /> 
-          <Route path="/categories/:category" element={<ProductList/>} />
-          <Route path="/categories/:category/:item" element={<ProductList />} />
-          <Route path="/products/:productId" element={<ProductDetail />} />
+        <Route path="/categories/:category" element={<ProductList/>} />
+        <Route path="/categories/:category/:item" element={<ProductList />} />
+        <Route path="/products/:productId" element={<ProductDetail />} />
+        <Route path="/Checkout" element={<Checkout />} />
         </Routes>
         <Footer />
         </div>

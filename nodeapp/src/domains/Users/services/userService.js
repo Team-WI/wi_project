@@ -2,10 +2,9 @@ import logger from '../../../utils/logger.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
 import mysql from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwtProvider from '../../../class/jwtProvider.js';
 import User from '../models/userModel.js';
 import response from '../../../class/response.js';
-import jwtProvider from '../../../class/jwtProvider.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -16,6 +15,7 @@ export const getUserById = async (req) => {
 	try {
 		
 		/* check Token */
+			/*
 	    const token = req.headers['authorization'];
 		const jwtprovider = new jwtProvider();
 		
@@ -30,6 +30,7 @@ export const getUserById = async (req) => {
 		} catch (err) {
 			throw new Error('Invalid Token');
 		}
+	*/
 	
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT * from Users where loginId = ?;';
@@ -67,6 +68,7 @@ export const getUserById = async (req) => {
 
 export const createUser = async (userData) => {
 	try {
+	
 		// bcrypt를 이용하여유저PW hash 변환
 		const salt = bcrypt.genSaltSync(10);
 		const hash = bcrypt.hashSync(userData.password, salt);
@@ -92,6 +94,7 @@ export const updateUser = async (req) => {
 	try {
 		
 		/* check Token */
+		/*
 	    const token = req.headers['authorization'];
 		
 		const jwtprovider = new jwtProvider();
@@ -108,7 +111,7 @@ export const updateUser = async (req) => {
 		} catch (err) {
 			throw new Error('Invalid Token');
 		}
-		
+		*/
 		
 		const keys = Object.keys(req.body);
 		const values = Object.values(req.body);
@@ -152,7 +155,7 @@ export const deleteUser = async (userId) => {
 	try {
     
 		const connection = await connectionPool.getConnection();
-		const query = 'DELETE FROM Users where userId = (?)';
+		const query = 'UPDATE Users SET status='+ "'inactive'" +' where userId = (?)';
 		const result = await connection.execute(query, [userId]);
 	
 		if(result[0].length === 0) {
@@ -193,27 +196,61 @@ export const login = async (req) => {
 
 		// 토큰 발급
 		if(isPasswordCorrect){
-				const jwtprovider = new jwtProvider({id: result[0][0].loginId}, '1h');
-				jwtprovider.toString();
-				
-				const accessToken = jwtprovider.issueFirstToken();
-				console.log(accessToken);
+			
+			const jwtprovider = new jwtProvider('10m', '3d');
+		
+			const accessToken = jwtprovider.issueToken({loginid: result[0][0].loginId}, 'access');
+			const refreshToken = jwtprovider.issueToken({loginid: result[0][0].loginId}, 'refresh');
 
-				jwtprovider.setExpiresIn('2h');
-				const refreshToken = jwtprovider.issueFirstToken();
-				
-				console.log(refreshToken);
-				
-			//return {'accessToken':accessToken, 'refreshToken':refreshToken};
-			return {'accessToken':accessToken };
+			const token = {'accessToken' : accessToken, 'refreshToken' : refreshToken}
+			return token;
+			
 		} else {
 			throw new Error('jwtProvider False');
 		}
 	
   }catch {
     logger.error(`fetching login :::: ` + error);
+	throw new Error('fetching login False');
   }
 };
 
 
+export const checkDuplicate = async (req) => {
+	try {
+		
+		const keys = Object.keys(req.body);
+		const values = Object.values(req.body);
+				
+		let querySetData = "";		
+				
+		for(let i=0; i < keys.length; i++){
 
+			if(i == keys.length-1){
+				querySetData += ( keys[i] + "='" + values[i] + "'");
+			} else {
+				querySetData += ( keys[i] + "='" + values[i] + "'" + ',');
+			}
+			
+		}
+		
+		const connection = await connectionPool.getConnection();
+		const query = 'SELECT * FROM Users where ' + querySetData;
+		console.log(query);
+
+		const result = await connection.execute(query);
+
+		if(result[0].length === 0) {
+			connection.release();
+			return {'checkDuplicate' : 'NotDuplicated'};
+		} else {
+			connection.release();
+			return {'checkDuplicate' : 'Duplicated'};
+		}
+
+
+	} catch (error) {
+		logger.error(`checkDuplicate :::: ` + error);
+		throw new Error('checkDuplicate False');
+	}
+};
