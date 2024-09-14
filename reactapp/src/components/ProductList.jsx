@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import Card from './Card';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
+import { LoaderCircle } from 'lucide-react';
 import { CATEGORIES, SUBCATEGORIES } from './CATEGORIES.js';
 import './ProductList.css';
 
@@ -34,8 +35,8 @@ const ProductList = ( ) => {
         console.log('요청중인 URL:', url);
 
         const response = await axios.get(url);
-        console.log('서버 응답:', response);
-        console.log('서버 응답 데이터:', response.data);
+        // console.log('서버 응답:', response);
+        // console.log('서버 응답 데이터:', response.data);
         
 
         // let filteredProducts = response.data.data;
@@ -50,7 +51,8 @@ const ProductList = ( ) => {
             // 항상 배열 형태로 처리
             setProducts(Array.isArray(productsData) ? productsData : [productsData]);
           } else {
-            throw new Error("응답에 data 속성이 없습니다.");
+            // throw new Error("응답에 data 속성이 없습니다.");
+            setProducts([]);
           }
         } catch (err) {
           console.error("상품 데이터 fetch 에러:", err);
@@ -59,25 +61,6 @@ const ProductList = ( ) => {
           setLoading(false);
         }
       };
-
-    //       if (Array.isArray(productsData)) {
-    //         setProducts(productsData);
-    //       } else if (typeof productsData === 'object') {
-    //         setProducts([productsData]);
-    //       } else {
-    //         throw new Error("상품 데이터 형식이 올바르지 않습니다.");
-    //       }
-    //     } else {
-    //       throw new Error("응답에 data 속성이 없습니다.");
-    //     }
-    //   } catch (err) {
-    //     console.error("상품 데이터 fetch 에러:", err);
-    //     setError(err.message || '상품을 불러오는 중 오류가 발생했습니다.');
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
       getProducts();
   }, [category, item]);  // category, item 의존성 
   
@@ -90,7 +73,7 @@ const ProductList = ( ) => {
     }
   }, [products]);
 
-  if (loading) return <div>로딩중</div>;
+  if (loading) return <LoaderCircle />;
   if (error) return <div>{error}</div>;
 
   

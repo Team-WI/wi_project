@@ -70,12 +70,12 @@ const Inquiries = () => {
                 body,         // 요청 본문
                 { headers: { 'Content-Type': 'application/json' } } // 요청 설정
             );
-            
-            // if(){
-            //   resPost = await axios.get(`http://43.203.208.22:3000/api/productInquiries`);
-            //   console.log(resPost);
-            //   setInquiries(resPost.data.data);
-            // } 
+            //console.log(Post.data.message);
+            if(Post.data.message==='Completed: newProductInquiry are Created'){
+             const resPost = await axios.get('http://43.203.208.22:3000/api/productInquiries');
+              //console.log(resPost);
+              setInquiries(resPost.data.data);
+            } 
 
       setProductID(''); // POST 후 입력 필드를 초기화
       setInquiryTitle('');

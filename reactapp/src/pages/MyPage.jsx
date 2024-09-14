@@ -28,23 +28,46 @@ useEffect(() => {
   
   const getUser = async () => {
     try {
-      const response = await axios.get(`http://43.203.208.22:3000/api/users/${loginId}`, {
-        headers: { Authorization: sessionStorage.getItem('accessToken'),},
+
+      const response = await axios.get(`https://wispmall.duckdns.org/api/users/${loginId}`, {
+        withCredentials: true // 쿠키를 포함하여 요청   
       }); 
-     
+
       if (response.data && response.data.data) {
         const { name, loginId, grade, phone } = response.data.data;
         setUserInfo({ name, loginId, grade, phone }); // 사용자 정보 상태 업데이트
       } else {
         setError("No data found"); // 데이터가 없을 때 에러 메시지 설정
       }
+
     } catch (error) {
+      // 리프레쉬 토큰 요청
+      if (error.response.status === 401){
+        try {
+          axios.get('https://wispmall.duckdns.org/api/auth/refreshToken', {
+            withCredentials: true
+          }).then(async () => {
+            const response = await axios.get(`https://wispmall.duckdns.org/api/users/${loginId}`, {
+            withCredentials: true // 쿠키를 포함하여 요청   
+            }); 
+          //결과 데이터 처리 반복
+            if (response.data && response.data.data) {
+              const { name, loginId, grade, phone } = response.data.data;
+              setUserInfo({ name, loginId, grade, phone }); // 사용자 정보 상태 업데이트
+            } else {
+              setError("No data found"); // 데이터가 없을 때 에러 메시지 설정
+            }
+          });
+
+        } catch (error) {
+          console.error("Error : refreshToken expired", error);
+        }  
+      }
       setError(error.message); // API 호출 실패 시 에러 메시지 설정
     }
   };
-
   getUser(); // getUser 함수 호출
-}, []); // 빈 배열을 의존성 배열로 사용하여 컴포넌트 마운트 시 한 번만 호출됨
+}, []); // 빈 배열을 의존성 배열로 사용하여 컴포넌트 마운트 시 한 번만 호출됨 // 빈 배열을 의존성 배열로 사용하여 컴포넌트 마운트 시 한 번만 호출됨
 
 if (error) {
   return <div>Error: {error}</div>; // 에러가 발생한 경우 화면에 에러 메시지 표시
