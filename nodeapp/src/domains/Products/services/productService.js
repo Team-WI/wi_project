@@ -9,7 +9,10 @@ export const getProductById = async (productId) => {
 	try {
 
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT * from Products where productId = (?);';
+		const query = 'SELECT p.*, pi.image_small, pi.image_medium, pi.image_large '
+						+ 'FROM Products p '
+						+ 'JOIN ProductImages pi ON pi.productId = p.productId '
+						+ 'WHERE p.productId = (?); ';
 		const result = await connection.execute(query, [productId]);
 
 		if(result[0].length === 0) {
@@ -27,6 +30,11 @@ export const getProductById = async (productId) => {
 				row.stock,
 				row.created_at
 				));
+			//2024-09-19 이미지 추가
+			product[0]['image_small'] = result[0][0].image_small;
+			product[0]['image_medium'] = result[0][0].image_medium;
+			product[0]['image_large'] = result[0][0].image_large;
+
 			return product[0];
 		}
 
@@ -35,7 +43,6 @@ export const getProductById = async (productId) => {
 		throw new Error('Product not found');
 	}
 };
-
 
 export const createProduct = async (req) => {
 
@@ -134,6 +141,7 @@ export const deleteProduct = async (req) => {
 		throw new Error('Product can\'t delete');
 	}
 };
+
 
 
 

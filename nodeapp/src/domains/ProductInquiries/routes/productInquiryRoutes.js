@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 router.get('/:id', getProductInquiry);
-router.get('/', getProductInquiries);
+router.get('/all/:id', getProductInquiries);
 
 router.post('/', addProductInquiry);
 

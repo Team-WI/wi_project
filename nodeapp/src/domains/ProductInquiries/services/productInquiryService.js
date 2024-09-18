@@ -18,7 +18,10 @@ export const getProductInquiryById = async (req) => {
 	try {
 
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT * from ProductInquiries where inquiryId = ?;';
+		const query = 'SELECT pi.*, pm.image_small, pm.image_medium, pm.image_large '
+						+ 'FROM ProductInquiries pi '
+						+ 'JOIN ProductImages pm ON pm.productId = pi.productId '
+						+ 'WHERE inquiryId = (?);';
 		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {
@@ -38,6 +41,11 @@ export const getProductInquiryById = async (req) => {
 				row.userComment,
 				row.sellerComment
 			));
+			//2024-09-19 이미지 추가
+			product[0]['image_small'] = result[0][0].image_small;
+			product[0]['image_medium'] = result[0][0].image_medium;
+			product[0]['image_large'] = result[0][0].image_large;
+
 			return productInquiry[0];
 		}
 
@@ -47,19 +55,19 @@ export const getProductInquiryById = async (req) => {
 	}
 };
 
-
 export const getProductInquiryAll = async (req) => {
 
-	const jwtprovider = new jwtProvider();
-	jwtprovider.verifyAccessToken(req);
+	//const jwtprovider = new jwtProvider();
+	//jwtprovider.verifyAccessToken(req);
 
 	try {	
-			
+	
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT * from ProductInquiries;';
-		const result = await connection.execute(query);
-
-		console.log('result ::::', result)
+		const query = 'SELECT pi.*, pm.image_small, pm.image_medium, pm.image_large '
+						+ 'FROM ProductInquiries pi '
+						+ 'LEFT JOIN ProductImages pm ON pm.productId = pi.productId '
+						+ 'WHERE userId = (?);';		
+		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {
 			connection.release();
@@ -68,18 +76,26 @@ export const getProductInquiryAll = async (req) => {
 		} else {
 			connection.release();
 			
-			const productInquiry = result[0].map(row => new ProductInquiry(
-				row.inquiryId,
-				row.productId,
-				row.userId,
-				row.inquiryCategory,
-				addHour(row.inquiryDate),
-				row.inquiryTitle,
-				row.userComment,
-				row.sellerComment
-				));
-			console.log('productInquiry ::::', productInquiry);
-			return productInquiry;
+			let productInquiryArr = [];
+			
+			for (const row in result[0]) {
+				const productInquiry = {
+					'inquiryId' : result[0][row].inquiryId,
+					'productId' : result[0][row].productId,
+					'userId' : result[0][row].userId,
+					'inquiryCategory' : result[0][row].inquiryCategory,
+					'inquiryDate' : addHour(result[0][row].inquiryDate),
+					'inquiryTitle' : result[0][row].inquiryTitle,
+					'userComment' : result[0][row].userComment,
+					'sellerComment' : result[0][row].sellerComment,
+					'image_small' : result[0][row].image_small,
+					'image_medium' : result[0][row].image_medium,
+					'image_large' : result[0][row].image_large
+				};
+				//2024-09-19 이미지 추가;
+				productInquiryArr.push(productInquiry);
+			}	
+			return productInquiryArr;
 		}
 
 	} catch (error) {
@@ -87,11 +103,6 @@ export const getProductInquiryAll = async (req) => {
 		throw new Error('ProductInquiry not found');
 	}
 };
-
-
-
-
-
 
 export const createProductInquiry = async (req) => {
 

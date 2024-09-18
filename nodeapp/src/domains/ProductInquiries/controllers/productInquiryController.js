@@ -27,7 +27,7 @@ export const getProductInquiry = async (req,res) => {
 export const getProductInquiries = async (req,res) => {
 	try {
 		logger.info(`${req.method} ${req.originalUrl}, Called getProductInquiry`);
-	        const productInquiry = await getProductInquiryAll();
+	        const productInquiry = await getProductInquiryAll(req);
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: ProductInquiry Are Found', productInquiry ));
 	} catch (error){
