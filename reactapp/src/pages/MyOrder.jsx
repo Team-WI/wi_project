@@ -8,11 +8,12 @@ import Sidebar from '../components/Sidebar';
 
 //데이터 패칭 함수
 const fetchData = async () => {
+    const API_URL = process.env.REACT_APP_API_URL;
 
     const loginId = sessionStorage.getItem('id'); 
 
     try {
-        const response = await axios.post('http://43.203.208.22:3000/api/orders/shippingList/',
+        const response = await axios.post(`${API_URL}/api/orders/shippingList/`,
             {loginId: loginId}
         );
        // console.log(response.data.data);

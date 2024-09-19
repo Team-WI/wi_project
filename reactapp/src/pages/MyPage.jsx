@@ -22,14 +22,15 @@ const MyPage = () => {
 });
 
 const [chkPw, setChkPw] = useState('');
-  
+const API_URL = process.env.REACT_APP_API_URL;
+
 
 useEffect(() => {
   
   const getUser = async () => {
     try {
 
-      const response = await axios.get(`https://wispmall.duckdns.org/api/users/${loginId}`, {
+      const response = await axios.get(`${API_URL}/api/users/${loginId}`, {
         withCredentials: true // 쿠키를 포함하여 요청   
       }); 
 
@@ -44,10 +45,10 @@ useEffect(() => {
       // 리프레쉬 토큰 요청
       if (error.response.status === 401){
         try {
-          axios.get('https://wispmall.duckdns.org/api/auth/refreshToken', {
+          axios.get(`${API_URL}/api/auth/refreshToken`, {
             withCredentials: true
           }).then(async () => {
-            const response = await axios.get(`https://wispmall.duckdns.org/api/users/${loginId}`, {
+            const response = await axios.get(`${API_URL}/api/users/${loginId}`, {
             withCredentials: true // 쿠키를 포함하여 요청   
             }); 
           //결과 데이터 처리 반복
@@ -103,7 +104,7 @@ const chkpwChange = (e) => {
 // 개인정보 update submit 
 //put 오류 - 404 api 문제인가
 const UpdateInfo = () => {
-  axios.put(`http://43.203.208.22:3000/api/user${loginId}`, {userInfo})
+  axios.put(`${API_URL}/api/user${loginId}`, {userInfo})
   .then(response => {
     console.log(response.data);
     alert('정보가 정상적으로 변경되었습니다.')
@@ -115,7 +116,7 @@ const UpdateInfo = () => {
 
 const UpdatePw = () => {
   if (chkPw === changePw.newpassword) {
-    axios.put(`http://43.203.208.22:3000/api/user${loginId}`, changePw)
+    axios.put(`${API_URL}/api/user${loginId}`, changePw)
       .then(response => {
         console.log(response.data);
         alert('정보가 정상적으로 변경되었습니다.');

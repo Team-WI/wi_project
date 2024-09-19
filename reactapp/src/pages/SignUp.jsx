@@ -14,6 +14,7 @@ function SignUp({ onSignUp }) {     // onSignUp props로 handleSignUp 함수를 
   const [message, setMessage] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const [user, setUser] = useState({
     loginId: '',
@@ -88,7 +89,7 @@ function SignUp({ onSignUp }) {     // onSignUp props로 handleSignUp 함수를 
   // 아이디 중복확인
   const dupIdCheck = async () => {
     try {
-      const response = await axios.post('http://43.203.208.22:3000/api/users/checkId', { loginId: user.loginId });
+      const response = await axios.post(`{${API_URL}/api/users/checkId`, { loginId: user.loginId });
       if (response.data.available) {
         alert('사용 가능한 아이디입니다.');
       } else {
@@ -103,7 +104,7 @@ function SignUp({ onSignUp }) {     // onSignUp props로 handleSignUp 함수를 
   // 이메일 중복확인
   const dupEmailCheck = async () => {
     try {
-      const response = await axios.post('http://43.203.208.22:3000/api/users/checkEmail', { email: user.email });
+      const response = await axios.post(`${API_URL}/api/users/checkEmail`, { email: user.email });
       if (response.data.available) {
         alert('사용 가능한 이메일입니다.');
       } else {
@@ -139,14 +140,14 @@ function SignUp({ onSignUp }) {     // onSignUp props로 handleSignUp 함수를 
 console.log('입력:', input)
       try {
         const response = await axios
-        .post('http://43.203.208.22:3000/api/users', input);;
+        .post(`${API_URL}/api/users`, input);
 
       console.log('회원가입 성공:', response.data);
       alert('회원가입에 성공했습니다. 로그인 페이지로 이동합니다.');
       onSignUp(input);
 
       // 로그인 페이지로 리다이렉트
-      navigate('http://43.203.208.22:3000/api/users/login');
+      navigate(`${API_URL}/api/users/login`);
 
     } catch (error) {
       if (error.response) {

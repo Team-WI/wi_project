@@ -3,20 +3,6 @@
 상수데이터+Array.map()으로 카테고리 관리
 */
 
-// export const CATEGORIES = [
-//   { id: 0, text: 'Best', name: 'best' },
-//   { id: 1, text: 'Women', name: 'women' },
-//   { id: 2, text: 'Men', name: 'men' },
-//   { id: 3, text: 'Kids', name: 'kids' },
-// ];
-
-// export const SUBCATEGORIES = [
-//   { id: 0, text: 'Top', name: 'top' },
-//   { id: 1, text: 'Bottom', name: 'bottom' },
-//   { id: 2, text: 'Shoes', name: 'shoes' },
-// ];
-
-
 export const CATEGORIES = [
   { id: 1, text: 'Best', name: 'best' },
   { id: 2, text: 'Women', name: 'women' },

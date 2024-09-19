@@ -5,17 +5,17 @@
  */
 
 
-import React, { useState } from 'react';
-import { useCart } from '../components/useCart';
+import React from 'react';
+import { useCart } from '../hooks/useCart';
 import Button from 'react-bootstrap/Button';
 import Toast from 'react-bootstrap';
 
-const CartButton = ({ productId }) => {
+const CartButton = ({ productId, quantity }) => {
   const { addToCart } = useCart();
   // const [showToast, setShowToast] = useState(false);
 
   const handleAddToCart = () => {
-    addToCart(productId);
+    addToCart(productId, quantity);
     // setShowToast(true);
   }
 

@@ -37,8 +37,8 @@ const MainCarousel = () => {
         spaceBetween={20}
         slidesPerView={4}
         navigation
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}
+        // onSwiper={(swiper) => console.log(swiper)}
+        // onSlideChange={() => console.log('slide change')}
         // loop = {true}
         className="main-carousel-swiper"
       >

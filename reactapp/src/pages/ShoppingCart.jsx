@@ -1,62 +1,44 @@
 /** src/pages/ShoppingCart.jsx
  * 장바구니 페이지 레이아웃 컴포넌트
+ * useCart 훅을 통해 장바구니 데이터를 호출
  * 사이드바 컴포넌트, 실제 장바구니에 담은 상품 데이터가 호출되는 CartItem.jsx 컴포넌트를 import
  *  */ 
 
-import React, { useState} from "react";
+import React from "react";
+import { useCart } from "../hooks/useCart";
 import Sidebar from "../components/Sidebar";
 import CartItem from "../components/CartItem";
-import { Link } from 'react-router-dom';
-
-const fakeItems = [
-  {
-    id: 1,
-    checked: true,
-    image: "https://placehold.co/100x100",
-    seller: "젤로",
-    name: "짱구 블루투스 바티컬 마우스",
-    option: "옵션 : [제품선택]짱구 바티컬 마우스",
-    quantity: 1,
-    price: 39900
-  },
-  {
-    id: 2,
-    checked: true,
-    image: "https://placehold.co/100x100",
-    seller: "아티드",
-    name: "옐로 슬럽 반팔 티셔츠_MELANGE WHITE",
-    option: "옵션 : [COLOR:SIZE]MELANGE WHITE:F",
-    quantity: 1,
-    price: 41300
-  },
-  {
-    id: 3,
-    checked: true,
-    image: "https://placehold.co/100x100",
-    seller: "아티드",
-    name: "모헤어 라운드넥 니트_PURPLE",
-    option: "옵션 : [COLOR:SIZE]PURPLE:F",
-    quantity: 1,
-    price: 152100
-  }
-]
-
+import { Link, useNavigate } from 'react-router-dom';
+import { LoaderCircle } from 'lucide-react';
 
 const ShoppingCart = () => {
-  const [cartItems, setCartItems] = useState(fakeItems);
+  const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL;
+  
+  // useCart 훅 사용
+  const {
+    cartItems,
+    isLoading,
+    error,
+    updateQuantity,
+    removeFromCart,
+    totalPrice,
+    toggleItemCheck,
+    toggleAllCheck
+  } = useCart();
 
-  // 수량 변경 함수
-  const handleQuantityChange = (id, newQuantity) => {
-    setCartItems(cartItems.map(item => item.id === id ? { ...item, quantity: Math.max(1, newQuantity)} : item ))
-  }
+  // 체크박스 선택된 상품 총 주문금액 계산
+  const checkedItemsTotal = cartItems
+    .filter(item => item.checked)
+    .reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  //장바구니 삭제 함수
-  const handleRemove = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-  }
+  const handleToggleAll = (checked) => {
+    toggleAllCheck(checked);
+  };
 
-  // 총 주문 금액 함수 
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  if (isLoading) return <LoaderCircle />;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="shopping-cart">
@@ -75,7 +57,7 @@ const ShoppingCart = () => {
           <input 
           type="checkbox" 
           checked={cartItems.every(item => item.checked)} 
-          onChange={() => {}} 
+          onChange={(e) => handleToggleAll(e.target.checked)} 
           />
         </div>
 
@@ -87,20 +69,29 @@ const ShoppingCart = () => {
       </div>
       {cartItems.map(item => (
         <CartItem 
-          key={item.id} 
+          key={item.ShoppingCartId} 
           item={item} 
-          onQuantityChange={handleQuantityChange}
-          onRemove={handleRemove}
+          onQuantityChange={updateQuantity}
+          onRemove={removeFromCart}
+          onToggleCheck={toggleItemCheck}
         />
       ))}
       <div className="cart-footer">
         <div className="cart-total">
           <span className="m-2">총 주문 금액</span>
-          <span>{totalPrice.toLocaleString()}원</span>
+          <span>{checkedItemsTotal.toLocaleString()}원</span>
         </div>
         <div className="cart-actions">
-          <Link to="/" className="continue-button">계속 쇼핑하기</Link>
-          <button className="order-button">주문하기</button>
+          <Link 
+            to="/" 
+            className="continue-button">계속 쇼핑하기</Link>
+          <button 
+            onClick={() => navigate("/Checkout")} 
+            className="order-button"
+            disabled={checkedItemsTotal === 0}
+          >
+            주문하기
+          </button>
         </div>
       </div>
       </>

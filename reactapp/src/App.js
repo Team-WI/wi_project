@@ -1,6 +1,5 @@
 /* 
-src/App.jsx
-실제 렌더링 되는 App.js
+src/App.js
 */
 
 import React from "react";
@@ -9,7 +8,7 @@ import NavBar from "./components/Layout/NavBar";
 import Footer from "./components/Footer";
 import MainPage from "./pages/MainPage";
 import {PrivateRoute} from './components/PrivateRoute';
-import MyLike from "./pages/MyLike";
+import Wishlist from "./pages/Wishlist";
 import MyPage from "./pages/MyPage";
 import DelAccount from './pages/DelAccount'
 import Inquiries from "./pages/Inquiries";
@@ -38,9 +37,7 @@ const App = () => {
         <NavBar />
         <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/ShoppingCart" element={<ShoppingCart />} />
-
-        <Route path="/MyLike" element={<PrivateRoute element={<MyLike />} />} />
+        <Route path="/Wishlist" element={<PrivateRoute element={<Wishlist />} />} />
         <Route path="/MyPage" element={<PrivateRoute element={<MyPage />} />} />
         <Route path="/MyPage/DelAccount" element={<DelAccount/>} />
         <Route path="/MyPage/Inquiries" element={<Inquiries />} /> 
@@ -54,7 +51,7 @@ const App = () => {
         <Route path="/categories/:category" element={<ProductList/>} />
         <Route path="/categories/:category/:item" element={<ProductList />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
-        <Route path="/Checkout" element={<Checkout />} />
+        <Route path="/Checkout/:productId" element={<Checkout />} />
         </Routes>
         <Footer />
         </div>

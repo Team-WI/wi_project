@@ -50,10 +50,29 @@
 
 .wishlist-btn {
   width: 50px;
+  height: 50px;
   background-color: white !important;
   color: #343a40 !important;
   border-color: #343a40 !important;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.wishlist-btn.wishlisted {
+  background-color: #ffecec !important;
+  border-color: #ff6b6b !important;
+}
+
+.wishlist-btn:hover {
+  background-color: #f8f9fa !important;
+}
+
+.wishlist-btn.wishlisted:hover {
+  background-color: #ffe5e5 !important;
+}
+
 
 .buy-btn {
   width: 100%;

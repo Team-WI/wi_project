@@ -21,8 +21,8 @@ const BannerSlide = () => {
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
+        // onSlideChange={() => console.log('slide change')}
+        // onSwiper={(swiper) => console.log(swiper)}
         autoplay={{ delay: 3000 }}
         className='mySwiper'
       >

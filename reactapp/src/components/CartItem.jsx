@@ -6,17 +6,16 @@ import React from 'react';
 import { Minus, Plus, X } from 'lucide-react';
 import '../pages/ShoppingCart.css'
 
-const CartItem = ({ item, onQuantityChange, onRemove }) => {
+const CartItem = ({ item, onQuantityChange, onRemove, onToggleCheck }) => {
 
 
   return (
     <div className="cart-item">
       <div className="checkbox-column">
-
         <input 
         type="checkbox" 
         checked={item.checked} 
-        onChange={() => {}}
+        onChange={() => onToggleCheck(item.shoppingCartId)}
         />
       </div>
 
@@ -30,15 +29,14 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
       </div>
       <div className="item-quantity">
         <button 
-          onClick={() => onQuantityChange(item.id, item.quantity - 1)}
+          onClick={() => onQuantityChange(item.shoppingCartId, item.quantity - 1)}
           >
             <Minus size={12} />
         </button>
-        <input type="text" 
-        value={item.quantity} readOnly 
+        <input type="text" value={item.quantity} readOnly 
         />
         <button 
-        onClick={() => onQuantityChange(item.id, item.quantity + 1)}
+        onClick={() => onQuantityChange(item.shoppingCartId, item.quantity + 1)}
         >
           <Plus size={12} />
         </button>
@@ -51,7 +49,7 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
       <div  className="item-shipping">무료배송</div>
       <button 
         className="remove-button" 
-        onClick={() => onRemove(item.id)}
+        onClick={() => onRemove(item.shoppingCartId)}
       >
         <X size={16} />
       </button>

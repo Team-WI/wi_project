@@ -3,8 +3,10 @@
  import React from 'react';
  
  const dupUserCheck = async () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+
   try {
-    const response = await axios.post('http://43.203.208.22:3000/api/users/check-username', { username: user.username });
+    const response = await axios.post(`${API_URL}/api/users/check-username`, { username: user.username });
     if (response.data.available) {
       alert('사용 가능한 아이디입니다.');
     } else {

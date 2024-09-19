@@ -18,6 +18,7 @@ const ProductList = ( ) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const API_URL = process.env.REACT_APP_API_URL;
 
   console.log('Current category:', category); 
   console.log('Current item:', item);   
@@ -26,7 +27,7 @@ const ProductList = ( ) => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        let url = `http://43.203.208.22:3000/api/categories/${category}`;
+        let url = `${API_URL}/api/categories/${category}`;
 
         // item이 존재하고 'all'이 아닌 경우에만 URL에 추가
         if (item && item !== 'all') {
