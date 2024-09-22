@@ -13,12 +13,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 // App 컴포넌트를 QueryClientProvider로 감싸기
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <App />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // 성능 측정을 시작하려면 reportWebVitals를 호출합니다.

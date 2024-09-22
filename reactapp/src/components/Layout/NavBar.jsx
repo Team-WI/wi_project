@@ -8,12 +8,13 @@ import React, { useState } from 'react';
 import { Link, useParams, useLocation} from 'react-router-dom';
 import { Container, Nav, Navbar, Form, Button, InputGroup } from 'react-bootstrap';
 import { CATEGORIES, SUBCATEGORIES } from '../CATEGORIES';
+import SearchBar from './SearchBar';
 import '../Components.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import './NavBar.css'; 
 
-const NavBar = () => {
+const NavBar = ({ products }) => {
   const [expanded, setExpanded] = useState(false);
   const { category, item } = useParams()
   const location = useLocation();
@@ -53,7 +54,7 @@ const NavBar = () => {
               ))}
             </Nav>
           
-
+          <SearchBar products={products}/>
           <Form className="d-flex">
             <InputGroup>  
               <Form.Control

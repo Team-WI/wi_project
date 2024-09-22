@@ -11,10 +11,13 @@ import './Card.css'
 const Card = ({ product }) => {
   return (
     <div>
-      <Link to={`/products/${product.productId}`}       className="product-card-link">
+      <Link to={`/products/${product.productId}`} className="product-card-link">
       <BootstrapCard className="product-card">
-        {product.productImg ? (
-          <BootstrapCard.Img variant="top" src={product.productImg} alt={product.productName} />
+        {product.imageUrl ? (
+          <BootstrapCard.Img 
+            variant="top" 
+            src={product.imageUrl}
+            alt={product.productName} />
         ) : (
           <div className="product-placeholder" style={{
             width: '100%',

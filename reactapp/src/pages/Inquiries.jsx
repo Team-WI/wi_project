@@ -17,12 +17,13 @@ const Inquiries = () => {
     const [userComment, setUserComment] =useState(''); 
     const [productID, setProductID] =useState('');
     const loginId = sessionStorage.getItem('id') 
+    const API_URL = process.env.REACT_APP_API_URL;
 
   
     useEffect(() => {
         const getInquiries = async () => {
             try {
-                const response = await axios.get(`http://43.203.208.22:3000/api/productInquiries/${inquiryId}`);
+                const response = await axios.get(`${API_URL}/api/productInquiries/${inquiryId}`);
                 console.log(response.data.data);
                  // 받은 데이터를 사용하려면 여기에 추가
                  setInquiries(response.data.data);    

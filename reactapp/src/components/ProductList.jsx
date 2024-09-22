@@ -37,7 +37,7 @@ const ProductList = ( ) => {
 
         const response = await axios.get(url);
         // console.log('서버 응답:', response);
-        // console.log('서버 응답 데이터:', response.data);
+        console.log('서버 응답 데이터:', response.data);
         
 
         // let filteredProducts = response.data.data;
@@ -47,7 +47,7 @@ const ProductList = ( ) => {
         // }
         if (response.data && response.data.data) {
           const productsData = response.data.data;
-          console.log('처리 전 상품 데이터:', productsData);
+          // console.log('처리 전 상품 데이터:', productsData);
 
             // 항상 배열 형태로 처리
             setProducts(Array.isArray(productsData) ? productsData : [productsData]);
@@ -119,7 +119,7 @@ const ProductList = ( ) => {
         {products.length > 0 ? (
             products.map((product) => (
           <Col key={product.productId} xs={6} md={4}>
-            <Card product={product} />
+            <Card product={{...product, imageUrl: product.image_medium}} />
           </Col>
           ))
         ) : (

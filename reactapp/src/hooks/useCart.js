@@ -30,10 +30,19 @@ const refreshToken = async () => {
 // 장바구니 데이터 호출 함수
 const getCartItems = async () => {
   const loginId = sessionStorage.getItem('id');
+  console.log("현재 로그인 유저 아이디:", loginId)
+  try {
   const response = await axios.get(`${API_URL}/api/shoppingCarts/${loginId}`, { 
     withCredentials: true  
   });
   return response.data.data;
+} catch (error) {
+  if (error.response && error.response.status === 404) {
+    console.log("Shopping cart is empty");
+    return []; 
+  }
+  throw error; 
+}
 };
 
 // 장바구니 상품 추가 함수 (상품 상세페이지)
@@ -86,8 +95,13 @@ export const useCart = () => {
   const { data: cartItems = [], isLoading, error } = useQuery({
     queryKey: ['cart'],
     queryFn: async () => {
+      try {
       const items = await getCartItems().catch(error => handleTokenRefresh(error, getCartItems));
       return items.map(item => ({...item, checked: true}));  // 체크박스 초기상태: checked
+    } catch (error) {
+      console.error("Failed to fetch cart items:", error)
+      return [];
+    }
     },
     staleTime: 1000 * 60 * 5, // 5분 동안 캐시 유지
   });
@@ -149,7 +163,7 @@ export const useCart = () => {
 
   return {
     cartItems,
-    isLoading,
+    isLoading: isCartLoading, 
     error,
     addToCart,
     updateQuantity,

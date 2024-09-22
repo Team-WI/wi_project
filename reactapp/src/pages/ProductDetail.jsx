@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { useCart } from '../hooks/useCart';
-import { useWishlist } from '../hooks/useWishlist';
+// import { useWishlist } from '../hooks/useWishlist';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Nav, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { CircleArrowLeft, Heart, LoaderCircle, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -24,7 +24,7 @@ const getProduct = async (productId) => {
 const ProductDetail = () => {
   const { productId } = useParams();
   const { addToCart } = useCart();
-  const { toggleWishlist, isInWishlist } = useWishlist();  
+  // const { toggleWishlist, isInWishlist } = useWishlist();  
   const navigate = useNavigate();
 
   // 상품 데이터 호출 
@@ -83,15 +83,21 @@ const ProductDetail = () => {
     });
   };
 
+  // 장바구니 담기
+  const handleAddToCart = () => {
+    addToCart(product.productId, quantity);
+    alert('상품이 장바구니에 추가되었습니다.');
+  };
+  
   // 바로 구매
   const handleBuyNow = () => {
     navigate('/Checkout', { state: { buyNow: true, product: { ...product, quantity }}});
   };
 
   // 짬하기
-  const handleWishlistToggle = () => {
-    toggleWishlist(productId);
-  };
+  // const handleWishlistToggle = () => {
+  //   toggleWishlist(productId);
+  // };
 
   // 상품 설명 탭 UI
   let [tab, setTab] = useState(0);
@@ -159,15 +165,16 @@ const ProductDetail = () => {
             </div>
             
               <div className="d-flex justify-content-between align-items-center mb-3">
-              
-                <CartButton productId={product.productId} />
-                <Button 
+                <CartButton productId={product.productId} onClick={handleAddToCart}/>
+                {/* <Button 
                   variant="outline-dark" 
                   className={`wishlist-btn ${isInWishlist(productId) ? 'wishlisted' : ''}`}
                   onClick={handleWishlistToggle}>
                   <Heart fill={isInWishlist(productId) ? 'red' : 'none'} size={20} />
-                </Button>
+                </Button> */}
               </div>
+
+
                 <Button variant="dark" className="buy-btn" onClick={handleBuyNow}>바로 구매</Button>
           </Col>
         </Row>
