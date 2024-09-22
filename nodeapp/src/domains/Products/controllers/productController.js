@@ -7,7 +7,7 @@ import logger from '../../../utils/logger.js';
 export const getProduct = async (req,res) => {
 	try {
 		logger.info(`${req.method} ${req.originalUrl}, Called getProduct`);
-	        const product = await getProductById(req.params.id);
+	        const product = await getProductById(req);
 			console.log(product);
 	        res.status(HttpStatus.OK.code)
 			.send(new response(HttpStatus.OK.code, HttpStatus.OK.status, 'Completed: Product Are Found', product ));

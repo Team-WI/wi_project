@@ -1,9 +1,6 @@
 import logger from '../../../utils/logger.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
-import mysql from 'mysql2/promise';
-import bcrypt from 'bcryptjs';
-import Review from '../models/reviewModel.js';
-import response from '../../../class/response.js';
+import { addHour } from '../../../utils/myUtil.js';
 import jwtProvider from '../../../class/jwtProvider.js';
 import dotenv from 'dotenv';
 
@@ -17,7 +14,12 @@ export const getReviewById = async (req) => {
 	try {
 
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT * from Reviews where reviewId = ?;';
+		const query = 'SELECT r.*, p.productName, pi.image_large, pi.image_medium, pi.image_small '
+						+ 'FROM Reviews r '
+						+ 'JOIN Products p ON p.productId = r.productId '
+						+ 'LEFT JOIN ProductImages pi ON pi.productId = p.productId '
+						+ 'WHERE reviewId = (?);';
+
 		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {
@@ -27,17 +29,30 @@ export const getReviewById = async (req) => {
 		} else {
 			connection.release();
 			
-			const review = result[0].map(row => new Review(
-				row.reviewId,
-				row.productId,
-				row.userId,
-				row.rating,
-				row.comment,
-				row.reviewDate,
-				row.helpCount,
-				row.noHelpCount
-				));
-			return review[0];
+				
+			let reviewArr = [];
+			
+			//2024-09-21 이미지 추가
+			for (const row in result[0]) {
+				const review = {
+
+					'reviewId' : result[0][row].reviewId,
+					'productId' : result[0][row].productId,
+					'userId' : result[0][row].userId,
+					'rating' : result[0][row].rating,
+					'comment' : result[0][row].comment,
+					'reviewDate' : addHour(result[0][row].reviewDate),
+					'helpCount' : result[0][row].helpCount,
+					'noHelpCount' : result[0][row].noHelpCount,
+					'productName' : result[0][row].productName,
+					'image_small' : result[0][row].image_small,
+					'image_medium' : result[0][row].image_medium,
+					'image_large' : result[0][row].image_large
+				};
+				reviewArr.push(review);
+			}
+			return reviewArr;
+
 		}
 
 	} catch (error) {

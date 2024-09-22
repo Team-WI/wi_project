@@ -1,8 +1,6 @@
 import logger from '../../../utils/logger.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
-import mysql from 'mysql2/promise';
 import Shipping from '../models/shippingModel.js';
-import response from '../../../class/response.js';
 
 
 export const getShippingById = async (shippingId) => {

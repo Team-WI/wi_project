@@ -1,9 +1,6 @@
 import logger from '../../../utils/logger.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
-import mysql from 'mysql2/promise';
-import Category from '../models/categoryModel.js';
 import Product from '../../Products/models/productModel.js';
-import response from '../../../class/response.js';
 import jwtProvider from '../../../class/jwtProvider.js';
 import { addHour } from '../../../utils/myUtil.js';
 import dotenv from 'dotenv';
@@ -15,12 +12,13 @@ export const getCategoryItemById = async (req) => {
 	try {
 
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT P.* '
-					  + 'from Products P '
-					  + 'JOIN Product_Category PC ON P.productId = PC.productId '
-				      + 'JOIN Categories C ON PC.categoryId = C.categoryId '
-					  + 'WHERE C.categoryName = (?) '
-					  + 'OR C.parentId = (SELECT categoryId FROM Categories WHERE categoryname = (?));';
+		const query = 'SELECT p.*, pi.image_large, pi.image_medium, pi.image_small '
+					  + 'from Products p '
+					  + 'JOIN Product_Category pc ON p.productId = pc.productId '
+				      + 'JOIN Categories c ON pc.categoryId = c.categoryId '
+					  + 'LEFT JOIN ProductImages pi ON pi.productId = p.productId '
+					  + 'WHERE c.categoryName = (?) '
+					  + 'OR c.parentId = (SELECT categoryId FROM Categories WHERE categoryname = (?));';
 		const result = await connection.execute(query, [req.params.id, req.params.id]);
 
 		if(result[0].length === 0) {
@@ -30,16 +28,27 @@ export const getCategoryItemById = async (req) => {
 		} else {
 			connection.release();
 			
-			const product = result[0].map(row => new Product(
-				row.productId,
-				row.productName,
-				row.description,
-				row.price,
-				row.stock,
-				addHour(row.created_at)
-				));
-			return product;
+			let categoryItemArr = [];
+			
+			//2024-09-21 이미지 추가
+			for (const row in result[0]) {
+				const categoryItem = {
 
+					'productId' : result[0][row].productId,
+					'productName' : result[0][row].productName,
+					'description' : result[0][row].description,
+					'created_at' : addHour(result[0][row].created_at),
+					'price' : result[0][row].price,
+					'stock' : result[0][row].stock,
+					'image_small' : result[0][row].image_small,
+					'image_medium' : result[0][row].image_medium,
+					'image_large' : result[0][row].image_large
+				};
+				
+				categoryItemArr.push(categoryItem);
+			}
+
+			return categoryItemArr;
 		}
 
 	} catch (error) {
@@ -52,12 +61,14 @@ export const getCategoryItemBySubId = async (req) => {
 	try {
 
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT P.* '
-					  + 'from Products P '
-					  + 'JOIN Product_Category PC ON P.productId = PC.productId '
-				      + 'JOIN Categories C ON PC.categoryId = C.categoryId '
-					  + 'WHERE C.parentId = (SELECT categoryId FROM Categories WHERE categoryName = (?)) '
-					  + 'AND C.categoryName = (?)';
+		const query = 'SELECT p.*, pi.image_large, pi.image_medium, pi.image_small '
+					  +	'FROM Products p '
+					  +	'JOIN Product_Category pc ON p.productId = pc.productId '
+					  +	'JOIN Categories c ON pc.categoryId = c.categoryId '
+					  +	'LEFT JOIN ProductImages pi ON pi.productId = p.productId '
+					  +	'WHERE c.parentId = (SELECT categoryId FROM Categories WHERE categoryName = (?)) '
+					  + 'AND c.categoryName = (?);';
+
 		const result = await connection.execute(query, [req.params.id, req.params.subId]);
 
 		if(result[0].length === 0) {
@@ -67,15 +78,27 @@ export const getCategoryItemBySubId = async (req) => {
 		} else {
 			connection.release();
 			
-			const product = result[0].map(row => new Product(
-				row.productId,
-				row.productName,
-				row.description,
-				row.price,
-				row.stock,
-				addHour(row.created_at)
-				));
-			return product[0];
+			let categoryItemArr = [];
+			
+			//2024-09-21 이미지 추가
+			for (const row in result[0]) {
+				const categoryItem = {
+
+					'productId' : result[0][row].productId,
+					'productName' : result[0][row].productName,
+					'description' : result[0][row].description,
+					'created_at' : addHour(result[0][row].created_at),
+					'price' : result[0][row].price,
+					'stock' : result[0][row].stock,
+					'image_small' : result[0][row].image_small,
+					'image_medium' : result[0][row].image_medium,
+					'image_large' : result[0][row].image_large
+				};
+				
+				categoryItemArr.push(categoryItem);
+			}
+
+			return categoryItemArr;
 		}
 
 	} catch (error) {

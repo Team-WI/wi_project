@@ -1,23 +1,26 @@
 import logger from '../../../utils/logger.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
-import mysql from 'mysql2/promise';
-import ShoppingCart from '../models/shoppingCartModel.js';
 import jwtProvider from '../../../class/jwtProvider.js';
+import SignedUrl from '../../../class/generateSignedUrl.js';
 import dotenv from 'dotenv';
+
 
 dotenv.config();
 
 export const getShoppingCartById = async (req) => {
 
-	const jwtprovider = new jwtProvider();
-	jwtprovider.verifyAccessToken(req);
+//	const jwtprovider = new jwtProvider();
+//	jwtprovider.verifyAccessToken(req);
 	
+	const signedUrl = new SignedUrl();
+
 	try {
 
 		const connection = await connectionPool.getConnection();
-		const query = 'SELECT sc.shoppingCartId, sc.userId, p.productName, sc.quantity '
+		const query = 'SELECT sc.shoppingCartId, sc.userId, p.productName, sc.quantity, pi.image_large, pi.image_medium, pi.image_small '
 						+ 'FROM ShoppingCarts sc '
 						+ 'JOIN Products p ON p.productId = sc.productId ' 
+						+ 'LEFT JOIN ProductImages pi ON pi.productId = p.productId '
 						+ 'WHERE sc.userId = (?);';
 		const result = await connection.execute(query, [req.params.id]);
 
@@ -28,13 +31,23 @@ export const getShoppingCartById = async (req) => {
 		} else {
 			connection.release();
 			
-			const shoppingCart = result[0].map(row => new ShoppingCart(
-				row.shoppingCartId,
-				row.userId,
-				row.productName,
-				row.quantity,
-				));
-			return shoppingCart;
+			let shoppingCartArr = [];
+			
+			//2024-09-21 이미지 추가
+			for (const row in result[0]) {
+				const categoryItem = {
+
+					'shoppingCartId' : result[0][row].shoppingCartId,
+					'userId' : result[0][row].userId,
+					'productName' : result[0][row].productName,
+					'quantity' : result[0][row].quantity,
+					'image_small' : signedUrl.generateSignedUrl(result[0][row].image_small),
+					'image_medium' : result[0][row].image_medium,
+					'image_large' : result[0][row].image_large
+				};
+				shoppingCartArr.push(categoryItem);
+			}
+			return shoppingCartArr;
 		}
 
 	} catch (error) {
@@ -48,7 +61,6 @@ export const createShoppingCart = async (req) => {
 	
 	const jwtprovider = new jwtProvider();
 	jwtprovider.verifyAccessToken(req);
-	
 	
 	try {
 		

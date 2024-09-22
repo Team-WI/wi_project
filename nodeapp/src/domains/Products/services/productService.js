@@ -1,27 +1,25 @@
 import logger from '../../../utils/logger.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
-import mysql from 'mysql2/promise';
 import Product from '../models/productModel.js';
-import response from '../../../class/response.js';
 import jwtProvider from '../../../class/jwtProvider.js';
 
-export const getProductById = async (productId) => {
+//상품 문의 개별 조회
+export const getProductById = async (req) => {
 	try {
-
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT p.*, pi.image_small, pi.image_medium, pi.image_large '
 						+ 'FROM Products p '
 						+ 'JOIN ProductImages pi ON pi.productId = p.productId '
 						+ 'WHERE p.productId = (?); ';
-		const result = await connection.execute(query, [productId]);
+		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {
 			connection.release();
 			throw new Error('Product not found');
-			
-		} else {
+
+		} else {			
 			connection.release();
-			
+
 			const product = result[0].map(row => new Product(
 				row.productId,
 				row.productName,
@@ -30,7 +28,7 @@ export const getProductById = async (productId) => {
 				row.stock,
 				row.created_at
 				));
-			//2024-09-19 이미지 추가
+			//2024-09-21 이미지 추가
 			product[0]['image_small'] = result[0][0].image_small;
 			product[0]['image_medium'] = result[0][0].image_medium;
 			product[0]['image_large'] = result[0][0].image_large;
@@ -50,7 +48,6 @@ export const createProduct = async (req) => {
 	jwtprovider.verifyAccessToken(req);
 
 	try {
-
 		const connection = await connectionPool.getConnection();
 		const query = 'INSERT INTO Products (productName, description, price , stock) VALUES (?,?,?,?)';
 		const result = await connection.execute(query, [req.body.productName, req.body.description, req.body.price, req.body.stock]);

@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import https from 'https';
-
 dotenv.config();
 
 import userRoutes from './domains/Users/routes/userRoutes.js';
@@ -25,7 +24,7 @@ const app = express();
 
 let corsOptions = {
     origin: "wispmall.duckdns.org",
-//  origin: "https://localhost:3000",
+//	origin: "http://localhost:3000",
 // 	origin: "*",
 	credentials: true
 }

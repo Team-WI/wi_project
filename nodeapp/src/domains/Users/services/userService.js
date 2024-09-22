@@ -9,7 +9,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
+// 마이페이지 조회
 export const getUserById = async (req) => {
 		
 	const jwtprovider = new jwtProvider();
@@ -50,7 +50,7 @@ export const getUserById = async (req) => {
 	}
 };
 
-
+// 회원가입
 export const createUser = async (userData) => {
 	try {
 	
@@ -148,6 +148,8 @@ export const login = async (req) => {
 		const query = 'SELECT * from Users where loginId = (?);';
 		const result = await connection.execute(query, [req.body.id]);
 
+		console.log(query);
+
 		if(result[0].length === 0) {
 			connection.release();
 			throw new Error('User not found');
@@ -162,7 +164,7 @@ export const login = async (req) => {
 			  result[0][0].password
 		);
 
-
+		console.log('isPasswordCorrect',isPasswordCorrect);
 		// 토큰 발급
 		if(isPasswordCorrect){
 			

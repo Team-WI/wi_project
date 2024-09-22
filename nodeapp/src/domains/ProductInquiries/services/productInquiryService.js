@@ -1,8 +1,6 @@
 import logger from '../../../utils/logger.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
-import mysql from 'mysql2/promise';
 import ProductInquiry from '../models/productInquiryModel.js';
-import response from '../../../class/response.js';
 import jwtProvider from '../../../class/jwtProvider.js';
 import { addHour } from '../../../utils/myUtil.js';
 
@@ -16,7 +14,6 @@ export const getProductInquiryById = async (req) => {
 	jwtprovider.verifyAccessToken(req);
 
 	try {
-
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT pi.*, pm.image_small, pm.image_medium, pm.image_large '
 						+ 'FROM ProductInquiries pi '
@@ -41,10 +38,10 @@ export const getProductInquiryById = async (req) => {
 				row.userComment,
 				row.sellerComment
 			));
-			//2024-09-19 이미지 추가
-			product[0]['image_small'] = result[0][0].image_small;
-			product[0]['image_medium'] = result[0][0].image_medium;
-			product[0]['image_large'] = result[0][0].image_large;
+			//2024-09-21 이미지 추가
+			productInquiry[0]['image_small'] = result[0][0].image_small;
+			productInquiry[0]['image_medium'] = result[0][0].image_medium;
+			productInquiry[0]['image_large'] = result[0][0].image_large;
 
 			return productInquiry[0];
 		}
@@ -57,8 +54,8 @@ export const getProductInquiryById = async (req) => {
 
 export const getProductInquiryAll = async (req) => {
 
-	//const jwtprovider = new jwtProvider();
-	//jwtprovider.verifyAccessToken(req);
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
 
 	try {	
 	
@@ -78,6 +75,7 @@ export const getProductInquiryAll = async (req) => {
 			
 			let productInquiryArr = [];
 			
+			//2024-09-21 이미지 추가
 			for (const row in result[0]) {
 				const productInquiry = {
 					'inquiryId' : result[0][row].inquiryId,
@@ -92,7 +90,7 @@ export const getProductInquiryAll = async (req) => {
 					'image_medium' : result[0][row].image_medium,
 					'image_large' : result[0][row].image_large
 				};
-				//2024-09-19 이미지 추가;
+				
 				productInquiryArr.push(productInquiry);
 			}	
 			return productInquiryArr;
