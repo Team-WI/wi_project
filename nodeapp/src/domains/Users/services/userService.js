@@ -100,7 +100,7 @@ export const updateUser = async (req) => {
 		const connection = await connectionPool.getConnection();
 		const query = 'UPDATE Users SET ' 
 						+ querySetData
-						+ ' where userId = (?)';
+						+ ' where loginId = (?)';
 		console.log(query);
 
 		const result = await connection.execute(query, [req.params.id]);
@@ -124,7 +124,7 @@ export const deleteUser = async (userId) => {
 	try {
     
 		const connection = await connectionPool.getConnection();
-		const query = 'UPDATE Users SET status='+ "'inactive'" +' where userId = (?)';
+		const query = 'UPDATE Users SET status='+ "'inactive'" +' where loginId = (?)';
 		const result = await connection.execute(query, [userId]);
 	
 		if(result[0].length === 0) {

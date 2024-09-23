@@ -18,7 +18,7 @@ export const getCategoryItemById = async (req) => {
 				      + 'JOIN Categories c ON pc.categoryId = c.categoryId '
 					  + 'LEFT JOIN ProductImages pi ON pi.productId = p.productId '
 					  + 'WHERE c.categoryName = (?) '
-					  + 'OR c.parentId = (SELECT categoryId FROM Categories WHERE categoryname = (?));';
+					  + 'OR c.parentId = (SELECT categoryId FROM Categories WHERE categoryName = (?));';
 		const result = await connection.execute(query, [req.params.id, req.params.id]);
 
 		if(result[0].length === 0) {

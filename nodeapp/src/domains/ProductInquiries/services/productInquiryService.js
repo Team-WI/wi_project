@@ -62,8 +62,10 @@ export const getProductInquiryAll = async (req) => {
 		const connection = await connectionPool.getConnection();
 		const query = 'SELECT pi.*, pm.image_small, pm.image_medium, pm.image_large '
 						+ 'FROM ProductInquiries pi '
+						+ 'JOIN Users u ON u.userId = pi.userId '
 						+ 'LEFT JOIN ProductImages pm ON pm.productId = pi.productId '
-						+ 'WHERE userId = (?);';		
+						+ 'WHERE u.loginId = (?);';
+						
 		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {

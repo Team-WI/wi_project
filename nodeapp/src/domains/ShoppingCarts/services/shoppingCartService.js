@@ -21,7 +21,7 @@ export const getShoppingCartById = async (req) => {
 						+ 'FROM ShoppingCarts sc '
 						+ 'JOIN Products p ON p.productId = sc.productId ' 
 						+ 'LEFT JOIN ProductImages pi ON pi.productId = p.productId '
-						+ 'WHERE sc.userId = (?);';
+						+ 'WHERE sc.loginId = (?);';
 		const result = await connection.execute(query, [req.params.id]);
 
 		if(result[0].length === 0) {

@@ -18,7 +18,7 @@ export const getReviewById = async (req) => {
 						+ 'FROM Reviews r '
 						+ 'JOIN Products p ON p.productId = r.productId '
 						+ 'LEFT JOIN ProductImages pi ON pi.productId = p.productId '
-						+ 'WHERE reviewId = (?);';
+						+ 'WHERE r.reviewId = (?);';
 
 		const result = await connection.execute(query, [req.params.id]);
 
