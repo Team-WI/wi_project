@@ -55,7 +55,7 @@ const NavBar = ({ products }) => {
             </Nav>
           
           <SearchBar products={products}/>
-          <Form className="d-flex">
+          {/* <Form className="d-flex">
             <InputGroup>  
               <Form.Control
                 type="search"
@@ -66,7 +66,7 @@ const NavBar = ({ products }) => {
               <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
               </Button>
             </InputGroup>
-          </Form>
+          </Form> */}
           
           <Nav>
             <Nav.Link as={Link} to="/MyLike" onClick={() => setExpanded(false)}>MyLike</Nav.Link>

@@ -37,7 +37,7 @@ const SearchBar = ({ }) => {
           value={searchKeyword}
           onChange={handleChange}
         />
-        <Button variant="light" type="submit">
+        <Button variant="dark" type="submit">
           <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
         </Button>
       </InputGroup>

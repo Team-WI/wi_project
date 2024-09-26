@@ -2,14 +2,14 @@
 'Swiper' 라이브러리를 사용 (npm i swiper) */ 
 
 import React from 'react';
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import './BannerSlide.css';
+import 'swiper/css/autoplay';
 
+import './BannerSlide.css';
 
 
 const BannerSlide = () => {
@@ -23,16 +23,25 @@ const BannerSlide = () => {
         pagination={{ clickable: true }}
         // onSlideChange={() => console.log('slide change')}
         // onSwiper={(swiper) => console.log(swiper)}
-        autoplay={{ delay: 3000 }}
+        autoplay={{ delay: 4000 }}
         className='mySwiper'
       >
       
         <SwiperSlide>
-        <img src="https://static.coupangcdn.com/ea/cmg_paperboy/image/1723520619708/C1_PC1%28%EC%97%85%EB%A1%9C%EB%93%9C-%EC%9A%A9%29.jpg" alt="배너 이미지"/>
-          </SwiperSlide>
-        <SwiperSlide>
-        <img src="https://static.coupangcdn.com/ra/cmg_paperboy/image/1724998723153/C1_PC1%28%EC%97%85%EB%A1%9C%EB%93%9C%EC%9A%A9%292.jpg" alt="배너 이미지"/>
+          <img 
+          src="https://via.placeholder.com/1920x450?text=Banner+Image1" 
+          alt="배너 이미지1"
+          loading="lazy"
+          />
         </SwiperSlide>
+        <SwiperSlide>
+          <img 
+            src="https://via.placeholder.com/1920x450?text=Banner+Image2" 
+            alt="배너 이미지2"
+            loading="lazy"
+            />
+        </SwiperSlide>
+        
       </Swiper>
     </div>
   );

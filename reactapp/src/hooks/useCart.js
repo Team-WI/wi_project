@@ -163,7 +163,7 @@ export const useCart = () => {
 
   return {
     cartItems,
-    isLoading: isCartLoading, 
+    isLoading, 
     error,
     addToCart,
     updateQuantity,
