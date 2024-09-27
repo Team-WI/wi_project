@@ -1,7 +1,6 @@
 import logger from '../../../utils/logger.js';
 import connectionPool from '../../../dbconfig/spmallDBC.js';
 import jwtProvider from '../../../class/jwtProvider.js';
-import SignedUrl from '../../../class/generateSignedUrl.js';
 import dotenv from 'dotenv';
 
 
@@ -9,9 +8,10 @@ dotenv.config();
 
 export const getShoppingCartById = async (req) => {
 
-//	const jwtprovider = new jwtProvider();
-//	jwtprovider.verifyAccessToken(req);
+	const jwtprovider = new jwtProvider();
+	jwtprovider.verifyAccessToken(req);
 	
+
 	try {
 
 		const connection = await connectionPool.getConnection();
@@ -39,7 +39,7 @@ export const getShoppingCartById = async (req) => {
 					'userId' : result[0][row].userId,
 					'productName' : result[0][row].productName,
 					'quantity' : result[0][row].quantity,
-					'image_small' : result[0][row].image_small,
+					'image_small' : signedUrl.generateSignedUrl(result[0][row].image_small),
 					'image_medium' : result[0][row].image_medium,
 					'image_large' : result[0][row].image_large
 				};

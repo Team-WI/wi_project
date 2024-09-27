@@ -1,0 +1,110 @@
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import * as url from 'url';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
+import fs from 'fs';
+import https from 'https';
+import {createProxyMiddleware} from 'http-proxy-middleware';
+
+dotenv.config();
+
+import userRoutes from './domains/Users/routes/userRoutes.js';
+import productRoutes from './domains/Products/routes/productRoutes.js';
+import orderRoutes from './domains/Orders/routes/orderRoutes.js';
+import shippingRoutes from './domains/Shipping/routes/shippingRoutes.js';
+import productInquiryRoutes from './domains/ProductInquiries/routes/productInquiryRoutes.js';
+import reviewRoutes from './domains/Reviews/routes/reviewRoutes.js';
+import categoryRoutes from './domains/Categories/routes/categoryRoutes.js';
+import boardRoutes from './domains/Boards/routes/boardRoutes.js';
+import paymentRoutes from './domains/Payments/routes/paymentRoutes.js';
+import authRoutes from './domains/Auth/routes/authRoutes.js';
+import shoppingCartRoutes from './domains/ShoppingCarts/routes/shoppingCartRoutes.js';
+
+const app = express();
+
+let corsOptions = {
+//  origin: "wispmall.duckdns.org",
+  origin: "http://localhost:3000",
+// 	origin: "*",
+	credentials: true
+}
+app.use(cors(corsOptions));
+
+// parse requests of content-type - application/json
+app.use(express.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+// body-parser
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
+
+// JWT
+app.use(cookieParser());
+
+// Set filePath
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+
+//app.use('요청 경로', express.static('실제 경로'));
+app.use('/', express.static(path.join(__dirname, 'public/build')));
+//app.use('/assets', express.static(path.join(__dirname, '/public/build/assets')));
+
+// 테이블 route 작성
+app.use('/api/users/', userRoutes);
+app.use('/api/products/', productRoutes);
+app.use('/api/orders/', orderRoutes);
+app.use('/api/shippings/', shippingRoutes);
+app.use('/api/reviews/', reviewRoutes);
+app.use('/api/productInquiries/', productInquiryRoutes);
+app.use('/api/categories/', categoryRoutes);
+app.use('/api/boards/', boardRoutes);
+app.use('/api/payments/', paymentRoutes);
+app.use('/api/auth/', authRoutes);
+app.use('/api/shoppingCarts/', shoppingCartRoutes);
+/*
+app.get("*", (req, res, next) => {
+	console.log("req.secure == " + req.secure);
+	if(req.secure){       // --- https        
+		next();    
+	}else{        // -- http        
+		let to = "https://" + req.headers.host + req.url;
+		console.log("to ==> " + to);
+		return res.redirect("https://" + req.headers.host + req.url);
+	}})
+*/
+
+app.get('/', (req, res) => {
+  res.sendFile("index.html");
+});
+
+app.get('/logout',(req, res)=>{
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken').redirect('/');
+});
+
+
+app.get("/review", (req, res) => {
+  res.sendFile(path.join(__dirname, "/public/html", "/review_modify.html"));
+});
+
+
+/*
+const HTTPS_PORT = 8443;
+
+const option = {
+  key: fs.readFileSync(path.join(__dirname, '.ssl', 'private.key')),
+  cert: fs.readFileSync(path.join(__dirname, '.ssl', 'certificate.crt'))
+};
+
+// HTTPS 서버 생성
+https.createServer(option, app).listen(HTTPS_PORT, () => {
+  console.log('HTTPS 서버가 실행 중입니다.');
+});
+*/
+export default app;
+

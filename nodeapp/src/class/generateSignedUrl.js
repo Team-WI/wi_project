@@ -17,18 +17,20 @@ class SignedUrl {
 		this.secretKey = secretKey;
   }
 
-  generateSignedUrl(uri) {
+  generateSignedUrl(inputUri) {
 
       const expires = Math.floor(Date.now() / 1000) + this.expireTime;
       
-      // Secure link 전달 파라미터: "expires + uri + secret_key"
-      const secureLink = `${expires}${uri} ${this.secretKey}`;
-
+      const uri = '/files/' + inputUri;
+      // Secure link 전달 파라미터: "expires + uri + " " +  secret_key"
+      //const secureLink = `${expires}${uri} ${this.secretKey}`;
+      const secureLink = `${uri} ${this.secretKey}`;
       // MD5 해시 생성
       const hash = crypto.createHash('md5').update(secureLink).digest('hex');
 
       // 서명된 URL 생성
-      const signedUrl = `${uri}?st=${hash}&e=${this.expireTime}`;
+      //const signedUrl = `${uri}?st=${hash}&expires=${this.expireTime}`;
+      const signedUrl = `${uri}?st=${hash}`;
 
       return signedUrl;
   }
