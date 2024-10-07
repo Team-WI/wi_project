@@ -14,7 +14,7 @@ import './BannerSlide.css';
 
 const BannerSlide = () => {
   return (
-    <div className='banner-container'>
+    <div className='banner-container mt-4'>
       <Swiper
         modules={[Navigation, Pagination, Autoplay, A11y]}
         spaceBetween={0}

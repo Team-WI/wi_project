@@ -6,12 +6,10 @@ TODO:
 
 import React, { useState } from 'react';
 import { Link, useParams, useLocation} from 'react-router-dom';
-import { Container, Nav, Navbar, Form, Button, InputGroup } from 'react-bootstrap';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 import { CATEGORIES, SUBCATEGORIES } from '../CATEGORIES';
 import SearchBar from './SearchBar';
 import '../Components.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import './NavBar.css'; 
 
 const NavBar = ({ products }) => {
@@ -31,7 +29,7 @@ const NavBar = ({ products }) => {
   
   return (
     <div>
-    <Navbar bg="white" variant="light" expand="lg" expanded={expanded} sticky="top">
+    <Navbar bg="white" variant="light" expand="lg" expanded={expanded}>
       <Container fluid>
         <Navbar.Brand as={Link} to="/">WI Mall</Navbar.Brand>
         <Navbar.Toggle 
@@ -53,49 +51,21 @@ const NavBar = ({ products }) => {
                 </Nav.Link>
               ))}
             </Nav>
-          
-          <SearchBar products={products}/>
-          {/* <Form className="d-flex">
-            <InputGroup>  
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <Button variant="light">
-              <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
-              </Button>
-            </InputGroup>
-          </Form> */}
-          
-          <Nav>
-            <Nav.Link as={Link} to="/MyLike" onClick={() => setExpanded(false)}>MyLike</Nav.Link>
-            <Nav.Link as={Link} to="/MyPage" onClick={() => setExpanded(false)}>MyPage</Nav.Link>
-            <Nav.Link as={Link} to="/ShoppingCart" onClick={() => setExpanded(false)}>Cart</Nav.Link>
-            <Nav.Link as={Link} to="/SignIn" onClick={() => setExpanded(false)}>Login</Nav.Link>
-          </Nav>
+
+          <div className="d-flex align-items-center">
+            <SearchBar products={products}/>
+
+            <Nav>
+              <Nav.Link as={Link} to="/MyLike" onClick={() => setExpanded(false)}>MyLike</Nav.Link>
+              <Nav.Link as={Link} to="/MyPage" onClick={() => setExpanded(false)}>MyPage</Nav.Link>
+              <Nav.Link as={Link} to="/ShoppingCart" onClick={() => setExpanded(false)}>Cart</Nav.Link>
+              <Nav.Link as={Link} to="/SignIn" onClick={() => setExpanded(false)}>Login</Nav.Link>
+            </Nav>
+          </div>
+
         </Navbar.Collapse>
       </Container>
     </Navbar>
-
-{/* 
-    {category && (
-        <Navbar>
-          <Nav className="justify-content-center">
-            {SUBCATEGORIES.map((subcat) => (
-              <Nav.Item key={subcat.name}>
-                <Nav.Link 
-                  as={Link} 
-                  to={`/categories/${category}/${subcat.name}`}
-                  active={item === subcat.name}
-                >
-                  {subcat.text}
-                </Nav.Link>
-              </Nav.Item>
-            ))}
-          </Nav>
-        </Navbar>
-    )} */}
     </div>
   );
 };

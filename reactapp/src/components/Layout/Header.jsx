@@ -5,12 +5,13 @@ Header 컴포넌트
 
 import React from 'react';
 import NavBar from './NavBar';
+import styles from './Header.module.css';
 
 const Header = () => {
   return (
-    <div>
+    <header className={styles.header}>
       <NavBar />
-    </div>
+    </header>
   );
 };
 

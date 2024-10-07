@@ -4,7 +4,7 @@ src/App.js
 
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NavBar from "./components/Layout/NavBar";
+import Header from "./components/Layout/Header";
 import Footer from "./components/Footer";
 import MainPage from "./pages/MainPage";
 import {PrivateRoute} from './components/PrivateRoute';
@@ -18,6 +18,7 @@ import ProductList from "./components/ProductList";
 import ProductDetail from "./pages/ProductDetail";
 import ShoppingCart from "./pages/ShoppingCart";
 import Checkout from "./pages/Checkout";
+import SearchResult from "./pages/SearchResult";
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 설치
 import './App.css';
@@ -34,7 +35,7 @@ const App = () => {
     <Router>
       <div className="main-container">
       <div className="landing-page">
-        <NavBar />
+        <Header />
         <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/Wishlist" element={<PrivateRoute element={<Wishlist />} />} />
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="/categories/:category" element={<ProductList/>} />
         <Route path="/categories/:category/:item" element={<ProductList />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
+        <Route path="/search" element={<SearchResult/>} />
         <Route path="/Checkout/:productId" element={<Checkout />} />
         </Routes>
         <Footer />

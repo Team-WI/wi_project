@@ -25,7 +25,7 @@ const MainCarousel = () => {
 
 
   return (
-    <div className="main-carousel-container">
+    <div className="main-carousel-container mt-4">
             <h5>Best</h5>
       <Swiper
         // install Swiper modules
@@ -39,7 +39,7 @@ const MainCarousel = () => {
         navigation
         // onSwiper={(swiper) => console.log(swiper)}
         // onSlideChange={() => console.log('slide change')}
-        // loop = {true}
+        loop = {true}
         className="main-carousel-swiper"
       >
 
