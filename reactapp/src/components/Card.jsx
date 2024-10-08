@@ -9,14 +9,20 @@ import { Card as BootstrapCard } from 'react-bootstrap';
 import './Card.css'
 
 const Card = ({ product }) => {
+
+  const imageUrl = product.image_medium
+    ? `${process.env.REACT_APP_IMAGE_URL}/${product.productName}/${product.image_medium}`
+    : null;
+
   return (
     <div>
       <Link to={`/products/${product.productId}`} className="product-card-link">
       <BootstrapCard className="product-card">
-        {product.imageUrl ? (
+        {imageUrl ? (
           <BootstrapCard.Img 
             variant="top" 
-            src={`http://43.203.208.22:3080/files/${product.productName}/${product.image_medium}`}
+            src={imageUrl}
+            // src={`http://43.203.208.22:3080/files/${product.productName}/${product.image_medium}`}
             alt={product.productName} />
         ) : (
           <div className="product-placeholder" style={{

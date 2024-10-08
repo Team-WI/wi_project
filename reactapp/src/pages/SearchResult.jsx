@@ -40,7 +40,16 @@ const SearchResult = () => {
         {products && products.length > 0 ? (
           products.map(product => (
             <Col key={product.productId} xs={6} md={4} lg={3}>
-              <Card product={{...product, imageUrl: product.image_medium}} />
+              <Card 
+                product={product
+                  // {
+                  // ...product, 
+                  // productImg: product.image_medium 
+                  // ? `${process.env.REACT_APP_IMAGE_URL}/${product.productName}/${product.image_medium}`
+                  // : null
+                  // }
+                }
+                  />
             </Col>
           ))
         ) : (
