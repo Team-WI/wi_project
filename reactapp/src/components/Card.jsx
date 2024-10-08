@@ -16,7 +16,7 @@ const Card = ({ product }) => {
         {product.imageUrl ? (
           <BootstrapCard.Img 
             variant="top" 
-            src={product.imageUrl}
+            src={`http://43.203.208.22:3080/files/${product.productName}/${product.image_medium}`}
             alt={product.productName} />
         ) : (
           <div className="product-placeholder" style={{
