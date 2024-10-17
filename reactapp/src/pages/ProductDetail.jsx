@@ -148,7 +148,7 @@ const ProductDetail = () => {
             <p className="seller-id">Seller</p>
             <h5 className="h2 mb-3">{product.productName}</h5>
             <p className="description">{product.description}</p>
-            <p classNAme="description">리뷰 00개</p>
+            <p className="description">리뷰 00개</p>
             <p className="price">{product.price}원</p>
 
             <div className="quantity-selector mb-3">

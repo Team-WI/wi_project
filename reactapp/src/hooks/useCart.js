@@ -32,17 +32,17 @@ const getCartItems = async () => {
   const loginId = sessionStorage.getItem('id');
   console.log("현재 로그인 유저 아이디:", loginId)
   try {
-  const response = await axios.get(`${API_URL}/api/shoppingCarts/${loginId}`, { 
-    withCredentials: true  
-  });
-  return response.data.data;
-} catch (error) {
-  if (error.response && error.response.status === 404) {
-    console.log("Shopping cart is empty");
-    return []; 
+    const response = await axios.get(`${API_URL}/api/shoppingCarts/${loginId}`, { 
+      withCredentials: true  
+    });
+    return response.data.data;
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      console.log("Shopping cart is empty");
+      return []; 
+    }
+    throw error; 
   }
-  throw error; 
-}
 };
 
 // 장바구니 상품 추가 함수 (상품 상세페이지)
@@ -96,14 +96,15 @@ export const useCart = () => {
     queryKey: ['cart'],
     queryFn: async () => {
       try {
-      const items = await getCartItems().catch(error => handleTokenRefresh(error, getCartItems));
+      const items = await getCartItems();
       return items.map(item => ({...item, checked: true}));  // 체크박스 초기상태: checked
-    } catch (error) {
+      } catch (error) {
       console.error("Failed to fetch cart items:", error)
       return [];
     }
     },
     staleTime: 1000 * 60 * 5, // 5분 동안 캐시 유지
+    retry: 1,
   });
 
   // useMutation 훅. 장바구니 추가, 수량 변경, 삭제 
@@ -112,6 +113,7 @@ export const useCart = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(['cart']);
     },
+    
   });
 
   const updateQuantityMutation = useMutation({
@@ -127,8 +129,13 @@ export const useCart = () => {
       queryClient.invalidateQueries(['cart'])
   });
 
-  const addToCart = (productId, quantity = 1) => {
-    addToCartMutation.mutate({ productId, quantity });
+  const addToCart = async (productId, quantity = 1) => {
+    try {
+    await addToCartMutation.mutateAsync({ productId, quantity });
+  } catch (error) {
+    console.error("장바구니 추가 실패: ", error);
+    throw error;
+  }
   };
 
   const updateQuantity = (shoppingCartId, quantity) => {
